@@ -1,0 +1,1278 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>⚗️ Science Junction</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  
+  :root {
+    --primary: #2563eb;
+    --primary-dark: #1d4ed8;
+    --secondary: #f0f7ff;
+    --success: #16a34a;
+    --danger: #dc2626;
+    --warning: #d97706;
+    --text: #1e293b;
+    --text-light: #64748b;
+    --border: #e2e8f0;
+    --white: #ffffff;
+    --shadow: 0 4px 20px rgba(0,0,0,0.08);
+  }
+
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #eff6ff 0%, #f8fafc 100%);
+    min-height: 100vh;
+    color: var(--text);
+  }
+
+  /* ===== HEADER ===== */
+  .header {
+    background: var(--white);
+    padding: 16px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: var(--shadow);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .logo { font-size: 1.4rem; font-weight: 700; color: var(--primary); }
+  .logo span { color: var(--text); }
+  .timer-display {
+    background: var(--primary);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-weight: 700;
+    font-size: 1.1rem;
+    display: none;
+  }
+  .timer-display.warning { background: var(--warning); }
+  .timer-display.danger { background: var(--danger); animation: pulse 1s infinite; }
+
+  @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.7; } }
+
+  /* ===== SCREENS ===== */
+  .screen { display: none; padding: 24px; max-width: 800px; margin: 0 auto; }
+  .screen.active { display: block; }
+
+  /* ===== CARDS ===== */
+  .card {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 32px;
+    box-shadow: var(--shadow);
+    margin-bottom: 20px;
+  }
+  .card h2 { color: var(--primary); margin-bottom: 8px; }
+  .card p { color: var(--text-light); margin-bottom: 24px; }
+
+  /* ===== BUTTONS ===== */
+  .btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .btn-primary { background: var(--primary); color: white; }
+  .btn-primary:hover { background: var(--primary-dark); transform: translateY(-1px); }
+  .btn-secondary { background: var(--secondary); color: var(--primary); border: 2px solid var(--primary); }
+  .btn-success { background: var(--success); color: white; }
+  .btn-danger { background: var(--danger); color: white; }
+  .btn-full { width: 100%; justify-content: center; }
+  .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+  /* ===== INPUTS ===== */
+  .form-group { margin-bottom: 20px; }
+  .form-group label { display: block; margin-bottom: 8px; font-weight: 600; color: var(--text); }
+  .form-group input, .form-group select {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid var(--border);
+    border-radius: 10px;
+    font-size: 1rem;
+    transition: border-color 0.2s;
+    background: var(--white);
+  }
+  .form-group input:focus, .form-group select:focus {
+    outline: none;
+    border-color: var(--primary);
+  }
+
+  /* ===== LOGIN SCREEN ===== */
+  .login-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 24px;
+  }
+  .tab-btn {
+    flex: 1;
+    padding: 12px;
+    border: 2px solid var(--border);
+    border-radius: 10px;
+    background: var(--white);
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s;
+    color: var(--text-light);
+  }
+  .tab-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+
+  /* ===== EXAM CARDS ===== */
+  .exam-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 12px;
+    margin: 20px 0;
+  }
+  .exam-card {
+    background: var(--secondary);
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 12px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .exam-card:hover { border-color: var(--primary); transform: translateY(-2px); }
+  .exam-card.selected { background: var(--primary); color: white; border-color: var(--primary); }
+  .exam-card .emoji { font-size: 2rem; margin-bottom: 8px; display: block; }
+  .exam-card .name { font-weight: 700; font-size: 0.95rem; }
+
+  /* ===== TEST TYPE ===== */
+  .test-type-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 20px 0;
+  }
+  .test-type-card {
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: var(--white);
+  }
+  .test-type-card:hover { border-color: var(--primary); transform: translateY(-2px); }
+  .test-type-card .icon { font-size: 2.5rem; margin-bottom: 12px; }
+  .test-type-card h3 { color: var(--text); margin-bottom: 4px; }
+  .test-type-card p { color: var(--text-light); font-size: 0.85rem; }
+
+  /* ===== QUESTION SCREEN ===== */
+  .question-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  .question-counter {
+    background: var(--secondary);
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-weight: 700;
+    color: var(--primary);
+  }
+  .question-text {
+    font-size: 1.1rem;
+    font-weight: 600;
+    line-height: 1.6;
+    margin-bottom: 24px;
+    padding: 20px;
+    background: var(--secondary);
+    border-radius: 12px;
+    border-left: 4px solid var(--primary);
+  }
+  .options-list { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+  .option-item {
+    padding: 16px 20px;
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 1rem;
+  }
+  .option-item:hover { border-color: var(--primary); background: var(--secondary); }
+  .option-item.selected { border-color: var(--primary); background: #dbeafe; }
+  .option-item.correct { border-color: var(--success); background: #dcfce7; }
+  .option-item.wrong { border-color: var(--danger); background: #fee2e2; }
+  .option-label {
+    width: 32px; height: 32px;
+    background: var(--primary);
+    color: white;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .option-item.correct .option-label { background: var(--success); }
+  .option-item.wrong .option-label { background: var(--danger); }
+
+  .explanation-box {
+    margin-top: 16px;
+    padding: 16px;
+    background: #f0fdf4;
+    border: 1px solid #86efac;
+    border-radius: 10px;
+    display: none;
+  }
+  .explanation-box.show { display: block; }
+
+  /* ===== PROGRESS BAR ===== */
+  .progress-bar {
+    height: 6px;
+    background: var(--border);
+    border-radius: 3px;
+    margin-bottom: 20px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--primary);
+    border-radius: 3px;
+    transition: width 0.3s ease;
+  }
+
+  /* ===== QUESTION PALETTE ===== */
+  .palette-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 16px 0;
+  }
+  .palette-btn {
+    width: 36px; height: 36px;
+    border-radius: 8px;
+    border: 2px solid var(--border);
+    background: var(--white);
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 0.85rem;
+    transition: all 0.2s;
+  }
+  .palette-btn.answered { background: var(--primary); color: white; border-color: var(--primary); }
+  .palette-btn.current { border-color: var(--warning); box-shadow: 0 0 0 3px rgba(217,119,6,0.2); }
+
+  /* ===== RESULT SCREEN ===== */
+  .result-ring {
+    width: 160px; height: 160px;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 24px;
+    position: relative;
+  }
+  .result-ring::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    border: 10px solid var(--border);
+  }
+  .result-ring::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    border: 10px solid transparent;
+    border-top-color: var(--primary);
+    animation: spin 1s linear;
+  }
+  @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+  .score-percent { font-size: 2.5rem; font-weight: 800; color: var(--primary); }
+  .score-label { font-size: 0.85rem; color: var(--text-light); }
+
+  .result-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin: 24px 0;
+  }
+  .stat-box {
+    text-align: center;
+    padding: 16px;
+    border-radius: 12px;
+    background: var(--secondary);
+  }
+  .stat-box .stat-num { font-size: 1.8rem; font-weight: 800; }
+  .stat-box .stat-lbl { font-size: 0.8rem; color: var(--text-light); margin-top: 4px; }
+  .stat-box.correct .stat-num { color: var(--success); }
+  .stat-box.wrong .stat-num { color: var(--danger); }
+  .stat-box.skip .stat-num { color: var(--warning); }
+
+  /* ===== TEACHER DASHBOARD ===== */
+  .dashboard-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 24px;
+    overflow-x: auto;
+  }
+  .dash-tab {
+    padding: 10px 20px;
+    border: 2px solid var(--border);
+    border-radius: 20px;
+    background: var(--white);
+    cursor: pointer;
+    font-weight: 600;
+    white-space: nowrap;
+    transition: all 0.2s;
+  }
+  .dash-tab.active { background: var(--primary); color: white; border-color: var(--primary); }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  .stats-card {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: var(--shadow);
+  }
+  .stats-card .big-num { font-size: 2rem; font-weight: 800; color: var(--primary); }
+  .stats-card .label { color: var(--text-light); font-size: 0.85rem; margin-top: 4px; }
+
+  .students-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+  }
+  .students-table th {
+    background: var(--secondary);
+    padding: 12px;
+    text-align: left;
+    font-weight: 700;
+    color: var(--primary);
+  }
+  .students-table td { padding: 12px; border-bottom: 1px solid var(--border); }
+  .students-table tr:hover td { background: var(--secondary); }
+
+  .badge {
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+  }
+  .badge-success { background: #dcfce7; color: var(--success); }
+  .badge-danger { background: #fee2e2; color: var(--danger); }
+  .badge-warning { background: #fef3c7; color: var(--warning); }
+
+  /* ===== LOADING ===== */
+  .loading {
+    text-align: center;
+    padding: 40px;
+  }
+  .spinner {
+    width: 50px; height: 50px;
+    border: 4px solid var(--border);
+    border-top-color: var(--primary);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin: 0 auto 16px;
+  }
+
+  /* ===== LEADERBOARD ===== */
+  .rank-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px;
+    background: var(--white);
+    border-radius: 12px;
+    margin-bottom: 8px;
+    box-shadow: var(--shadow);
+  }
+  .rank-medal { font-size: 1.8rem; width: 40px; text-align: center; }
+  .rank-info { flex: 1; }
+  .rank-name { font-weight: 700; }
+  .rank-detail { color: var(--text-light); font-size: 0.85rem; }
+  .rank-score { font-size: 1.4rem; font-weight: 800; color: var(--primary); }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 600px) {
+    .screen { padding: 16px; }
+    .card { padding: 20px; }
+    .test-type-grid { grid-template-columns: 1fr; }
+    .result-stats { grid-template-columns: repeat(3, 1fr); }
+  }
+
+  .nav-btns {
+    display: flex;
+    gap: 12px;
+    margin-top: 20px;
+    justify-content: space-between;
+  }
+
+  .subject-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 10px;
+    margin: 16px 0;
+  }
+  .subject-btn {
+    padding: 14px;
+    border: 2px solid var(--border);
+    border-radius: 10px;
+    background: var(--white);
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s;
+    text-align: center;
+  }
+  .subject-btn:hover, .subject-btn.selected { background: var(--primary); color: white; border-color: var(--primary); }
+
+  .chapter-list {
+    max-height: 300px;
+    overflow-y: auto;
+    border: 2px solid var(--border);
+    border-radius: 10px;
+  }
+  .chapter-item {
+    padding: 14px 16px;
+    cursor: pointer;
+    border-bottom: 1px solid var(--border);
+    transition: background 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .chapter-item:hover { background: var(--secondary); }
+  .chapter-item.selected { background: #dbeafe; color: var(--primary); font-weight: 600; }
+  .chapter-num { width: 24px; height: 24px; background: var(--primary); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 700; flex-shrink: 0; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="logo">⚗️ Science <span>Junction</span></div>
+  <div class="timer-display" id="timerDisplay">⏱ 00:00</div>
+</div>
+
+<!-- ==================== SCREEN 1: LOGIN ==================== -->
+<div class="screen active" id="loginScreen">
+  <div class="card">
+    <h2>⚗️ Science Junction में आपका स्वागत है!</h2>
+    <p>JEE • NEET • NDA • CLAT • 9th-12th</p>
+    
+    <div class="login-tabs">
+      <button class="tab-btn active" onclick="switchTab('student')">👨‍🎓 Student Login</button>
+      <button class="tab-btn" onclick="switchTab('teacher')">👨‍🏫 Teacher Login</button>
+    </div>
+
+    <!-- Student Login -->
+    <div id="studentLoginForm">
+      <div class="form-group">
+        <label>अपना नाम लिखें</label>
+        <input type="text" id="studentName" placeholder="जैसे: Rahul Kumar">
+      </div>
+      <div class="form-group">
+        <label>Class / Exam चुनें</label>
+        <select id="quickExam">
+          <option value="">-- चुनें --</option>
+          <option value="JEE">🎯 JEE (Engineering)</option>
+          <option value="NEET">🏥 NEET (Medical)</option>
+          <option value="NDA">⚔️ NDA (Defence)</option>
+          <option value="CLAT">⚖️ CLAT (Law)</option>
+          <option value="Class 9">📚 Class 9th</option>
+          <option value="Class 10">📚 Class 10th</option>
+          <option value="Class 11">📚 Class 11th</option>
+          <option value="Class 12">📚 Class 12th</option>
+        </select>
+      </div>
+      <button class="btn btn-primary btn-full" onclick="studentLogin()">
+        आगे बढ़ें →
+      </button>
+    </div>
+
+    <!-- Teacher Login -->
+    <div id="teacherLoginForm" style="display:none">
+      <div class="form-group">
+        <label>Teacher Password</label>
+        <input type="password" id="teacherPassword" placeholder="Password डालें">
+      </div>
+      <button class="btn btn-primary btn-full" onclick="teacherLogin()">
+        Teacher Dashboard खोलें →
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SCREEN 2: TEST SETUP ==================== -->
+<div class="screen" id="setupScreen">
+  <div class="card">
+    <h2>📝 Test Setup</h2>
+    <p id="setupGreeting">नमस्ते! Test type चुनें</p>
+    
+    <div class="test-type-grid">
+      <div class="test-type-card" onclick="selectTestType('chapter')">
+        <div class="icon">📖</div>
+        <h3>Chapter Test</h3>
+        <p>किसी एक chapter का test दें</p>
+      </div>
+      <div class="test-type-card" onclick="selectTestType('mock')">
+        <div class="icon">📋</div>
+        <h3>Full Mock Test</h3>
+        <p>पूरा exam pattern वाला test</p>
+      </div>
+    </div>
+
+    <button class="btn btn-secondary" onclick="showScreen('loginScreen')">← वापस जाएं</button>
+  </div>
+</div>
+
+<!-- ==================== SCREEN 3: CHAPTER SELECTION ==================== -->
+<div class="screen" id="chapterScreen">
+  <div class="card">
+    <h2>📚 Subject & Chapter चुनें</h2>
+    
+    <div class="form-group">
+      <label>Subject</label>
+      <div class="subject-grid" id="subjectGrid"></div>
+    </div>
+    
+    <div class="form-group" id="chapterGroup" style="display:none">
+      <label>Chapter</label>
+      <div class="chapter-list" id="chapterList"></div>
+    </div>
+
+    <div class="form-group" id="questionCountGroup" style="display:none">
+      <label>Questions की संख्या</label>
+      <select id="questionCount">
+        <option value="5">5 Questions (Quick)</option>
+        <option value="10" selected>10 Questions (Normal)</option>
+        <option value="15">15 Questions (Full)</option>
+        <option value="20">20 Questions (Challenge)</option>
+      </select>
+    </div>
+
+    <div class="nav-btns">
+      <button class="btn btn-secondary" onclick="showScreen('setupScreen')">← वापस</button>
+      <button class="btn btn-primary" id="startChapterBtn" onclick="startTest()" disabled>
+        Test शुरू करें 🚀
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SCREEN 4: LOADING ==================== -->
+<div class="screen" id="loadingScreen">
+  <div class="card">
+    <div class="loading">
+      <div class="spinner"></div>
+      <h3>Questions तैयार हो रहे हैं...</h3>
+      <p style="color: var(--text-light); margin-top: 8px;">AI आपके लिए special questions बना रहा है ✨</p>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SCREEN 5: TEST ==================== -->
+<div class="screen" id="testScreen">
+  <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+  
+  <div class="card">
+    <div class="question-header">
+      <div class="question-counter" id="questionCounter">प्रश्न 1/10</div>
+      <div id="markingInfo" style="color: var(--text-light); font-size: 0.85rem;"></div>
+    </div>
+    
+    <div class="question-text" id="questionText"></div>
+    
+    <ul class="options-list" id="optionsList"></ul>
+    
+    <div class="explanation-box" id="explanationBox">
+      <strong>💡 Explanation:</strong>
+      <p id="explanationText"></p>
+    </div>
+    
+    <div class="nav-btns">
+      <button class="btn btn-secondary" onclick="prevQuestion()">← पिछला</button>
+      <button class="btn btn-primary" onclick="nextQuestion()" id="nextBtn">अगला →</button>
+    </div>
+  </div>
+
+  <!-- Question Palette -->
+  <div class="card">
+    <h3 style="margin-bottom: 12px;">📌 Question Palette</h3>
+    <div class="palette-grid" id="paletteGrid"></div>
+    <button class="btn btn-danger btn-full" style="margin-top: 16px;" onclick="submitTest()">
+      ✅ Test Submit करें
+    </button>
+  </div>
+</div>
+
+<!-- ==================== SCREEN 6: RESULT ==================== -->
+<div class="screen" id="resultScreen">
+  <div class="card" style="text-align: center;">
+    <h2>🎉 Test पूरा हुआ!</h2>
+    
+    <div class="result-ring" id="resultRing">
+      <div class="score-percent" id="scorePercent">0%</div>
+      <div class="score-label">Score</div>
+    </div>
+
+    <div class="result-stats">
+      <div class="stat-box correct">
+        <div class="stat-num" id="correctCount">0</div>
+        <div class="stat-lbl">✅ सही</div>
+      </div>
+      <div class="stat-box wrong">
+        <div class="stat-num" id="wrongCount">0</div>
+        <div class="stat-lbl">❌ गलत</div>
+      </div>
+      <div class="stat-box skip">
+        <div class="stat-num" id="skipCount">0</div>
+        <div class="stat-lbl">⏭ छोड़े</div>
+      </div>
+    </div>
+
+    <div id="resultMessage" style="padding: 16px; background: var(--secondary); border-radius: 10px; margin-bottom: 20px; font-size: 1.1rem; font-weight: 600;"></div>
+
+    <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+      <button class="btn btn-primary" onclick="reviewTest()">📖 Review देखें</button>
+      <button class="btn btn-secondary" onclick="showScreen('setupScreen')">🔄 फिर से Test दें</button>
+      <button class="btn btn-secondary" onclick="showScreen('loginScreen')">🏠 Home</button>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SCREEN 7: TEACHER DASHBOARD ==================== -->
+<div class="screen" id="teacherScreen">
+  <div class="dashboard-tabs">
+    <button class="dash-tab active" onclick="showDashTab('overview')">📊 Overview</button>
+    <button class="dash-tab" onclick="showDashTab('students')">👥 Students</button>
+    <button class="dash-tab" onclick="showDashTab('leaderboard')">🏆 Leaderboard</button>
+  </div>
+
+  <!-- Overview Tab -->
+  <div id="tab-overview">
+    <div class="stats-grid" id="overviewStats"></div>
+    <div class="card">
+      <h3>📈 Recent Activity</h3>
+      <div id="recentActivity" style="margin-top: 16px;"></div>
+    </div>
+  </div>
+
+  <!-- Students Tab -->
+  <div id="tab-students" style="display:none">
+    <div class="card">
+      <h3>👥 All Students Results</h3>
+      <div style="overflow-x: auto; margin-top: 16px;">
+        <table class="students-table" id="studentsTable">
+          <thead>
+            <tr>
+              <th>Student</th>
+              <th>Exam</th>
+              <th>Chapter</th>
+              <th>Score</th>
+              <th>%</th>
+              <th>Date</th>
+            </tr>
+          </thead>
+          <tbody id="studentsBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Leaderboard Tab -->
+  <div id="tab-leaderboard" style="display:none">
+    <div id="leaderboardList"></div>
+  </div>
+
+  <div style="margin-top: 16px;">
+    <button class="btn btn-secondary" onclick="teacherLogout()">← Logout</button>
+  </div>
+</div>
+
+<script>
+// ===== CONFIGURATION =====
+// ⚠️ यहां अपना Google Apps Script URL डालें (deploy करने के बाद मिलेगा)
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwRtvck-c-9ZKPo4VynOdCX5gVW4wa745d0_Tix23cJhn5n-RM9SAIWl9dBA1DLz-MMgA/exec";
+
+// ===== DATA =====
+const SYLLABUS = {
+  "JEE": {
+    "Physics": ["Units & Measurement","Kinematics","Laws of Motion","Work, Energy & Power","Rotational Motion","Gravitation","Properties of Matter","Thermodynamics","Kinetic Theory","Oscillations","Waves","Electrostatics","Current Electricity","Magnetic Effects","EMI & AC","Optics","Modern Physics"],
+    "Chemistry": ["Basic Concepts","Atomic Structure","Chemical Bonding","States of Matter","Thermodynamics","Equilibrium","Redox Reactions","Hydrogen","s-Block Elements","p-Block Elements","Organic Chemistry Basics","Hydrocarbons","Alcohols & Ethers","Aldehydes & Ketones","Carboxylic Acids","Amines","Polymers","Biomolecules"],
+    "Maths": ["Sets & Relations","Complex Numbers","Quadratic Equations","Permutations","Binomial Theorem","Sequences & Series","Straight Lines","Circles","Conics","3D Geometry","Vectors","Limits","Differentiation","Integration","Differential Equations","Probability","Matrices"]
+  },
+  "NEET": {
+    "Physics": ["Physical World","Kinematics","Laws of Motion","Work & Energy","Motion of System","Gravitation","Properties of Bulk Matter","Thermodynamics","Kinetic Theory","Oscillations","Waves","Electrostatics","Current Electricity","Magnetic Effects","EMI","Alternating Current","EM Waves","Optics","Dual Nature","Atoms","Nuclei","Electronic Devices"],
+    "Chemistry": ["Basic Chemistry","Atomic Structure","Chemical Bonding","States of Matter","Chemical Thermodynamics","Equilibrium","Redox","Hydrogen","s-Block","p-Block","d-Block","Coordination Compounds","Organic Basics","Hydrocarbons","Haloalkanes","Alcohols","Aldehydes","Carboxylic Acids","Amines","Biomolecules","Polymers","Chemistry in Everyday Life"],
+    "Biology": ["Cell Biology","Cell Division","Biomolecules","Plant Morphology","Plant Anatomy","Transport in Plants","Mineral Nutrition","Photosynthesis","Respiration","Plant Growth","Reproduction in Plants","Human Physiology - Digestion","Human Physiology - Breathing","Human Physiology - Body Fluids","Human Physiology - Excretion","Human Physiology - Locomotion","Human Physiology - Neural Control","Human Physiology - Chemical Coordination","Reproduction in Humans","Genetics","Molecular Biology","Evolution","Human Health","Microbes","Biotechnology","Ecosystems","Biodiversity","Environmental Issues"]
+  },
+  "NDA": {
+    "Maths": ["Algebra","Matrices","Trigonometry","Analytic Geometry 2D","Analytic Geometry 3D","Differential Calculus","Integral Calculus","Differential Equations","Vector Algebra","Statistics","Probability"],
+    "General Science": ["Physics","Chemistry","Biology"],
+    "English": ["Grammar","Vocabulary","Reading Comprehension","Writing Skills"],
+    "GK": ["History","Geography","Current Affairs","Economy","Science & Tech"]
+  },
+  "CLAT": {
+    "English": ["Reading Comprehension","Vocabulary","Grammar","Verbal Reasoning"],
+    "GK & Current Affairs": ["National Affairs","International Affairs","Legal Affairs","Science & Tech","Economy"],
+    "Legal Reasoning": ["Legal Principles","Legal Maxims","Constitutional Law","Criminal Law","Civil Law"],
+    "Logical Reasoning": ["Analytical Reasoning","Logical Sequences","Critical Reasoning"],
+    "Quantitative Techniques": ["Basic Maths","Data Interpretation","Graphs & Charts"]
+  },
+  "Class 9": {
+    "Science": ["Matter in Surroundings","Is Matter Pure","Atoms & Molecules","Structure of Atom","Cell","Tissues","Diversity in Living Organisms","Motion","Force & Laws","Gravitation","Work & Energy","Sound","Why do we fall ill","Natural Resources"],
+    "Maths": ["Number Systems","Polynomials","Coordinate Geometry","Linear Equations","Euclid's Geometry","Lines & Angles","Triangles","Quadrilaterals","Areas","Circles","Constructions","Heron's Formula","Surface Areas","Statistics","Probability"],
+    "SST": ["India Size & Location","Physical Features","Drainage","Climate","Natural Vegetation","Population","French Revolution","Russian Revolution","Nazism","Forest Society","Pastoralists","Peasants","Sports & Politics","Clothing","Electoral Politics","Constitutional Design","Working Institutions","Democratic Rights","Poverty","Food Security","India Economy"]
+  },
+  "Class 10": {
+    "Science": ["Chemical Reactions","Acids Bases Salts","Metals & Non-metals","Carbon Compounds","Life Processes","Control & Coordination","Reproduction","Heredity","Light","Human Eye","Electricity","Magnetic Effects","Energy Sources","Environment"],
+    "Maths": ["Real Numbers","Polynomials","Linear Equations","Quadratic Equations","Arithmetic Progressions","Triangles","Coordinate Geometry","Trigonometry","Applications of Trigonometry","Circles","Constructions","Areas Related to Circles","Surface Areas","Statistics","Probability"],
+    "SST": ["Resources","Forest & Wildlife","Water Resources","Agriculture","Minerals","Manufacturing Industries","Transport","Nationalism in India","Nationalist Movement","Age of Industrialisation","Work Life","Print Culture","Novels","Power Sharing","Federalism","Democracy & Diversity","Gender & Politics","Popular Struggles","Challenges to Democracy","Development","Sectors of Economy","Money & Credit","Globalisation","Consumer Rights"]
+  },
+  "Class 11": {
+    "Physics": ["Physical World","Units","Motion in Straight Line","Motion in Plane","Laws of Motion","Work Energy Power","Rotational Motion","Gravitation","Mechanical Properties","Thermal Properties","Thermodynamics","Kinetic Theory","Oscillations","Waves"],
+    "Chemistry": ["Basic Chemistry","Atomic Structure","Classification of Elements","Chemical Bonding","States of Matter","Thermodynamics","Equilibrium","Redox","Hydrogen","s-Block","p-Block","Organic Chemistry","Hydrocarbons","Environmental Chemistry"],
+    "Maths": ["Sets","Relations & Functions","Trigonometry","Principle of Mathematical Induction","Complex Numbers","Linear Inequalities","Permutations","Binomial Theorem","Sequences & Series","Straight Lines","Conics","3D Geometry","Limits","Derivatives","Statistics","Probability"],
+    "Biology": ["Cell","Biomolecules","Cell Division","Morphology of Plants","Anatomy of Plants","Structural Organisation in Animals","Photosynthesis","Respiration","Plant Growth","Digestion","Breathing","Body Fluids","Excretion","Locomotion","Neural Control","Chemical Coordination"]
+  },
+  "Class 12": {
+    "Physics": ["Electric Charges","Electrostatic Potential","Current Electricity","Magnetic Effects","Magnetism","EMI","AC","EM Waves","Ray Optics","Wave Optics","Dual Nature","Atoms","Nuclei","Semiconductors","Communication"],
+    "Chemistry": ["Solutions","Electrochemistry","Chemical Kinetics","Surface Chemistry","d-Block Elements","Coordination Compounds","Haloalkanes","Alcohols","Aldehydes & Ketones","Carboxylic Acids","Amines","Biomolecules","Polymers","Chemistry in Daily Life"],
+    "Maths": ["Relations & Functions","Inverse Trigonometry","Matrices","Determinants","Continuity & Differentiability","Applications of Derivatives","Integrals","Applications of Integrals","Differential Equations","Vector Algebra","3D Geometry","Linear Programming","Probability"],
+    "Biology": ["Reproduction in Plants","Reproduction in Humans","Principles of Inheritance","Molecular Basis of Inheritance","Evolution","Human Health","Microbes in Human Welfare","Biotechnology Principles","Biotechnology Applications","Organisms and Populations","Ecosystem","Biodiversity","Environmental Issues"]
+  }
+};
+
+const MARKING = {
+  "JEE": { correct: 4, wrong: -1 },
+  "NEET": { correct: 4, wrong: -1 },
+  "NDA": { correct: 4, wrong: -1.33 },
+  "CLAT": { correct: 1, wrong: -0.25 },
+  "Class 9": { correct: 1, wrong: 0 },
+  "Class 10": { correct: 1, wrong: 0 },
+  "Class 11": { correct: 1, wrong: 0 },
+  "Class 12": { correct: 1, wrong: 0 }
+};
+
+// ===== APP STATE =====
+let state = {
+  studentName: "",
+  exam: "",
+  subject: "",
+  chapter: "",
+  testType: "",
+  questions: [],
+  currentQ: 0,
+  answers: {},
+  timerInterval: null,
+  timeLeft: 0,
+  startTime: null
+};
+
+// ===== NAVIGATION =====
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+// ===== LOGIN =====
+function switchTab(type) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  document.getElementById('studentLoginForm').style.display = type === 'student' ? 'block' : 'none';
+  document.getElementById('teacherLoginForm').style.display = type === 'teacher' ? 'block' : 'none';
+}
+
+function studentLogin() {
+  const name = document.getElementById('studentName').value.trim();
+  const exam = document.getElementById('quickExam').value;
+  if (!name) { alert('कृपया अपना नाम लिखें'); return; }
+  if (!exam) { alert('कृपया Exam चुनें'); return; }
+  state.studentName = name;
+  state.exam = exam;
+  document.getElementById('setupGreeting').textContent = `नमस्ते ${name}! Test type चुनें`;
+  showScreen('setupScreen');
+}
+
+function teacherLogin() {
+  const pwd = document.getElementById('teacherPassword').value;
+  if (pwd === 'science123') {
+    loadTeacherDashboard();
+    showScreen('teacherScreen');
+  } else {
+    alert('गलत Password! सही password डालें');
+  }
+}
+
+function teacherLogout() {
+  document.getElementById('teacherPassword').value = '';
+  showScreen('loginScreen');
+}
+
+// ===== TEST SETUP =====
+function selectTestType(type) {
+  state.testType = type;
+  if (type === 'chapter') {
+    loadSubjects();
+    showScreen('chapterScreen');
+  } else {
+    startMockTest();
+  }
+}
+
+function loadSubjects() {
+  const subjects = Object.keys(SYLLABUS[state.exam] || {});
+  const grid = document.getElementById('subjectGrid');
+  grid.innerHTML = subjects.map(s =>
+    `<button class="subject-btn" onclick="selectSubject('${s}')">${s}</button>`
+  ).join('');
+  document.getElementById('chapterGroup').style.display = 'none';
+  document.getElementById('questionCountGroup').style.display = 'none';
+  document.getElementById('startChapterBtn').disabled = true;
+  state.subject = '';
+  state.chapter = '';
+}
+
+function selectSubject(subject) {
+  state.subject = subject;
+  state.chapter = '';
+  document.querySelectorAll('.subject-btn').forEach(b => b.classList.remove('selected'));
+  event.target.classList.add('selected');
+  
+  const chapters = SYLLABUS[state.exam][subject] || [];
+  const list = document.getElementById('chapterList');
+  list.innerHTML = chapters.map((c, i) =>
+    `<div class="chapter-item" onclick="selectChapter('${c}', this)">
+      <div class="chapter-num">${i+1}</div>
+      ${c}
+    </div>`
+  ).join('');
+  
+  document.getElementById('chapterGroup').style.display = 'block';
+  document.getElementById('questionCountGroup').style.display = 'none';
+  document.getElementById('startChapterBtn').disabled = true;
+}
+
+function selectChapter(chapter, el) {
+  state.chapter = chapter;
+  document.querySelectorAll('.chapter-item').forEach(i => i.classList.remove('selected'));
+  el.classList.add('selected');
+  document.getElementById('questionCountGroup').style.display = 'block';
+  document.getElementById('startChapterBtn').disabled = false;
+}
+
+// ===== START TEST =====
+async function startTest() {
+  const count = parseInt(document.getElementById('questionCount').value);
+  showScreen('loadingScreen');
+  
+  try {
+    const questions = await fetchQuestions(state.exam, state.subject, state.chapter, count);
+    state.questions = questions;
+    state.currentQ = 0;
+    state.answers = {};
+    state.startTime = Date.now();
+    
+    // Timer set करो
+    const minutes = count * 1.5; // 1.5 min per question
+    state.timeLeft = Math.round(minutes * 60);
+    startTimer();
+    
+    renderTest();
+    showScreen('testScreen');
+  } catch (err) {
+    alert('Questions load करने में problem आई। फिर से try करें।');
+    showScreen('chapterScreen');
+  }
+}
+
+async function startMockTest() {
+  showScreen('loadingScreen');
+  
+  const mockConfig = {
+    "JEE": { Physics: 10, Chemistry: 10, Maths: 10 },
+    "NEET": { Physics: 10, Chemistry: 10, Biology: 15 },
+    "NDA": { Maths: 15, "General Science": 10 },
+    "CLAT": { English: 8, "Legal Reasoning": 10, "Logical Reasoning": 8 },
+    "Class 9": { Science: 10, Maths: 10 },
+    "Class 10": { Science: 10, Maths: 10 },
+    "Class 11": { Physics: 10, Chemistry: 10 },
+    "Class 12": { Physics: 10, Chemistry: 10 }
+  };
+  
+  const config = mockConfig[state.exam] || { Science: 10 };
+  let allQuestions = [];
+  
+  for (const [subject, count] of Object.entries(config)) {
+    const chapters = SYLLABUS[state.exam]?.[subject] || [];
+    const randomChapter = chapters[Math.floor(Math.random() * chapters.length)] || subject;
+    state.subject = subject;
+    state.chapter = randomChapter;
+    try {
+      const qs = await fetchQuestions(state.exam, subject, randomChapter, count);
+      allQuestions = allQuestions.concat(qs);
+    } catch (e) {
+      allQuestions = allQuestions.concat(getLocalFallbackQuestions(subject, randomChapter, count));
+    }
+  }
+  
+  state.questions = allQuestions;
+  state.currentQ = 0;
+  state.answers = {};
+  state.startTime = Date.now();
+  state.timeLeft = allQuestions.length * 90;
+  startTimer();
+  renderTest();
+  showScreen('testScreen');
+}
+
+// ===== FETCH QUESTIONS =====
+async function fetchQuestions(exam, subject, chapter, count) {
+  if (!APPS_SCRIPT_URL || APPS_SCRIPT_URL === "YOUR_APPS_SCRIPT_URL_HERE") {
+    return getLocalFallbackQuestions(subject, chapter, count);
+  }
+  
+  const url = `${APPS_SCRIPT_URL}?action=generateQuestions&exam=${encodeURIComponent(exam)}&subject=${encodeURIComponent(subject)}&chapter=${encodeURIComponent(chapter)}&count=${count}`;
+  
+  const response = await fetch(url);
+  const data = await response.json();
+  
+  if (data.status === 'success' && data.questions) {
+    return data.questions;
+  }
+  
+  return getLocalFallbackQuestions(subject, chapter, count);
+}
+
+// ===== LOCAL FALLBACK QUESTIONS =====
+function getLocalFallbackQuestions(subject, chapter, count) {
+  const bank = {
+    "Physics": [
+      { id:1, question:"न्यूटन का पहला नियम किससे संबंधित है?", options:{A:"जड़त्व",B:"त्वरण",C:"गुरुत्वाकर्षण",D:"ऊर्जा"}, correct:"A", explanation:"न्यूटन का पहला नियम जड़त्व का नियम है।"},
+      { id:2, question:"प्रकाश की गति लगभग कितनी है?", options:{A:"3×10⁸ m/s",B:"3×10⁶ m/s",C:"3×10¹⁰ m/s",D:"3×10⁴ m/s"}, correct:"A", explanation:"प्रकाश की गति 3×10⁸ m/s है।"},
+      { id:3, question:"F = ma में m क्या है?", options:{A:"Motion",B:"Mass",C:"Momentum",D:"Magnitude"}, correct:"B", explanation:"m = mass (द्रव्यमान)"},
+      { id:4, question:"गुरुत्वीय त्वरण (g) का मान क्या है?", options:{A:"9.8 m/s²",B:"8.9 m/s²",C:"10.8 m/s²",D:"6.8 m/s²"}, correct:"A", explanation:"g = 9.8 m/s² (approximately 10 m/s²)"},
+      { id:5, question:"किस राशि का SI मात्रक Newton है?", options:{A:"ऊर्जा",B:"शक्ति",C:"बल",D:"दाब"}, correct:"C", explanation:"बल (Force) का SI मात्रक Newton है।"}
+    ],
+    "Chemistry": [
+      { id:1, question:"जल का रासायनिक सूत्र क्या है?", options:{A:"H₂O",B:"HO₂",C:"H₂O₂",D:"H₃O"}, correct:"A", explanation:"जल = H₂O (दो हाइड्रोजन, एक ऑक्सीजन)"},
+      { id:2, question:"परमाणु के केंद्र में क्या होता है?", options:{A:"Electron",B:"Proton",C:"Nucleus",D:"Neutron only"}, correct:"C", explanation:"Nucleus (नाभिक) में Proton और Neutron होते हैं।"},
+      { id:3, question:"सबसे हल्का तत्व कौनसा है?", options:{A:"Helium",B:"Hydrogen",C:"Oxygen",D:"Nitrogen"}, correct:"B", explanation:"Hydrogen सबसे हल्का तत्व है।"},
+      { id:4, question:"pH 7 से कम होने पर पदार्थ होता है?", options:{A:"Neutral",B:"Basic",C:"Acidic",D:"Salt"}, correct:"C", explanation:"pH < 7 = Acidic, pH = 7 = Neutral, pH > 7 = Basic"},
+      { id:5, question:"NaCl किसका रासायनिक नाम है?", options:{A:"Baking Soda",B:"Common Salt",C:"Bleaching Powder",D:"Washing Soda"}, correct:"B", explanation:"NaCl = Sodium Chloride = Common Salt (साधारण नमक)"}
+    ],
+    "Maths": [
+      { id:1, question:"त्रिभुज के तीनों कोणों का योग कितना होता है?", options:{A:"90°",B:"180°",C:"270°",D:"360°"}, correct:"B", explanation:"त्रिभुज के तीनों कोणों का योग = 180°"},
+      { id:2, question:"वृत्त का क्षेत्रफल क्या होता है?", options:{A:"πr",B:"2πr",C:"πr²",D:"2πr²"}, correct:"C", explanation:"वृत्त का क्षेत्रफल = πr²"},
+      { id:3, question:"√144 का मान क्या है?", options:{A:"11",B:"12",C:"13",D:"14"}, correct:"B", explanation:"√144 = 12 क्योंकि 12×12 = 144"},
+      { id:4, question:"समबाहु त्रिभुज के प्रत्येक कोण की माप?", options:{A:"45°",B:"60°",C:"90°",D:"30°"}, correct:"B", explanation:"समबाहु त्रिभुज के तीनों कोण बराबर = 180°/3 = 60°"},
+      { id:5, question:"प्रधान अभाज्य संख्या कौनसी है?", options:{A:"1",B:"2",C:"4",D:"9"}, correct:"B", explanation:"2 सबसे छोटी और एकमात्र सम अभाज्य संख्या है।"}
+    ],
+    "Biology": [
+      { id:1, question:"मानव शरीर में हड्डियों की संख्या कितनी है?", options:{A:"206",B:"208",C:"212",D:"200"}, correct:"A", explanation:"वयस्क मानव शरीर में 206 हड्डियाँ होती हैं।"},
+      { id:2, question:"प्रकाश संश्लेषण किसमें होता है?", options:{A:"Mitochondria",B:"Nucleus",C:"Chloroplast",D:"Ribosome"}, correct:"C", explanation:"Chloroplast में Chlorophyll होता है जो प्रकाश संश्लेषण करता है।"},
+      { id:3, question:"DNA का पूरा नाम क्या है?", options:{A:"Deoxyribonucleic Acid",B:"Deoxyribo Nucleic Acid",C:"Deoxyribose Nucleic Acid",D:"उपरोक्त सभी"}, correct:"A", explanation:"DNA = Deoxyribonucleic Acid"},
+      { id:4, question:"रक्त का pH मान कितना होता है?", options:{A:"6.8-7.0",B:"7.35-7.45",C:"7.0-7.2",D:"7.5-7.8"}, correct:"B", explanation:"सामान्य रक्त का pH = 7.35-7.45 (slightly alkaline)"},
+      { id:5, question:"सबसे बड़ी कोशिका कौनसी है?", options:{A:"Nerve Cell",B:"Muscle Cell",C:"Ostrich Egg",D:"Red Blood Cell"}, correct:"C", explanation:"Ostrich (शुतुरमुर्ग) का अंडा सबसे बड़ी कोशिका है।"}
+    ]
+  };
+  
+  const defaultSubject = subject in bank ? subject : Object.keys(bank)[0];
+  const questions = bank[defaultSubject] || bank["Physics"];
+  
+  const result = [];
+  for (let i = 0; i < Math.min(count, questions.length); i++) {
+    result.push({...questions[i], id: i+1});
+  }
+  
+  // अगर कम questions हैं तो repeat करो
+  while (result.length < count) {
+    const q = {...questions[result.length % questions.length]};
+    q.id = result.length + 1;
+    result.push(q);
+  }
+  
+  return result;
+}
+
+// ===== RENDER TEST =====
+function renderTest() {
+  const q = state.questions[state.currentQ];
+  const total = state.questions.length;
+  
+  // Progress
+  document.getElementById('progressFill').style.width = `${((state.currentQ + 1) / total) * 100}%`;
+  document.getElementById('questionCounter').textContent = `प्रश्न ${state.currentQ + 1}/${total}`;
+  
+  // Marking scheme
+  const marking = MARKING[state.exam] || { correct: 1, wrong: 0 };
+  document.getElementById('markingInfo').textContent = `+${marking.correct} सही | ${marking.wrong} गलत`;
+  
+  // Question
+  document.getElementById('questionText').textContent = q.question;
+  
+  // Options
+  const optList = document.getElementById('optionsList');
+  optList.innerHTML = Object.entries(q.options).map(([key, val]) => {
+    const answered = state.answers[state.currentQ];
+    let cls = '';
+    if (answered !== undefined) {
+      if (key === q.correct) cls = 'correct';
+      else if (key === answered && key !== q.correct) cls = 'wrong';
+    } else if (state.answers[state.currentQ] === key) {
+      cls = 'selected';
+    }
+    const disabled = answered !== undefined ? 'style="pointer-events:none"' : '';
+    return `<li class="option-item ${cls}" onclick="selectAnswer('${key}')" ${disabled}>
+      <div class="option-label">${key}</div>
+      <span>${val}</span>
+    </li>`;
+  }).join('');
+  
+  // Explanation
+  const expBox = document.getElementById('explanationBox');
+  if (state.answers[state.currentQ] !== undefined) {
+    document.getElementById('explanationText').textContent = q.explanation || '';
+    expBox.classList.add('show');
+  } else {
+    expBox.classList.remove('show');
+  }
+  
+  // Palette
+  renderPalette();
+  
+  // Next button
+  const nextBtn = document.getElementById('nextBtn');
+  if (state.currentQ === total - 1) {
+    nextBtn.textContent = 'Submit करें ✅';
+    nextBtn.onclick = submitTest;
+  } else {
+    nextBtn.textContent = 'अगला →';
+    nextBtn.onclick = nextQuestion;
+  }
+}
+
+function renderPalette() {
+  const grid = document.getElementById('paletteGrid');
+  grid.innerHTML = state.questions.map((_, i) => {
+    let cls = state.answers[i] !== undefined ? 'answered' : '';
+    if (i === state.currentQ) cls += ' current';
+    return `<button class="palette-btn ${cls}" onclick="goToQuestion(${i})">${i + 1}</button>`;
+  }).join('');
+}
+
+function selectAnswer(key) {
+  if (state.answers[state.currentQ] !== undefined) return;
+  state.answers[state.currentQ] = key;
+  renderTest();
+}
+
+function nextQuestion() {
+  if (state.currentQ < state.questions.length - 1) {
+    state.currentQ++;
+    renderTest();
+  }
+}
+
+function prevQuestion() {
+  if (state.currentQ > 0) {
+    state.currentQ--;
+    renderTest();
+  }
+}
+
+function goToQuestion(i) {
+  state.currentQ = i;
+  renderTest();
+}
+
+// ===== TIMER =====
+function startTimer() {
+  const display = document.getElementById('timerDisplay');
+  display.style.display = 'flex';
+  
+  clearInterval(state.timerInterval);
+  state.timerInterval = setInterval(() => {
+    state.timeLeft--;
+    const m = Math.floor(state.timeLeft / 60);
+    const s = state.timeLeft % 60;
+    display.textContent = `⏱ ${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+    
+    if (state.timeLeft <= 60) display.className = 'timer-display danger';
+    else if (state.timeLeft <= 300) display.className = 'timer-display warning';
+    else display.className = 'timer-display';
+    
+    if (state.timeLeft <= 0) {
+      clearInterval(state.timerInterval);
+      submitTest();
+    }
+  }, 1000);
+}
+
+function stopTimer() {
+  clearInterval(state.timerInterval);
+  document.getElementById('timerDisplay').style.display = 'none';
+}
+
+// ===== SUBMIT TEST =====
+function submitTest() {
+  if (Object.keys(state.answers).length < state.questions.length * 0.3) {
+    if (!confirm(`आपने सिर्फ ${Object.keys(state.answers).length} questions answer किए हैं। Submit करें?`)) return;
+  }
+  
+  stopTimer();
+  
+  const marking = MARKING[state.exam] || { correct: 1, wrong: 0 };
+  let score = 0, correct = 0, wrong = 0;
+  
+  state.questions.forEach((q, i) => {
+    const ans = state.answers[i];
+    if (ans === undefined) return;
+    if (ans === q.correct) { score += marking.correct; correct++; }
+    else { score += marking.wrong; wrong++; }
+  });
+  
+  const skipped = state.questions.length - correct - wrong;
+  const maxScore = state.questions.length * marking.correct;
+  const percent = Math.max(0, Math.round((score / maxScore) * 100));
+  
+  // Show result
+  document.getElementById('scorePercent').textContent = `${percent}%`;
+  document.getElementById('correctCount').textContent = correct;
+  document.getElementById('wrongCount').textContent = wrong;
+  document.getElementById('skipCount').textContent = skipped;
+  
+  const msg = percent >= 80 ? '🌟 शानदार! बहुत बढ़िया performance!' :
+              percent >= 60 ? '👍 अच्छा! थोड़ी और practice करें' :
+              percent >= 40 ? '📚 मेहनत करो, improvement हो रहा है' :
+              '💪 हार मत मानो, फिर से try करो!';
+  document.getElementById('resultMessage').textContent = msg;
+  
+  // Save result
+  saveResult(score, maxScore, percent, correct, wrong, skipped);
+  
+  showScreen('resultScreen');
+}
+
+function saveResult(score, total, percent, correct, wrong, skipped) {
+  // Local storage में save करो
+  const results = JSON.parse(localStorage.getItem('sj_results') || '[]');
+  results.push({
+    name: state.studentName,
+    exam: state.exam,
+    subject: state.subject,
+    chapter: state.chapter,
+    score, total, percent, correct, wrong, skipped,
+    date: new Date().toLocaleDateString('hi-IN'),
+    time: new Date().toLocaleTimeString('hi-IN')
+  });
+  localStorage.setItem('sj_results', JSON.stringify(results));
+  
+  // Backend में भी save करो
+  if (APPS_SCRIPT_URL && APPS_SCRIPT_URL !== "YOUR_APPS_SCRIPT_URL_HERE") {
+    const url = `${APPS_SCRIPT_URL}?action=saveResult&studentName=${encodeURIComponent(state.studentName)}&exam=${encodeURIComponent(state.exam)}&subject=${encodeURIComponent(state.subject)}&chapter=${encodeURIComponent(state.chapter)}&score=${score}&total=${total}&percentage=${percent}`;
+    fetch(url).catch(() => {});
+  }
+}
+
+function reviewTest() {
+  state.currentQ = 0;
+  renderTest();
+  showScreen('testScreen');
+}
+
+// ===== TEACHER DASHBOARD =====
+function loadTeacherDashboard() {
+  const results = JSON.parse(localStorage.getItem('sj_results') || '[]');
+  
+  // Overview Stats
+  const stats = document.getElementById('overviewStats');
+  const avgPercent = results.length ? Math.round(results.reduce((a,b) => a + b.percent, 0) / results.length) : 0;
+  const uniqueStudents = [...new Set(results.map(r => r.name))].length;
+  
+  stats.innerHTML = `
+    <div class="stats-card"><div class="big-num">${results.length}</div><div class="label">कुल Tests</div></div>
+    <div class="stats-card"><div class="big-num">${uniqueStudents}</div><div class="label">Students</div></div>
+    <div class="stats-card"><div class="big-num">${avgPercent}%</div><div class="label">Average Score</div></div>
+    <div class="stats-card"><div class="big-num">${results.filter(r => r.percent >= 60).length}</div><div class="label">Passed</div></div>
+  `;
+  
+  // Recent Activity
+  const recent = document.getElementById('recentActivity');
+  if (results.length === 0) {
+    recent.innerHTML = '<p style="color: var(--text-light);">अभी तक कोई test नहीं दिया गया।</p>';
+  } else {
+    recent.innerHTML = results.slice(-5).reverse().map(r =>
+      `<div style="padding: 12px; border-bottom: 1px solid var(--border); display:flex; justify-content:space-between; align-items:center;">
+        <div><strong>${r.name}</strong> <span style="color:var(--text-light); font-size:0.85rem;">${r.exam} - ${r.chapter}</span></div>
+        <span class="badge ${r.percent >= 60 ? 'badge-success' : 'badge-danger'}">${r.percent}%</span>
+      </div>`
+    ).join('');
+  }
+  
+  // Students Table
+  const tbody = document.getElementById('studentsBody');
+  tbody.innerHTML = results.map(r =>
+    `<tr>
+      <td><strong>${r.name}</strong></td>
+      <td>${r.exam}</td>
+      <td>${r.chapter || '-'}</td>
+      <td>${r.score}/${r.total}</td>
+      <td><span class="badge ${r.percent >= 60 ? 'badge-success' : r.percent >= 40 ? 'badge-warning' : 'badge-danger'}">${r.percent}%</span></td>
+      <td>${r.date}</td>
+    </tr>`
+  ).join('') || '<tr><td colspan="6" style="text-align:center; color:var(--text-light);">कोई data नहीं</td></tr>';
+  
+  // Leaderboard
+  const byStudent = {};
+  results.forEach(r => {
+    if (!byStudent[r.name]) byStudent[r.name] = { total: 0, count: 0 };
+    byStudent[r.name].total += r.percent;
+    byStudent[r.name].count++;
+  });
+  
+  const leaderboard = Object.entries(byStudent)
+    .map(([name, data]) => ({ name, avg: Math.round(data.total / data.count), tests: data.count }))
+    .sort((a, b) => b.avg - a.avg);
+  
+  const medals = ['🥇', '🥈', '🥉'];
+  document.getElementById('leaderboardList').innerHTML = leaderboard.length ?
+    leaderboard.map((s, i) =>
+      `<div class="rank-item">
+        <div class="rank-medal">${medals[i] || `#${i+1}`}</div>
+        <div class="rank-info">
+          <div class="rank-name">${s.name}</div>
+          <div class="rank-detail">${s.tests} tests दिए</div>
+        </div>
+        <div class="rank-score">${s.avg}%</div>
+      </div>`
+    ).join('') :
+    '<div class="card" style="text-align:center; color:var(--text-light);">अभी कोई data नहीं है</div>';
+}
+
+function showDashTab(tab) {
+  document.querySelectorAll('.dash-tab').forEach(t => t.classList.remove('active'));
+  event.target.classList.add('active');
+  document.getElementById('tab-overview').style.display = tab === 'overview' ? 'block' : 'none';
+  document.getElementById('tab-students').style.display = tab === 'students' ? 'block' : 'none';
+  document.getElementById('tab-leaderboard').style.display = tab === 'leaderboard' ? 'block' : 'none';
+}
+</script>
+</body>
+</html>
