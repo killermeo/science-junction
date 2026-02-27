@@ -3,249 +3,192 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>⚗️ Science Junction</title>
+<title>Science Junction</title>
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  
-  body {
-    font-family: 'Segoe UI', sans-serif;
-    background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
-    min-height: 100vh;
-    color: white;
-  }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Segoe UI',sans-serif; background:linear-gradient(135deg,#0f0c29,#302b63,#24243e); min-height:100vh; color:white; }
 
-  /* ===== SCREENS ===== */
-  .screen { display: none; padding: 20px; min-height: 100vh; }
-  .screen.active { display: flex; flex-direction: column; align-items: center; justify-content: center; }
+/* SCREENS */
+.screen { display:none; padding:20px; min-height:100vh; }
+.screen.active { display:flex; flex-direction:column; align-items:center; justify-content:center; }
+.screen.top { justify-content:flex-start; padding-top:70px; }
 
-  /* ===== LOGIN SCREEN ===== */
-  .logo-area { text-align: center; margin-bottom: 30px; }
-  .logo-area h1 { font-size: 2.5em; font-weight: 800; background: linear-gradient(90deg, #f7971e, #ffd200); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-  .logo-area p { color: #aaa; margin-top: 5px; font-size: 0.95em; }
+/* BANNER */
+.director-banner {
+  width:100%; background:linear-gradient(135deg,#1a1a2e,#16213e);
+  border-bottom:2px solid rgba(255,210,0,0.3);
+  padding:10px 20px; display:flex; align-items:center; gap:15px;
+  position:fixed; top:0; left:0; z-index:1000;
+}
+.director-banner img {
+  width:50px; height:50px; border-radius:50%;
+  border:2px solid #ffd200; object-fit:cover; object-position:top;
+}
+.banner-text { flex:1; }
+.banner-name { font-size:0.9em; font-weight:700; color:#ffd200; }
+.banner-inst { font-size:0.75em; color:#ccc; }
+.banner-contact { font-size:0.8em; color:#ffd200; font-weight:600; }
+.banner-ad {
+  font-size:0.7em; background:linear-gradient(90deg,#f7971e,#ffd200);
+  color:#000; padding:3px 8px; border-radius:10px; font-weight:700;
+  animation:adpulse 2s infinite;
+}
+@keyframes adpulse { 0%,100%{opacity:1} 50%{opacity:0.7} }
 
-  .login-card {
-    background: rgba(255,255,255,0.08);
-    backdrop-filter: blur(15px);
-    border: 1px solid rgba(255,255,255,0.15);
-    border-radius: 20px;
-    padding: 35px;
-    width: 100%;
-    max-width: 420px;
-  }
+/* BODY PADDING for banner */
+.screen { padding-top:80px; }
+.screen.active:not(.top) { padding-top:80px; }
 
-  .tab-btns { display: flex; margin-bottom: 25px; background: rgba(0,0,0,0.3); border-radius: 10px; padding: 5px; }
-  .tab-btn { flex: 1; padding: 10px; border: none; background: transparent; color: #aaa; border-radius: 8px; cursor: pointer; font-size: 0.95em; transition: all 0.3s; }
-  .tab-btn.active { background: linear-gradient(135deg, #f7971e, #ffd200); color: #000; font-weight: 700; }
+/* LOGIN */
+.logo-area { text-align:center; margin-bottom:25px; }
+.logo-area h1 { font-size:2.2em; font-weight:800; background:linear-gradient(90deg,#f7971e,#ffd200); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+.logo-area p { color:#aaa; font-size:0.9em; margin-top:4px; }
 
-  .input-group { margin-bottom: 15px; }
-  .input-group label { display: block; margin-bottom: 6px; color: #ccc; font-size: 0.9em; }
-  .input-group input, .input-group select {
-    width: 100%; padding: 12px 15px; border-radius: 10px;
-    border: 1px solid rgba(255,255,255,0.2);
-    background: rgba(255,255,255,0.1); color: white; font-size: 1em;
-    outline: none; transition: border 0.3s;
-  }
-  .input-group input:focus, .input-group select:focus { border-color: #ffd200; }
-  .input-group select option { background: #302b63; color: white; }
+.login-card { background:rgba(255,255,255,0.08); backdrop-filter:blur(15px); border:1px solid rgba(255,255,255,0.15); border-radius:20px; padding:30px; width:100%; max-width:420px; }
+.tab-btns { display:flex; margin-bottom:20px; background:rgba(0,0,0,0.3); border-radius:10px; padding:4px; }
+.tab-btn { flex:1; padding:9px; border:none; background:transparent; color:#aaa; border-radius:8px; cursor:pointer; font-size:0.9em; transition:all 0.3s; }
+.tab-btn.active { background:linear-gradient(135deg,#f7971e,#ffd200); color:#000; font-weight:700; }
 
-  .btn-primary {
-    width: 100%; padding: 14px; border: none; border-radius: 10px;
-    background: linear-gradient(135deg, #f7971e, #ffd200);
-    color: #000; font-size: 1.1em; font-weight: 700; cursor: pointer;
-    transition: transform 0.2s, box-shadow 0.2s;
-    margin-top: 10px;
-  }
-  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(247,151,30,0.4); }
-  .btn-primary:active { transform: translateY(0); }
+.input-group { margin-bottom:14px; }
+.input-group label { display:block; margin-bottom:5px; color:#ccc; font-size:0.85em; }
+.input-group input, .input-group select { width:100%; padding:11px 14px; border-radius:10px; border:1px solid rgba(255,255,255,0.2); background:rgba(255,255,255,0.1); color:white; font-size:0.95em; outline:none; transition:border 0.3s; }
+.input-group input:focus, .input-group select:focus { border-color:#ffd200; }
+.input-group select option { background:#302b63; color:white; }
 
-  /* ===== EXAM SELECTION ===== */
-  .page-title { font-size: 1.6em; font-weight: 700; margin-bottom: 5px; text-align: center; }
-  .page-sub { color: #aaa; text-align: center; margin-bottom: 25px; font-size: 0.9em; }
+.btn-primary { width:100%; padding:13px; border:none; border-radius:10px; background:linear-gradient(135deg,#f7971e,#ffd200); color:#000; font-size:1.05em; font-weight:700; cursor:pointer; transition:transform 0.2s; margin-top:8px; }
+.btn-primary:hover { transform:translateY(-2px); }
+.btn-secondary { padding:11px 20px; border-radius:10px; background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); color:white; font-size:0.95em; cursor:pointer; transition:all 0.2s; }
+.btn-secondary:hover { background:rgba(255,255,255,0.2); }
 
-  .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; width: 100%; max-width: 500px; }
-  .grid-3 { grid-template-columns: repeat(3, 1fr); }
+/* PAGE TITLES */
+.page-title { font-size:1.5em; font-weight:700; margin-bottom:4px; text-align:center; }
+.page-sub { color:#aaa; text-align:center; margin-bottom:20px; font-size:0.88em; }
 
-  .card {
-    background: rgba(255,255,255,0.08);
-    border: 1px solid rgba(255,255,255,0.15);
-    border-radius: 15px; padding: 20px 15px;
-    text-align: center; cursor: pointer;
-    transition: all 0.3s;
-  }
-  .card:hover { background: rgba(247,151,30,0.2); border-color: #ffd200; transform: translateY(-3px); }
-  .card .icon { font-size: 2em; margin-bottom: 8px; }
-  .card .label { font-size: 0.9em; font-weight: 600; }
-  .card .sub { font-size: 0.75em; color: #aaa; margin-top: 3px; }
+/* GRIDS */
+.grid { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; width:100%; max-width:500px; }
+.grid-3 { grid-template-columns:repeat(3,1fr); }
+.card { background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); border-radius:14px; padding:18px 12px; text-align:center; cursor:pointer; transition:all 0.3s; }
+.card:hover { background:rgba(247,151,30,0.2); border-color:#ffd200; transform:translateY(-3px); }
+.card .icon { font-size:1.8em; margin-bottom:7px; }
+.card .label { font-size:0.88em; font-weight:600; }
+.card .sub { font-size:0.72em; color:#aaa; margin-top:2px; }
 
-  /* ===== TEST SCREEN ===== */
-  .test-header {
-    width: 100%; max-width: 650px;
-    display: flex; justify-content: space-between; align-items: center;
-    margin-bottom: 20px; background: rgba(255,255,255,0.08);
-    border-radius: 12px; padding: 12px 18px;
-  }
-  .test-header .q-count { font-size: 0.9em; color: #aaa; }
-  .test-header .q-count span { color: white; font-weight: 700; }
+/* CHAPTER LIST */
+.chapter-list { width:100%; max-width:500px; max-height:60vh; overflow-y:auto; }
+.chapter-item { background:rgba(255,255,255,0.07); border:1px solid rgba(255,255,255,0.12); border-radius:10px; padding:12px 16px; margin-bottom:8px; cursor:pointer; transition:all 0.2s; display:flex; align-items:center; gap:10px; }
+.chapter-item:hover { border-color:#ffd200; background:rgba(255,210,0,0.1); }
+.chapter-num { background:rgba(255,210,0,0.2); color:#ffd200; width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:0.8em; font-weight:700; flex-shrink:0; }
 
-  .timer {
-    background: linear-gradient(135deg, #f7971e, #ffd200);
-    color: #000; padding: 6px 16px; border-radius: 20px;
-    font-weight: 800; font-size: 1.1em;
-  }
-  .timer.warning { background: linear-gradient(135deg, #ff416c, #ff4b2b); color: white; animation: pulse 1s infinite; }
+/* DIFFICULTY */
+.diff-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; width:100%; max-width:400px; }
+.diff-card { padding:16px; border-radius:12px; text-align:center; cursor:pointer; border:2px solid transparent; transition:all 0.3s; }
+.diff-card:hover { transform:translateY(-2px); }
+.diff-easy { background:rgba(0,200,83,0.15); border-color:rgba(0,200,83,0.3); }
+.diff-easy:hover { border-color:#00c853; }
+.diff-moderate { background:rgba(255,210,0,0.15); border-color:rgba(255,210,0,0.3); }
+.diff-moderate:hover { border-color:#ffd200; }
+.diff-hard { background:rgba(255,23,68,0.15); border-color:rgba(255,23,68,0.3); }
+.diff-hard:hover { border-color:#ff1744; }
+.diff-mix { background:rgba(100,100,255,0.15); border-color:rgba(100,100,255,0.3); }
+.diff-mix:hover { border-color:#6464ff; }
 
-  @keyframes pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+/* QCOUNT */
+.qcount-btns { display:flex; gap:10px; flex-wrap:wrap; justify-content:center; max-width:400px; }
+.qcount-btn { padding:10px 20px; border-radius:25px; border:2px solid rgba(255,255,255,0.2); background:rgba(255,255,255,0.08); color:white; cursor:pointer; font-size:0.95em; transition:all 0.2s; }
+.qcount-btn:hover, .qcount-btn.selected { border-color:#ffd200; background:rgba(255,210,0,0.15); color:#ffd200; font-weight:700; }
 
-  .question-card {
-    background: rgba(255,255,255,0.08);
-    border: 1px solid rgba(255,255,255,0.15);
-    border-radius: 20px; padding: 25px;
-    width: 100%; max-width: 650px;
-  }
+/* TEST SCREEN */
+.test-header { width:100%; max-width:650px; display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; background:rgba(255,255,255,0.08); border-radius:12px; padding:11px 16px; }
+.q-count { font-size:0.88em; color:#aaa; }
+.q-count span { color:white; font-weight:700; }
+.timer { background:linear-gradient(135deg,#f7971e,#ffd200); color:#000; padding:5px 14px; border-radius:18px; font-weight:800; font-size:1.05em; }
+.timer.warning { background:linear-gradient(135deg,#ff416c,#ff4b2b); color:white; animation:pulse 1s infinite; }
+@keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.05)} }
 
-  .q-number { color: #ffd200; font-size: 0.85em; margin-bottom: 10px; font-weight: 600; }
-  .q-text { font-size: 1.05em; line-height: 1.6; margin-bottom: 20px; }
+.question-card { background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); border-radius:18px; padding:22px; width:100%; max-width:650px; }
+.q-number { color:#ffd200; font-size:0.82em; margin-bottom:9px; font-weight:600; }
+.q-text { font-size:1.02em; line-height:1.6; margin-bottom:18px; }
+.options { display:flex; flex-direction:column; gap:9px; }
+.option { padding:12px 16px; border-radius:10px; border:1px solid rgba(255,255,255,0.2); background:rgba(255,255,255,0.05); cursor:pointer; transition:all 0.2s; display:flex; align-items:center; gap:11px; }
+.option:hover:not(.disabled) { border-color:#ffd200; background:rgba(255,210,0,0.1); }
+.opt-label { width:26px; height:26px; border-radius:50%; background:rgba(255,255,255,0.1); display:flex; align-items:center; justify-content:center; font-size:0.82em; font-weight:700; flex-shrink:0; }
+.option.correct { border-color:#00c853; background:rgba(0,200,83,0.15); }
+.option.correct .opt-label { background:#00c853; }
+.option.wrong { border-color:#ff1744; background:rgba(255,23,68,0.15); }
+.option.wrong .opt-label { background:#ff1744; }
+.option.disabled { cursor:not-allowed; }
+.explanation { margin-top:13px; padding:11px 14px; background:rgba(0,200,83,0.1); border-left:3px solid #00c853; border-radius:8px; font-size:0.88em; color:#ccc; display:none; }
 
-  .options { display: flex; flex-direction: column; gap: 10px; }
-  .option {
-    padding: 13px 18px; border-radius: 10px;
-    border: 1px solid rgba(255,255,255,0.2);
-    background: rgba(255,255,255,0.05);
-    cursor: pointer; transition: all 0.2s;
-    display: flex; align-items: center; gap: 12px;
-  }
-  .option:hover:not(.disabled) { border-color: #ffd200; background: rgba(255,210,0,0.1); }
-  .option .opt-label {
-    width: 28px; height: 28px; border-radius: 50%;
-    background: rgba(255,255,255,0.1);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 0.85em; font-weight: 700; flex-shrink: 0;
-  }
-  .option.correct { border-color: #00c853; background: rgba(0,200,83,0.15); }
-  .option.correct .opt-label { background: #00c853; }
-  .option.wrong { border-color: #ff1744; background: rgba(255,23,68,0.15); }
-  .option.wrong .opt-label { background: #ff1744; }
-  .option.disabled { cursor: not-allowed; }
+.nav-btns { display:flex; gap:11px; margin-top:16px; width:100%; max-width:650px; }
+.progress-bar-wrap { width:100%; max-width:650px; margin-bottom:12px; }
+.progress-bar { height:5px; background:rgba(255,255,255,0.1); border-radius:3px; overflow:hidden; }
+.progress-fill { height:100%; background:linear-gradient(90deg,#f7971e,#ffd200); transition:width 0.3s; }
 
-  .explanation {
-    margin-top: 15px; padding: 12px 15px;
-    background: rgba(0,200,83,0.1); border-left: 3px solid #00c853;
-    border-radius: 8px; font-size: 0.9em; color: #ccc; display: none;
-  }
+/* RESULT */
+.result-card { background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); border-radius:20px; padding:30px; width:100%; max-width:420px; text-align:center; }
+.score-circle { width:130px; height:130px; border-radius:50%; background:conic-gradient(#ffd200 var(--pct), rgba(255,255,255,0.1) 0); display:flex; align-items:center; justify-content:center; margin:0 auto 18px; position:relative; }
+.score-circle::before { content:''; position:absolute; width:100px; height:100px; border-radius:50%; background:#1a1a2e; }
+.score-inner { position:relative; z-index:1; }
+.score-pct { font-size:1.9em; font-weight:800; color:#ffd200; }
+.score-label { font-size:0.72em; color:#aaa; }
+.result-stats { display:flex; justify-content:space-around; margin:18px 0; }
+.stat .val { font-size:1.4em; font-weight:700; }
+.stat .key { font-size:0.78em; color:#aaa; margin-top:2px; }
+.correct-val { color:#00c853; }
+.wrong-val { color:#ff1744; }
+.skip-val { color:#ffd200; }
 
-  .nav-btns { display: flex; gap: 12px; margin-top: 20px; width: 100%; max-width: 650px; }
-  .btn-secondary {
-    flex: 1; padding: 12px; border-radius: 10px;
-    background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
-    color: white; font-size: 1em; cursor: pointer; transition: all 0.2s;
-  }
-  .btn-secondary:hover { background: rgba(255,255,255,0.2); }
+/* LOADING */
+.loading { display:flex; flex-direction:column; align-items:center; gap:14px; }
+.spinner { width:48px; height:48px; border-radius:50%; border:4px solid rgba(255,255,255,0.1); border-top-color:#ffd200; animation:spin 1s linear infinite; }
+@keyframes spin { to{transform:rotate(360deg)} }
 
-  /* ===== RESULT SCREEN ===== */
-  .result-card {
-    background: rgba(255,255,255,0.08);
-    border: 1px solid rgba(255,255,255,0.15);
-    border-radius: 20px; padding: 35px;
-    width: 100%; max-width: 450px; text-align: center;
-  }
+/* LEADERBOARD */
+.lb-item { display:flex; align-items:center; gap:11px; background:rgba(255,255,255,0.06); border-radius:10px; padding:11px 14px; margin-bottom:7px; width:100%; max-width:500px; }
+.lb-rank { font-size:1.1em; width:28px; text-align:center; }
+.lb-name { flex:1; font-weight:600; }
+.lb-score { color:#ffd200; font-weight:700; }
 
-  .score-circle {
-    width: 140px; height: 140px; border-radius: 50%;
-    background: conic-gradient(#ffd200 var(--pct), rgba(255,255,255,0.1) 0);
-    display: flex; align-items: center; justify-content: center;
-    margin: 0 auto 20px; position: relative;
-  }
-  .score-circle::before {
-    content: ''; position: absolute;
-    width: 110px; height: 110px; border-radius: 50%;
-    background: #1a1a2e;
-  }
-  .score-inner { position: relative; z-index: 1; }
-  .score-pct { font-size: 2em; font-weight: 800; color: #ffd200; }
-  .score-label { font-size: 0.75em; color: #aaa; }
+/* TEACHER */
+.table-wrap { width:100%; max-width:700px; overflow-x:auto; }
+table { width:100%; border-collapse:collapse; }
+th { background:rgba(247,151,30,0.3); padding:9px; text-align:left; font-size:0.82em; }
+td { padding:9px; border-bottom:1px solid rgba(255,255,255,0.08); font-size:0.82em; }
+tr:hover td { background:rgba(255,255,255,0.04); }
+.badge { display:inline-block; padding:2px 9px; border-radius:18px; font-size:0.72em; font-weight:700; background:rgba(0,200,83,0.2); color:#00c853; }
 
-  .result-stats { display: flex; justify-content: space-around; margin: 20px 0; }
-  .stat { text-align: center; }
-  .stat .val { font-size: 1.5em; font-weight: 700; }
-  .stat .key { font-size: 0.8em; color: #aaa; margin-top: 2px; }
-  .correct-val { color: #00c853; }
-  .wrong-val { color: #ff1744; }
-  .skip-val { color: #ffd200; }
-
-  /* ===== LEADERBOARD ===== */
-  .lb-item {
-    display: flex; align-items: center; gap: 12px;
-    background: rgba(255,255,255,0.06);
-    border-radius: 10px; padding: 12px 15px; margin-bottom: 8px;
-    width: 100%; max-width: 500px;
-  }
-  .lb-rank { font-size: 1.2em; width: 30px; text-align: center; }
-  .lb-name { flex: 1; font-weight: 600; }
-  .lb-score { color: #ffd200; font-weight: 700; }
-
-  /* ===== LOADING ===== */
-  .loading {
-    display: flex; flex-direction: column; align-items: center; gap: 15px;
-  }
-  .spinner {
-    width: 50px; height: 50px; border-radius: 50%;
-    border: 4px solid rgba(255,255,255,0.1);
-    border-top-color: #ffd200;
-    animation: spin 1s linear infinite;
-  }
-  @keyframes spin { to { transform: rotate(360deg); } }
-
-  /* ===== TEACHER SCREEN ===== */
-  .table-wrap { width: 100%; max-width: 700px; overflow-x: auto; }
-  table { width: 100%; border-collapse: collapse; }
-  th { background: rgba(247,151,30,0.3); padding: 10px; text-align: left; font-size: 0.85em; }
-  td { padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.08); font-size: 0.85em; }
-  tr:hover td { background: rgba(255,255,255,0.04); }
-
-  .back-btn {
-    position: fixed; top: 15px; left: 15px;
-    background: rgba(255,255,255,0.1); border: none;
-    color: white; padding: 8px 15px; border-radius: 20px;
-    cursor: pointer; font-size: 0.9em; transition: all 0.2s;
-    backdrop-filter: blur(10px);
-  }
-  .back-btn:hover { background: rgba(255,255,255,0.2); }
-
-  .badge {
-    display: inline-block; padding: 3px 10px; border-radius: 20px;
-    font-size: 0.75em; font-weight: 700;
-    background: rgba(0,200,83,0.2); color: #00c853;
-  }
-
-  /* ===== PROGRESS BAR ===== */
-  .progress-bar-wrap { width: 100%; max-width: 650px; margin-bottom: 15px; }
-  .progress-bar { height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden; }
-  .progress-fill { height: 100%; background: linear-gradient(90deg, #f7971e, #ffd200); transition: width 0.3s; }
-
-  .msg { color: #ff6b6b; font-size: 0.85em; margin-top: 8px; text-align: center; }
+.back-btn { position:fixed; top:68px; left:15px; background:rgba(255,255,255,0.1); border:none; color:white; padding:7px 14px; border-radius:18px; cursor:pointer; font-size:0.85em; transition:all 0.2s; backdrop-filter:blur(10px); z-index:999; }
+.back-btn:hover { background:rgba(255,255,255,0.2); }
+.msg { color:#ff6b6b; font-size:0.82em; margin-top:7px; text-align:center; }
+.divider { width:100%; max-width:500px; height:1px; background:rgba(255,255,255,0.1); margin:15px 0; }
 </style>
 </head>
 <body>
 
-<!-- ===================== LOGIN SCREEN ===================== -->
+<!-- DIRECTOR BANNER -->
+<div class="director-banner">
+  <img id="director-photo" src="" alt="Dr. Harish Shahi">
+  <div class="banner-text">
+    <div class="banner-name">Dr. Harish Shahi</div>
+    <div class="banner-inst">Science Junction</div>
+    <div class="banner-contact">📞 8949772372</div>
+  </div>
+  <div class="banner-ad">⭐ Join Us!</div>
+</div>
+
+<!-- LOGIN -->
 <div id="screen-login" class="screen active">
   <div class="logo-area">
     <h1>⚗️ Science Junction</h1>
     <p>AI-Powered Exam Preparation Platform</p>
   </div>
-
   <div class="login-card">
     <div class="tab-btns">
       <button class="tab-btn active" onclick="switchTab('student')">🎓 Student</button>
       <button class="tab-btn" onclick="switchTab('teacher')">👨‍🏫 Teacher</button>
     </div>
-
-    <!-- Student Login -->
     <div id="student-form">
-      <div class="input-group">
-        <label>आपका नाम</label>
-        <input type="text" id="student-name" placeholder="नाम लिखें...">
-      </div>
+      <div class="input-group"><label>आपका नाम</label><input type="text" id="student-name" placeholder="नाम लिखें..."></div>
       <div class="input-group">
         <label>Exam चुनें</label>
         <select id="student-exam">
@@ -263,529 +206,402 @@
       <p id="login-msg" class="msg"></p>
       <button class="btn-primary" onclick="studentLogin()">शुरू करें →</button>
     </div>
-
-    <!-- Teacher Login -->
     <div id="teacher-form" style="display:none">
-      <div class="input-group">
-        <label>Teacher Password</label>
-        <input type="password" id="teacher-pass" placeholder="Password डालें...">
-      </div>
+      <div class="input-group"><label>Teacher Password</label><input type="password" id="teacher-pass" placeholder="Password डालें..."></div>
       <p id="teacher-msg" class="msg"></p>
       <button class="btn-primary" onclick="teacherLogin()">Login करें →</button>
     </div>
   </div>
 </div>
 
-<!-- ===================== SUBJECT SELECTION ===================== -->
+<!-- SUBJECT -->
 <div id="screen-subject" class="screen">
   <button class="back-btn" onclick="goTo('screen-login')">← वापस</button>
-  <p class="page-sub" id="welcome-msg" style="font-size:1.1em; margin-bottom:5px;"></p>
+  <p style="font-size:1.05em; margin-bottom:4px; text-align:center;" id="welcome-msg"></p>
   <h2 class="page-title">Subject चुनें</h2>
-  <p class="page-sub">कौन सा subject पढ़ना है?</p>
-
-  <div class="grid" id="subject-grid">
-    <!-- dynamically filled -->
-  </div>
+  <p class="page-sub" id="exam-label-sub"></p>
+  <div class="grid" id="subject-grid"></div>
 </div>
 
-<!-- ===================== TEST TYPE SELECTION ===================== -->
-<div id="screen-testtype" class="screen">
+<!-- STREAM (Class 11-12) -->
+<div id="screen-stream" class="screen">
   <button class="back-btn" onclick="goTo('screen-subject')">← वापस</button>
-  <h2 class="page-title">Test Type चुनें</h2>
-  <p class="page-sub" id="selected-subject-label"></p>
+  <h2 class="page-title">Stream चुनें</h2>
+  <p class="page-sub" id="stream-sub"></p>
+  <div class="grid" id="stream-grid"></div>
+</div>
 
-  <div class="grid">
-    <div class="card" onclick="startTest('chapter')">
-      <div class="icon">📖</div>
-      <div class="label">Chapter Test</div>
-      <div class="sub">10 Questions</div>
-    </div>
-    <div class="card" onclick="startTest('mock')">
-      <div class="icon">🏆</div>
-      <div class="label">Full Mock Test</div>
-      <div class="sub">30 Questions</div>
-    </div>
+<!-- CHAPTER -->
+<div id="screen-chapter" class="screen top">
+  <button class="back-btn" id="chapter-back-btn">← वापस</button>
+  <h2 class="page-title">Chapter चुनें</h2>
+  <p class="page-sub" id="chapter-sub"></p>
+  <div class="chapter-list" id="chapter-list"></div>
+</div>
+
+<!-- DIFFICULTY -->
+<div id="screen-difficulty" class="screen">
+  <button class="back-btn" onclick="goTo('screen-chapter')">← वापस</button>
+  <h2 class="page-title">Difficulty चुनें</h2>
+  <p class="page-sub">Questions किस level के हों?</p>
+  <div class="diff-grid">
+    <div class="diff-card diff-easy" onclick="selectDifficulty('Easy')"><div style="font-size:1.8em">😊</div><div style="font-weight:700;margin-top:6px">Easy</div><div style="font-size:0.75em;color:#aaa">Basic level</div></div>
+    <div class="diff-card diff-moderate" onclick="selectDifficulty('Moderate')"><div style="font-size:1.8em">🤔</div><div style="font-weight:700;margin-top:6px">Moderate</div><div style="font-size:0.75em;color:#aaa">Medium level</div></div>
+    <div class="diff-card diff-hard" onclick="selectDifficulty('Hard')"><div style="font-size:1.8em">🔥</div><div style="font-weight:700;margin-top:6px">Hard</div><div style="font-size:0.75em;color:#aaa">Advanced level</div></div>
+    <div class="diff-card diff-mix" onclick="selectDifficulty('Mix')"><div style="font-size:1.8em">🎯</div><div style="font-weight:700;margin-top:6px">Mix</div><div style="font-size:0.75em;color:#aaa">All levels</div></div>
   </div>
 </div>
 
-<!-- ===================== LOADING SCREEN ===================== -->
+<!-- QUESTION COUNT -->
+<div id="screen-qcount" class="screen">
+  <button class="back-btn" onclick="goTo('screen-difficulty')">← वापस</button>
+  <h2 class="page-title">कितने Questions?</h2>
+  <p class="page-sub">Test में कितने questions हों?</p>
+  <div class="qcount-btns">
+    <div class="qcount-btn" onclick="selectQCount(5)">5</div>
+    <div class="qcount-btn" onclick="selectQCount(10)">10</div>
+    <div class="qcount-btn" onclick="selectQCount(15)">15</div>
+    <div class="qcount-btn" onclick="selectQCount(20)">20</div>
+    <div class="qcount-btn" onclick="selectQCount(25)">25</div>
+    <div class="qcount-btn" onclick="selectQCount(30)">30</div>
+  </div>
+  <p style="color:#aaa; font-size:0.82em; margin-top:20px;">ज़्यादा questions = ज़्यादा time</p>
+</div>
+
+<!-- LOADING -->
 <div id="screen-loading" class="screen">
   <div class="loading">
     <div class="spinner"></div>
     <h3>AI Questions तैयार हो रहे हैं...</h3>
-    <p style="color:#aaa; font-size:0.9em;">Groq AI से questions generate हो रहे हैं</p>
+    <p style="color:#aaa;font-size:0.88em" id="loading-detail">Groq AI से questions generate हो रहे हैं</p>
   </div>
 </div>
 
-<!-- ===================== TEST SCREEN ===================== -->
-<div id="screen-test" class="screen" style="justify-content:flex-start; padding-top:70px;">
+<!-- TEST -->
+<div id="screen-test" class="screen top">
   <button class="back-btn" onclick="confirmExit()">✕ Exit</button>
-
-  <div class="progress-bar-wrap">
-    <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
-  </div>
-
+  <div class="progress-bar-wrap"><div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div></div>
   <div class="test-header">
-    <div class="q-count">Question <span id="q-current">1</span> / <span id="q-total">10</span></div>
-    <div class="timer" id="timer">30:00</div>
+    <div class="q-count">Q <span id="q-current">1</span>/<span id="q-total">10</span></div>
+    <div class="timer" id="timer">10:00</div>
   </div>
-
   <div class="question-card">
     <div class="q-number" id="q-num-label">Q1.</div>
     <div class="q-text" id="q-text">Loading...</div>
     <div class="options" id="options-container"></div>
     <div class="explanation" id="explanation"></div>
   </div>
-
   <div class="nav-btns">
     <button class="btn-secondary" onclick="prevQuestion()">← पिछला</button>
-    <button class="btn-primary" id="next-btn" onclick="nextQuestion()" style="flex:2;">अगला →</button>
+    <button class="btn-primary" id="next-btn" onclick="nextQuestion()" style="flex:2">अगला →</button>
   </div>
 </div>
 
-<!-- ===================== RESULT SCREEN ===================== -->
+<!-- RESULT -->
 <div id="screen-result" class="screen">
   <div class="result-card">
-    <h2 style="margin-bottom:20px;">🎯 Result</h2>
-
+    <h2 style="margin-bottom:18px">🎯 Result</h2>
     <div class="score-circle" id="score-circle">
-      <div class="score-inner">
-        <div class="score-pct" id="result-pct">0%</div>
-        <div class="score-label">Score</div>
-      </div>
+      <div class="score-inner"><div class="score-pct" id="result-pct">0%</div><div class="score-label">Score</div></div>
     </div>
-
     <div class="result-stats">
       <div class="stat"><div class="val correct-val" id="r-correct">0</div><div class="key">✅ Correct</div></div>
       <div class="stat"><div class="val wrong-val" id="r-wrong">0</div><div class="key">❌ Wrong</div></div>
       <div class="stat"><div class="val skip-val" id="r-skip">0</div><div class="key">⏭️ Skip</div></div>
     </div>
-
-    <p id="result-msg" style="color:#aaa; margin: 10px 0 20px; font-size:0.9em;"></p>
-
-    <div style="display:flex; gap:10px;">
+    <p id="result-msg" style="color:#aaa;margin:8px 0 18px;font-size:0.88em"></p>
+    <div style="display:flex;gap:10px">
       <button class="btn-secondary" onclick="goTo('screen-subject')">🔄 फिर से</button>
-      <button class="btn-primary" onclick="goTo('screen-leaderboard')">🏆 Leaderboard</button>
+      <button class="btn-primary" onclick="showLeaderboard()">🏆 Leaderboard</button>
     </div>
   </div>
 </div>
 
-<!-- ===================== LEADERBOARD ===================== -->
-<div id="screen-leaderboard" class="screen" style="justify-content:flex-start; padding-top:70px;">
+<!-- LEADERBOARD -->
+<div id="screen-leaderboard" class="screen top">
   <button class="back-btn" onclick="goTo('screen-subject')">← वापस</button>
-  <h2 class="page-title" style="margin-bottom:5px;">🏆 Leaderboard</h2>
+  <h2 class="page-title" style="margin-bottom:4px">🏆 Leaderboard</h2>
   <p class="page-sub">Top Performers</p>
-  <div id="lb-container" style="width:100%;">
-    <div class="loading"><div class="spinner"></div></div>
-  </div>
+  <div id="lb-container" style="width:100%"><div class="loading"><div class="spinner"></div></div></div>
 </div>
 
-<!-- ===================== TEACHER SCREEN ===================== -->
-<div id="screen-teacher" class="screen" style="justify-content:flex-start; padding-top:70px;">
+<!-- TEACHER -->
+<div id="screen-teacher" class="screen top">
   <button class="back-btn" onclick="goTo('screen-login')">← Logout</button>
-  <h2 class="page-title" style="margin-bottom:5px;">👨‍🏫 Teacher Dashboard</h2>
+  <h2 class="page-title" style="margin-bottom:4px">👨‍🏫 Teacher Dashboard</h2>
   <p class="page-sub">सभी Students के Results</p>
-
   <div class="table-wrap">
-    <table>
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>नाम</th>
-          <th>Exam</th>
-          <th>Subject</th>
-          <th>Score</th>
-          <th>%</th>
-          <th>Date</th>
-        </tr>
-      </thead>
-      <tbody id="teacher-table"></tbody>
-    </table>
+    <table><thead><tr><th>#</th><th>नाम</th><th>Exam</th><th>Chapter</th><th>Difficulty</th><th>Score</th><th>%</th><th>Date</th></tr></thead>
+    <tbody id="teacher-table"></tbody></table>
   </div>
 </div>
 
 <script>
-// =====================================================
-// CONFIGURATION
-// =====================================================
 const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwRtvck-c-9ZKPo4VynOdCX5gVW4wa745d0_Tix23cJhn5n-RM9SAIWl9dBA1DLz-MMgA/exec";
 const TEACHER_PASSWORD = "science123";
 
-// =====================================================
-// SUBJECTS BY EXAM
-// =====================================================
+// ── DIRECTOR PHOTO (embedded) ──
+document.getElementById('director-photo').src = "data:image/jpeg;base64,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";
+
+// ── SUBJECTS DATA ──
 const SUBJECTS = {
-  "JEE": [
-    { icon: "⚛️", label: "Physics", sub: "Mechanics, Waves, Optics" },
-    { icon: "🧪", label: "Chemistry", sub: "Organic, Inorganic, Physical" },
-    { icon: "🔢", label: "Mathematics", sub: "Calculus, Algebra, Geometry" }
-  ],
-  "NEET": [
-    { icon: "⚛️", label: "Physics", sub: "Mechanics, Thermodynamics" },
-    { icon: "🧪", label: "Chemistry", sub: "Organic & Inorganic" },
-    { icon: "🌿", label: "Botany", sub: "Plant Biology" },
-    { icon: "🦠", label: "Zoology", sub: "Animal Biology" }
-  ],
-  "NDA": [
-    { icon: "🔢", label: "Mathematics", sub: "Algebra, Calculus" },
-    { icon: "🌍", label: "General Studies", sub: "Science, History, GK" },
-    { icon: "📝", label: "English", sub: "Grammar, Comprehension" }
-  ],
-  "CLAT": [
-    { icon: "⚖️", label: "Legal Reasoning", sub: "Law Basics" },
-    { icon: "📝", label: "English", sub: "Comprehension" },
-    { icon: "🧠", label: "Logical Reasoning", sub: "Puzzles, Deduction" },
-    { icon: "🔢", label: "Quantitative", sub: "Maths Basics" }
-  ],
-  "Class 9": [
-    { icon: "⚛️", label: "Science", sub: "Physics, Chemistry, Bio" },
-    { icon: "🔢", label: "Mathematics", sub: "Algebra, Geometry" },
-    { icon: "🌍", label: "Social Science", sub: "History, Geography" }
-  ],
-  "Class 10": [
-    { icon: "⚛️", label: "Science", sub: "Physics, Chemistry, Bio" },
-    { icon: "🔢", label: "Mathematics", sub: "Algebra, Trigonometry" },
-    { icon: "🌍", label: "Social Science", sub: "History, Geography" }
-  ],
-  "Class 11": [
-    { icon: "⚛️", label: "Physics", sub: "Mechanics, Thermodynamics" },
-    { icon: "🧪", label: "Chemistry", sub: "Organic & Inorganic" },
-    { icon: "🔢", label: "Mathematics", sub: "Calculus, Algebra" }
-  ],
-  "Class 12": [
-    { icon: "⚛️", label: "Physics", sub: "Electrostatics, Optics" },
-    { icon: "🧪", label: "Chemistry", sub: "Electrochemistry, Polymers" },
-    { icon: "🔢", label: "Mathematics", sub: "Integration, Vectors" }
-  ]
+  "JEE": [{icon:"⚛️",label:"Physics"},{icon:"🧪",label:"Chemistry"},{icon:"🔢",label:"Mathematics"}],
+  "NEET": [{icon:"⚛️",label:"Physics"},{icon:"🧪",label:"Chemistry"},{icon:"🌿",label:"Botany"},{icon:"🦠",label:"Zoology"}],
+  "NDA": [{icon:"🔢",label:"Mathematics"},{icon:"🌍",label:"General Studies"},{icon:"📝",label:"English"}],
+  "CLAT": [{icon:"⚖️",label:"Legal Reasoning"},{icon:"📝",label:"English"},{icon:"🧠",label:"Logical Reasoning"},{icon:"🔢",label:"Quantitative"}],
+  "Class 9": [{icon:"⚛️",label:"Science"},{icon:"🔢",label:"Mathematics"},{icon:"🌍",label:"Social Science"},{icon:"📝",label:"Hindi"},{icon:"🔤",label:"English"}],
+  "Class 10": [{icon:"⚛️",label:"Science"},{icon:"🔢",label:"Mathematics"},{icon:"🌍",label:"Social Science"},{icon:"📝",label:"Hindi"},{icon:"🔤",label:"English"}],
+  "Class 11": [{icon:"🔬",label:"Science Stream"},{icon:"📐",label:"Math Stream"},{icon:"🌾",label:"Agriculture Stream"},{icon:"🎨",label:"Arts Stream"}],
+  "Class 12": [{icon:"🔬",label:"Science Stream"},{icon:"📐",label:"Math Stream"},{icon:"🌾",label:"Agriculture Stream"},{icon:"🎨",label:"Arts Stream"}]
 };
 
-// =====================================================
-// STATE
-// =====================================================
-let state = {
-  name: "", exam: "", subject: "", testType: "",
-  questions: [], currentQ: 0, answers: [],
-  timerInterval: null, timeLeft: 0
+// ── STREAMS for 11-12 ──
+const STREAMS = {
+  "Science Stream": [{icon:"⚛️",label:"Physics"},{icon:"🧪",label:"Chemistry"},{icon:"🌿",label:"Biology"},{icon:"🔢",label:"Mathematics"}],
+  "Math Stream": [{icon:"🔢",label:"Mathematics"},{icon:"⚛️",label:"Physics"},{icon:"🧪",label:"Chemistry"},{icon:"💻",label:"Computer Science"}],
+  "Agriculture Stream": [{icon:"🌾",label:"Agriculture"},{icon:"🧪",label:"Chemistry"},{icon:"🌿",label:"Biology"},{icon:"🌍",label:"Environment"}],
+  "Arts Stream": [{icon:"📜",label:"History"},{icon:"🏛️",label:"Political Science"},{icon:"🌍",label:"Geography"},{icon:"📝",label:"Hindi/English"}]
 };
 
-// =====================================================
-// NAVIGATION
-// =====================================================
-function goTo(screenId) {
+// ── CHAPTERS ──
+const CHAPTERS = {
+  "Science": {
+    "Class 9": ["Matter in Our Surroundings","Is Matter Around Us Pure","Atoms and Molecules","Structure of Atom","The Fundamental Unit of Life","Tissues","Motion","Force and Laws of Motion","Gravitation","Work and Energy","Sound","Why Do We Fall Ill","Natural Resources"],
+    "Class 10": ["Chemical Reactions","Acids Bases and Salts","Metals and Non-metals","Carbon and its Compounds","Life Processes","Control and Coordination","Reproduction","Heredity","Light – Reflection and Refraction","Human Eye","Electricity","Magnetic Effects","Our Environment"]
+  },
+  "Mathematics": {
+    "Class 9": ["Number Systems","Polynomials","Coordinate Geometry","Linear Equations","Euclid's Geometry","Lines and Angles","Triangles","Quadrilaterals","Circles","Heron's Formula","Surface Areas","Statistics","Probability"],
+    "Class 10": ["Real Numbers","Polynomials","Pair of Linear Equations","Quadratic Equations","Arithmetic Progressions","Triangles","Coordinate Geometry","Trigonometry","Circles","Areas Related to Circles","Surface Areas and Volumes","Statistics","Probability"]
+  },
+  "Physics": {
+    "Class 11": ["Physical World","Units and Measurements","Motion in a Straight Line","Motion in a Plane","Laws of Motion","Work Energy Power","System of Particles","Gravitation","Mechanical Properties of Solids","Thermodynamics","Kinetic Theory","Oscillations","Waves"],
+    "Class 12": ["Electric Charges","Electrostatic Potential","Current Electricity","Moving Charges","Magnetism","Electromagnetic Induction","Alternating Current","Electromagnetic Waves","Ray Optics","Wave Optics","Dual Nature","Atoms","Nuclei","Semiconductors"],
+    "JEE": ["Mechanics","Thermodynamics","Waves and Optics","Electrostatics","Current Electricity","Magnetic Effects","Modern Physics"],
+    "NEET": ["Physical World","Kinematics","Laws of Motion","Work Energy","Rotational Motion","Gravitation","Properties of Matter","Thermodynamics","Oscillations","Waves"]
+  },
+  "Chemistry": {
+    "Class 11": ["Some Basic Concepts","Structure of Atom","Classification of Elements","Chemical Bonding","States of Matter","Thermodynamics","Equilibrium","Redox Reactions","Hydrogen","s-Block Elements","p-Block Elements","Organic Chemistry","Hydrocarbons","Environmental Chemistry"],
+    "Class 12": ["Solid State","Solutions","Electrochemistry","Chemical Kinetics","Surface Chemistry","Isolation of Elements","p-Block Elements","d and f Block","Coordination Compounds","Haloalkanes","Alcohols Phenols","Aldehydes Ketones","Carboxylic Acids","Amines","Biomolecules","Polymers"],
+    "JEE": ["Physical Chemistry","Inorganic Chemistry","Organic Chemistry"],
+    "NEET": ["Basic Concepts","Atomic Structure","Chemical Bonding","States of Matter","Thermodynamics","Equilibrium","Organic Chemistry","Biomolecules"]
+  },
+  "Biology": {
+    "Class 11": ["The Living World","Biological Classification","Plant Kingdom","Animal Kingdom","Morphology of Plants","Anatomy of Plants","Cell Structure","Cell Cycle","Biomolecules","Photosynthesis","Respiration","Plant Growth","Digestion","Breathing","Body Fluids","Excretion","Locomotion","Neural Control","Chemical Coordination"],
+    "Class 12": ["Reproduction in Plants","Sexual Reproduction","Human Reproduction","Reproductive Health","Inheritance","Molecular Basis","Evolution","Human Health","Microbes","Biotechnology","Organisms and Populations","Ecosystem","Biodiversity","Environmental Issues"]
+  },
+  "Social Science": {
+    "Class 9": ["French Revolution","Russian Revolution","Nazism","Forest Society","Pastoralists","India Size and Location","Physical Features","Drainage","Climate","Natural Vegetation","Population","Electoral Politics","Constitutional Design","Working of Institutions","Democratic Rights","Food Security","Poverty","People as Resource"],
+    "Class 10": ["Nationalism in Europe","Nationalism in India","Age of Industrialisation","Print Culture","Resources and Development","Forest and Wildlife","Water Resources","Agriculture","Minerals and Energy","Manufacturing Industries","National Economy","Power Sharing","Federalism","Democracy and Diversity","Gender and Caste","Political Parties","Outcomes of Democracy","Challenges to Democracy","Development","Sectors of Economy","Money and Credit","Globalisation","Consumer Rights"]
+  },
+  "History": { "Arts Stream": ["Early Societies","Empires","Changing Traditions","Turning Points","Paths to Modernisation"] },
+  "Political Science": { "Arts Stream": ["Constitution","Rights","Elections","Local Government","Parliament","Federalism","Democracy"] },
+  "Agriculture": { "Agriculture Stream": ["Crop Production","Soil Science","Horticulture","Animal Husbandry","Agricultural Economics","Plant Physiology","Genetics"] },
+  "General": ["General Topic"]
+};
+
+// ── STATE ──
+let S = { name:"", exam:"", subject:"", stream:"", chapter:"", difficulty:"", qcount:10, questions:[], currentQ:0, answers:[], timerInterval:null, timeLeft:0 };
+
+// ── NAVIGATION ──
+function goTo(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById(screenId).classList.add('active');
+  document.getElementById(id).classList.add('active');
 }
 
-// =====================================================
-// LOGIN
-// =====================================================
+// ── LOGIN ──
 function switchTab(tab) {
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   event.target.classList.add('active');
-  document.getElementById('student-form').style.display = tab === 'student' ? 'block' : 'none';
-  document.getElementById('teacher-form').style.display = tab === 'teacher' ? 'block' : 'none';
+  document.getElementById('student-form').style.display = tab==='student'?'block':'none';
+  document.getElementById('teacher-form').style.display = tab==='teacher'?'block':'none';
 }
 
 function studentLogin() {
   const name = document.getElementById('student-name').value.trim();
   const exam = document.getElementById('student-exam').value;
   const msg = document.getElementById('login-msg');
-
-  if (!name) { msg.textContent = "कृपया अपना नाम लिखें"; return; }
-  if (!exam) { msg.textContent = "कृपया Exam चुनें"; return; }
-
-  state.name = name;
-  state.exam = exam;
-  msg.textContent = "";
-
-  document.getElementById('welcome-msg').textContent = "नमस्ते " + name + " 👋";
+  if (!name) { msg.textContent="कृपया नाम लिखें"; return; }
+  if (!exam) { msg.textContent="कृपया Exam चुनें"; return; }
+  S.name=name; S.exam=exam; msg.textContent="";
+  document.getElementById('welcome-msg').textContent="नमस्ते "+name+" 👋";
+  document.getElementById('exam-label-sub').textContent=exam+" के लिए subject चुनें";
   loadSubjects(exam);
   goTo('screen-subject');
 }
 
 function teacherLogin() {
-  const pass = document.getElementById('teacher-pass').value;
-  if (pass === TEACHER_PASSWORD) {
-    loadTeacherData();
-    goTo('screen-teacher');
-  } else {
-    document.getElementById('teacher-msg').textContent = "गलत password!";
-  }
+  if (document.getElementById('teacher-pass').value===TEACHER_PASSWORD) { loadTeacherData(); goTo('screen-teacher'); }
+  else document.getElementById('teacher-msg').textContent="गलत password!";
 }
 
-// =====================================================
-// SUBJECT SELECTION
-// =====================================================
+// ── SUBJECTS ──
 function loadSubjects(exam) {
-  const subjects = SUBJECTS[exam] || [];
+  const subs = SUBJECTS[exam]||[];
   const grid = document.getElementById('subject-grid');
-  grid.innerHTML = '';
-  subjects.forEach(s => {
-    grid.innerHTML += `
-      <div class="card" onclick="selectSubject('${s.label}')">
-        <div class="icon">${s.icon}</div>
-        <div class="label">${s.label}</div>
-        <div class="sub">${s.sub}</div>
-      </div>`;
+  grid.innerHTML='';
+  subs.forEach(s => {
+    grid.innerHTML += `<div class="card" onclick="selectSubject('${s.label}')"><div class="icon">${s.icon}</div><div class="label">${s.label}</div></div>`;
   });
 }
 
 function selectSubject(subject) {
-  state.subject = subject;
-  document.getElementById('selected-subject-label').textContent = state.exam + " → " + subject;
-  goTo('screen-testtype');
+  S.subject=subject; S.stream="";
+  const isStream11_12 = (S.exam==="Class 11"||S.exam==="Class 12") && STREAMS[subject];
+  if (isStream11_12) {
+    S.stream=subject;
+    document.getElementById('stream-sub').textContent=subject+" → Subject चुनें";
+    const sg = document.getElementById('stream-grid');
+    sg.innerHTML='';
+    STREAMS[subject].forEach(s => {
+      sg.innerHTML += `<div class="card" onclick="selectStreamSubject('${s.label}')"><div class="icon">${s.icon}</div><div class="label">${s.label}</div></div>`;
+    });
+    goTo('screen-stream');
+  } else {
+    loadChapters(subject);
+  }
 }
 
-// =====================================================
-// START TEST
-// =====================================================
-function startTest(type) {
-  state.testType = type;
-  state.currentQ = 0;
-  state.answers = [];
-  const count = type === 'mock' ? 30 : 10;
-  state.timeLeft = type === 'mock' ? 1800 : 600; // 30 min or 10 min
+function selectStreamSubject(subject) {
+  S.subject=subject;
+  loadChapters(subject);
+}
 
+// ── CHAPTERS ──
+function loadChapters(subject) {
+  const classKey = S.exam.includes("Class") ? S.exam.replace("Class ","Class ") : S.exam;
+  let chapters = [];
+  if (CHAPTERS[subject]) {
+    chapters = CHAPTERS[subject][S.exam] || CHAPTERS[subject][classKey] || CHAPTERS[subject]["JEE"] || CHAPTERS[subject]["NEET"] || CHAPTERS[subject]["Arts Stream"] || CHAPTERS[subject]["Agriculture Stream"] || [];
+  }
+  if (!chapters.length) chapters = ["General Topic","Mixed Topics","Previous Year Questions","Important Concepts","Numericals/Problems"];
+
+  document.getElementById('chapter-sub').textContent=S.exam+" → "+S.subject;
+  document.getElementById('chapter-back-btn').onclick = () => goTo(S.stream ? 'screen-stream' : 'screen-subject');
+
+  const list = document.getElementById('chapter-list');
+  list.innerHTML = `<div class="chapter-item" onclick="selectChapter('All Chapters')"><div class="chapter-num">📚</div><div><div style="font-weight:600">All Chapters (Mixed)</div><div style="font-size:0.78em;color:#aaa">पूरे syllabus से questions</div></div></div>`;
+  chapters.forEach((ch,i) => {
+    list.innerHTML += `<div class="chapter-item" onclick="selectChapter('${ch}')"><div class="chapter-num">${i+1}</div><div>${ch}</div></div>`;
+  });
+  goTo('screen-chapter');
+}
+
+function selectChapter(chapter) { S.chapter=chapter; goTo('screen-difficulty'); }
+function selectDifficulty(d) { S.difficulty=d; goTo('screen-qcount'); }
+function selectQCount(n) { S.qcount=n; fetchQuestions(); }
+
+// ── FETCH QUESTIONS ──
+function fetchQuestions() {
   goTo('screen-loading');
+  document.getElementById('loading-detail').textContent=`${S.subject} – ${S.chapter} (${S.difficulty}) – ${S.qcount} Questions`;
 
-  const url = `${APPS_SCRIPT_URL}?action=getQuestions&subject=${encodeURIComponent(state.subject)}&exam=${encodeURIComponent(state.exam)}&count=${count}`;
+  const url=`${APPS_SCRIPT_URL}?action=getQuestions&subject=${encodeURIComponent(S.subject)}&exam=${encodeURIComponent(S.exam)}&chapter=${encodeURIComponent(S.chapter)}&difficulty=${encodeURIComponent(S.difficulty)}&count=${S.qcount}`;
+
+  const timeout = setTimeout(() => { S.questions=getLocalBackup(); initTest(); }, 25000);
 
   fetch(url)
-    .then(r => r.json())
-    .then(data => {
-      if (data.success && data.questions && data.questions.length > 0) {
-        state.questions = data.questions;
-      } else {
-        state.questions = getLocalBackup();
-      }
+    .then(r=>r.json())
+    .then(data=>{
+      clearTimeout(timeout);
+      S.questions = (data.success && data.questions && data.questions.length>0) ? data.questions : getLocalBackup();
       initTest();
     })
-    .catch(() => {
-      state.questions = getLocalBackup();
-      initTest();
-    });
+    .catch(()=>{ clearTimeout(timeout); S.questions=getLocalBackup(); initTest(); });
 }
 
+// ── TEST ──
 function initTest() {
-  document.getElementById('q-total').textContent = state.questions.length;
-  state.answers = new Array(state.questions.length).fill(-1);
-  showQuestion(0);
-  startTimer();
-  goTo('screen-test');
+  S.currentQ=0; S.answers=new Array(S.questions.length).fill(-1);
+  S.timeLeft = S.qcount * 60;
+  document.getElementById('q-total').textContent=S.questions.length;
+  showQuestion(0); startTimer(); goTo('screen-test');
 }
 
-// =====================================================
-// QUESTIONS
-// =====================================================
 function showQuestion(idx) {
-  const q = state.questions[idx];
-  if (!q) return;
+  const q=S.questions[idx]; if(!q) return;
+  S.currentQ=idx;
+  document.getElementById('q-current').textContent=idx+1;
+  document.getElementById('q-num-label').textContent=`Q${idx+1}.`;
+  document.getElementById('q-text').textContent=q.question;
+  document.getElementById('explanation').style.display='none';
+  document.getElementById('progress-fill').style.width=((idx+1)/S.questions.length*100)+'%';
 
-  state.currentQ = idx;
-  document.getElementById('q-current').textContent = idx + 1;
-  document.getElementById('q-num-label').textContent = `Q${idx + 1}.`;
-  document.getElementById('q-text').textContent = q.question;
-  document.getElementById('explanation').style.display = 'none';
-  document.getElementById('explanation').textContent = '';
-
-  // Progress bar
-  const pct = ((idx + 1) / state.questions.length) * 100;
-  document.getElementById('progress-fill').style.width = pct + '%';
-
-  // Options
-  const container = document.getElementById('options-container');
-  container.innerHTML = '';
-  const labels = ['A', 'B', 'C', 'D'];
-  const answered = state.answers[idx] !== -1;
-
-  q.options.forEach((opt, i) => {
-    const div = document.createElement('div');
-    div.className = 'option' + (answered ? ' disabled' : '');
-
-    if (answered) {
-      if (i === q.correct) div.classList.add('correct');
-      else if (i === state.answers[idx]) div.classList.add('wrong');
-    }
-
-    div.innerHTML = `<div class="opt-label">${labels[i]}</div><div>${opt}</div>`;
-    if (!answered) div.onclick = () => selectAnswer(i);
+  const container=document.getElementById('options-container');
+  container.innerHTML='';
+  const labels=['A','B','C','D'];
+  const answered=S.answers[idx]!==-1;
+  q.options.forEach((opt,i)=>{
+    const div=document.createElement('div');
+    div.className='option'+(answered?' disabled':'');
+    if(answered){ if(i===q.correct) div.classList.add('correct'); else if(i===S.answers[idx]) div.classList.add('wrong'); }
+    div.innerHTML=`<div class="opt-label">${labels[i]}</div><div>${opt}</div>`;
+    if(!answered) div.onclick=()=>selectAnswer(i);
     container.appendChild(div);
   });
-
-  if (answered && q.explanation) {
-    const exp = document.getElementById('explanation');
-    exp.textContent = '💡 ' + q.explanation;
-    exp.style.display = 'block';
-  }
-
-  // Next/Submit button
-  const nextBtn = document.getElementById('next-btn');
-  nextBtn.textContent = idx === state.questions.length - 1 ? '✅ Submit करें' : 'अगला →';
+  if(answered && q.explanation){ const e=document.getElementById('explanation'); e.textContent='💡 '+q.explanation; e.style.display='block'; }
+  document.getElementById('next-btn').textContent=idx===S.questions.length-1?'✅ Submit':'अगला →';
 }
 
-function selectAnswer(optIdx) {
-  state.answers[state.currentQ] = optIdx;
-  showQuestion(state.currentQ);
+function selectAnswer(i){ S.answers[S.currentQ]=i; showQuestion(S.currentQ); }
+function nextQuestion(){ if(S.currentQ===S.questions.length-1) submitTest(); else showQuestion(S.currentQ+1); }
+function prevQuestion(){ if(S.currentQ>0) showQuestion(S.currentQ-1); }
+function confirmExit(){ if(confirm("Test छोड़ना है?")){ clearInterval(S.timerInterval); goTo('screen-subject'); } }
+
+function startTimer(){
+  clearInterval(S.timerInterval);
+  updateTimer();
+  S.timerInterval=setInterval(()=>{ S.timeLeft--; updateTimer(); if(S.timeLeft<=0){ clearInterval(S.timerInterval); submitTest(); } },1000);
+}
+function updateTimer(){
+  const m=Math.floor(S.timeLeft/60), s=S.timeLeft%60;
+  const el=document.getElementById('timer');
+  el.textContent=`${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+  el.className='timer'+(S.timeLeft<60?' warning':'');
 }
 
-function nextQuestion() {
-  if (state.currentQ === state.questions.length - 1) {
-    submitTest();
-  } else {
-    showQuestion(state.currentQ + 1);
-  }
-}
-
-function prevQuestion() {
-  if (state.currentQ > 0) showQuestion(state.currentQ - 1);
-}
-
-function confirmExit() {
-  if (confirm("क्या आप test छोड़ना चाहते हैं?")) {
-    clearInterval(state.timerInterval);
-    goTo('screen-subject');
-  }
-}
-
-// =====================================================
-// TIMER
-// =====================================================
-function startTimer() {
-  clearInterval(state.timerInterval);
-  updateTimerDisplay();
-  state.timerInterval = setInterval(() => {
-    state.timeLeft--;
-    updateTimerDisplay();
-    if (state.timeLeft <= 0) {
-      clearInterval(state.timerInterval);
-      submitTest();
-    }
-  }, 1000);
-}
-
-function updateTimerDisplay() {
-  const m = Math.floor(state.timeLeft / 60);
-  const s = state.timeLeft % 60;
-  const el = document.getElementById('timer');
-  el.textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
-  el.className = 'timer' + (state.timeLeft < 60 ? ' warning' : '');
-}
-
-// =====================================================
-// SUBMIT TEST
-// =====================================================
-function submitTest() {
-  clearInterval(state.timerInterval);
-
-  let correct = 0, wrong = 0, skip = 0;
-  state.questions.forEach((q, i) => {
-    if (state.answers[i] === -1) skip++;
-    else if (state.answers[i] === q.correct) correct++;
-    else wrong++;
-  });
-
-  const total = state.questions.length;
-  const pct = Math.round((correct / total) * 100);
-
-  // Show result
-  document.getElementById('result-pct').textContent = pct + '%';
-  document.getElementById('r-correct').textContent = correct;
-  document.getElementById('r-wrong').textContent = wrong;
-  document.getElementById('r-skip').textContent = skip;
-  document.getElementById('score-circle').style.setProperty('--pct', pct + '%');
-
-  const msgs = pct >= 80 ? "🎉 शानदार! बेहतरीन performance!" :
-               pct >= 60 ? "👍 अच्छा! थोड़ी और मेहनत करो।" :
-               pct >= 40 ? "📚 और पढ़ाई करो, सुधार होगा।" : "💪 हार मत मानो, फिर कोशिश करो!";
-  document.getElementById('result-msg').textContent = msgs;
-
-  // Save to sheet
-  const url = `${APPS_SCRIPT_URL}?action=saveResult&name=${encodeURIComponent(state.name)}&exam=${encodeURIComponent(state.exam)}&subject=${encodeURIComponent(state.subject)}&score=${correct}&total=${total}&percentage=${pct}%`;
-  fetch(url).catch(() => {});
-
+function submitTest(){
+  clearInterval(S.timerInterval);
+  let correct=0,wrong=0,skip=0;
+  S.questions.forEach((q,i)=>{ if(S.answers[i]===-1) skip++; else if(S.answers[i]===q.correct) correct++; else wrong++; });
+  const total=S.questions.length, pct=Math.round(correct/total*100);
+  document.getElementById('result-pct').textContent=pct+'%';
+  document.getElementById('r-correct').textContent=correct;
+  document.getElementById('r-wrong').textContent=wrong;
+  document.getElementById('r-skip').textContent=skip;
+  document.getElementById('score-circle').style.setProperty('--pct',pct+'%');
+  document.getElementById('result-msg').textContent=pct>=80?'🎉 शानदार! बेहतरीन performance!':pct>=60?'👍 अच्छा! थोड़ी और मेहनत।':pct>=40?'📚 और पढ़ो, सुधार होगा।':'💪 हार मत मानो, फिर कोशिश करो!';
+  const url=`${APPS_SCRIPT_URL}?action=saveResult&name=${encodeURIComponent(S.name)}&exam=${encodeURIComponent(S.exam)}&subject=${encodeURIComponent(S.subject)}&chapter=${encodeURIComponent(S.chapter)}&difficulty=${encodeURIComponent(S.difficulty)}&score=${correct}&total=${total}&percentage=${pct}%`;
+  fetch(url).catch(()=>{});
   goTo('screen-result');
 }
 
-// =====================================================
-// LEADERBOARD
-// =====================================================
-document.getElementById('screen-leaderboard').addEventListener('click', function(e) {
-  if (this.classList.contains('active') && !this._loaded) {
-    this._loaded = true;
-    loadLeaderboard();
-  }
-});
-
-function loadLeaderboard() {
-  const url = `${APPS_SCRIPT_URL}?action=getLeaderboard`;
-  fetch(url)
-    .then(r => r.json())
-    .then(data => {
-      const container = document.getElementById('lb-container');
-      if (!data.data || data.data.length === 0) {
-        container.innerHTML = '<p style="text-align:center;color:#aaa;">अभी कोई result नहीं है।</p>';
-        return;
-      }
-      const medals = ['🥇', '🥈', '🥉'];
-      container.innerHTML = data.data.map((r, i) => `
-        <div class="lb-item">
-          <div class="lb-rank">${medals[i] || (i+1)}</div>
-          <div>
-            <div class="lb-name">${r.name}</div>
-            <div style="font-size:0.8em;color:#aaa;">${r.exam} • ${r.subject}</div>
-          </div>
-          <div class="lb-score">${r.percentage}</div>
-        </div>
-      `).join('');
-    })
-    .catch(() => {
-      document.getElementById('lb-container').innerHTML = '<p style="text-align:center;color:#aaa;">Data load नहीं हो सका।</p>';
-    });
+function showLeaderboard(){ loadLeaderboard(); goTo('screen-leaderboard'); }
+function loadLeaderboard(){
+  fetch(`${APPS_SCRIPT_URL}?action=getLeaderboard`)
+    .then(r=>r.json()).then(data=>{
+      const c=document.getElementById('lb-container');
+      if(!data.data||!data.data.length){ c.innerHTML='<p style="text-align:center;color:#aaa">अभी कोई result नहीं।</p>'; return; }
+      const medals=['🥇','🥈','🥉'];
+      c.innerHTML=data.data.map((r,i)=>`<div class="lb-item"><div class="lb-rank">${medals[i]||(i+1)}</div><div><div class="lb-name">${r.name}</div><div style="font-size:0.78em;color:#aaa">${r.exam} • ${r.subject}</div></div><div class="lb-score">${r.percentage}</div></div>`).join('');
+    }).catch(()=>{ document.getElementById('lb-container').innerHTML='<p style="text-align:center;color:#aaa">Load नहीं हुआ।</p>'; });
 }
 
-// =====================================================
-// TEACHER DASHBOARD
-// =====================================================
-function loadTeacherData() {
-  const url = `${APPS_SCRIPT_URL}?action=getLeaderboard`;
-  fetch(url)
-    .then(r => r.json())
-    .then(data => {
-      const tbody = document.getElementById('teacher-table');
-      if (!data.data || data.data.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:#aaa;">कोई data नहीं</td></tr>';
-        return;
-      }
-      tbody.innerHTML = data.data.map((r, i) => `
-        <tr>
-          <td>${i+1}</td>
-          <td>${r.name}</td>
-          <td>${r.exam}</td>
-          <td>${r.subject}</td>
-          <td>${r.score}/${r.total}</td>
-          <td><span class="badge">${r.percentage}</span></td>
-          <td>${r.date}</td>
-        </tr>
-      `).join('');
-    })
-    .catch(() => {});
+function loadTeacherData(){
+  fetch(`${APPS_SCRIPT_URL}?action=getLeaderboard`)
+    .then(r=>r.json()).then(data=>{
+      const tb=document.getElementById('teacher-table');
+      if(!data.data||!data.data.length){ tb.innerHTML='<tr><td colspan="8" style="text-align:center;color:#aaa">कोई data नहीं</td></tr>'; return; }
+      tb.innerHTML=data.data.map((r,i)=>`<tr><td>${i+1}</td><td>${r.name}</td><td>${r.exam}</td><td>${r.subject||''}</td><td><span class="badge">${r.percentage}</span></td><td>${r.date||''}</td></tr>`).join('');
+    }).catch(()=>{});
 }
 
-// =====================================================
-// LOCAL BACKUP QUESTIONS
-// =====================================================
-function getLocalBackup() {
+function getLocalBackup(){
   return [
-    { question: "न्यूटन का गति का पहला नियम क्या कहता है?", options: ["प्रत्येक क्रिया की समान और विपरीत प्रतिक्रिया होती है", "कोई भी वस्तु तब तक अपनी स्थिति में रहती है जब तक उस पर बल न लगाया जाए", "बल = द्रव्यमान × त्वरण", "ऊर्जा न तो बनाई जा सकती है न नष्ट की जा सकती है"], correct: 1, explanation: "न्यूटन का पहला नियम जड़त्व का नियम है।" },
-    { question: "प्रकाश की गति निर्वात में कितनी होती है?", options: ["3 × 10⁶ m/s", "3 × 10⁸ m/s", "3 × 10¹⁰ m/s", "3 × 10⁴ m/s"], correct: 1, explanation: "प्रकाश की गति 3 × 10⁸ m/s है।" },
-    { question: "परमाणु के केंद्र में क्या होता है?", options: ["इलेक्ट्रॉन", "न्यूट्रॉन", "नाभिक", "प्रोटॉन"], correct: 2, explanation: "परमाणु के केंद्र में नाभिक होता है।" },
-    { question: "ओम का नियम क्या है?", options: ["V = IR", "P = IV", "F = ma", "E = mc²"], correct: 0, explanation: "ओम के नियम के अनुसार V = IR।" },
-    { question: "DNA का पूरा नाम क्या है?", options: ["Deoxyribonucleic Acid", "Diribonucleic Acid", "Double Nuclear Acid", "Deoxyribose Acid"], correct: 0, explanation: "DNA = Deoxyribonucleic Acid।" },
-    { question: "पानी का रासायनिक सूत्र क्या है?", options: ["CO₂", "H₂O", "NaCl", "O₂"], correct: 1, explanation: "पानी का सूत्र H₂O है।" },
-    { question: "पृथ्वी पर गुरुत्वाकर्षण का मान क्या है?", options: ["9.8 m/s²", "8.9 m/s²", "10.8 m/s²", "6.7 m/s²"], correct: 0, explanation: "g = 9.8 m/s² (लगभग 10 m/s²)।" },
-    { question: "प्रकाश-संश्लेषण में कौन सी गैस उत्पन्न होती है?", options: ["CO₂", "N₂", "O₂", "H₂"], correct: 2, explanation: "प्रकाश-संश्लेषण में ऑक्सीजन (O₂) बनती है।" },
-    { question: "आवर्त सारणी में सबसे हल्का तत्व कौन सा है?", options: ["हीलियम", "हाइड्रोजन", "लिथियम", "कार्बन"], correct: 1, explanation: "हाइड्रोजन सबसे हल्का तत्व है।" },
-    { question: "बिजली का SI मात्रक क्या है?", options: ["वोल्ट", "एम्पीयर", "ओम", "वाट"], correct: 1, explanation: "विद्युत धारा का SI मात्रक एम्पीयर है।" }
+    {question:"न्यूटन का गति का पहला नियम क्या कहता है?",options:["प्रत्येक क्रिया की विपरीत प्रतिक्रिया होती है","कोई वस्तु तब तक अपनी स्थिति नहीं बदलती जब तक बल न लगे","बल = द्रव्यमान × त्वरण","ऊर्जा संरक्षित रहती है"],correct:1,explanation:"यह जड़त्व का नियम है।"},
+    {question:"प्रकाश की गति निर्वात में कितनी है?",options:["3×10⁶ m/s","3×10⁸ m/s","3×10¹⁰ m/s","3×10⁴ m/s"],correct:1,explanation:"प्रकाश की गति 3×10⁸ m/s है।"},
+    {question:"पानी का रासायनिक सूत्र क्या है?",options:["CO₂","H₂O","NaCl","O₂"],correct:1,explanation:"पानी = H₂O।"},
+    {question:"DNA का पूरा नाम क्या है?",options:["Deoxyribonucleic Acid","Diribonucleic Acid","Double Nuclear Acid","Deoxyribose Acid"],correct:0,explanation:"DNA = Deoxyribonucleic Acid।"},
+    {question:"पृथ्वी पर गुरुत्वाकर्षण का मान?",options:["9.8 m/s²","8.9 m/s²","10.8 m/s²","6.7 m/s²"],correct:0,explanation:"g ≈ 9.8 m/s²।"}
   ];
 }
 </script>
