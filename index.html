@@ -7,25 +7,25 @@
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --gold:#FFD700;--gold2:#FFA500;--gold-dark:#B8860B;
-    --bg:#0a0a0a;--bg2:#111111;--bg3:#1a1a1a;
-    --card:#141414;--border:#2a2a2a;
-    --text:#f0f0f0;--text2:#aaaaaa;
-    --green:#00ff88;--red:#ff4455;--blue:#00aaff;
+    --gold:#C8960C;--gold2:#E8A000;--gold-dark:#A07800;
+    --bg:#F8F4ED;--bg2:#F0EAE0;--bg3:#EDE6D8;
+    --card:#FFFFFF;--border:#DDD5C0;
+    --text:#1A1200;--text2:#6B5C3E;
+    --green:#1A7A4A;--red:#C0392B;--blue:#1A5FA0;
   }
   *{margin:0;padding:0;box-sizing:border-box;}
   body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-serif;font-size:16px;min-height:100vh;overflow-x:hidden;}
   #particles-canvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;opacity:0.4;}
-  ::-webkit-scrollbar{width:6px;}::-webkit-scrollbar-track{background:var(--bg);}::-webkit-scrollbar-thumb{background:var(--gold-dark);border-radius:3px;}
+  ::-webkit-scrollbar{width:6px;}::-webkit-scrollbar-track{background:var(--bg2);}::-webkit-scrollbar-thumb{background:var(--gold-dark);border-radius:3px;}
   .screen{display:none;position:relative;z-index:1;min-height:100vh;padding:20px;max-width:800px;margin:0 auto;}
   .screen.active{display:block;}
   .logo-wrap{text-align:center;padding:30px 0 10px;}
   .logo-title{font-family:'Orbitron',sans-serif;font-size:clamp(22px,5vw,38px);font-weight:900;background:linear-gradient(135deg,#FFD700,#FFA500,#FFD700);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:3px;animation:pulse-glow 2.5s ease-in-out infinite;filter:drop-shadow(0 0 15px rgba(255,215,0,0.5));}
   .logo-tagline{color:var(--text2);font-size:13px;letter-spacing:4px;text-transform:uppercase;margin-top:6px;}
   @keyframes pulse-glow{0%,100%{filter:drop-shadow(0 0 10px rgba(255,215,0,0.4));}50%{filter:drop-shadow(0 0 25px rgba(255,165,0,0.8));}}
-  .banner{background:linear-gradient(135deg,#111 0%,#1a1500 50%,#111 100%);border:1px solid rgba(255,215,0,0.2);border-radius:16px;padding:18px 20px;margin:16px 0;display:flex;align-items:center;gap:16px;position:relative;overflow:hidden;}
-  .banner::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);}
-  .banner-avatar{width:70px;height:70px;border-radius:50%;border:2px solid var(--gold);box-shadow:0 0 20px rgba(255,215,0,0.5);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:28px;background:linear-gradient(135deg,#2a2000,#1a1000);}
+  .banner{background:linear-gradient(135deg,#FFF8E8 0%,#FFF0CC 50%,#FFF8E8 100%);border:1px solid rgba(200,150,12,0.3);border-radius:16px;padding:18px 20px;margin:16px 0;display:flex;align-items:center;gap:16px;position:relative;overflow:hidden;}
+  .banner::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold2),transparent);}
+  .banner-avatar{width:70px;height:70px;border-radius:50%;border:2px solid var(--gold);box-shadow:0 0 20px rgba(255,215,0,0.5);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:28px;background:linear-gradient(135deg,#FFF0CC,#FFE090);}
   .banner-name{font-family:'Orbitron',sans-serif;font-size:14px;color:var(--gold);font-weight:700;letter-spacing:1px;}
   .banner-sub{font-size:12px;color:var(--text2);margin-top:2px;}
   .badges-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;}
@@ -34,9 +34,9 @@
   .badge-jee{background:rgba(0,200,180,0.15);border-color:#00c8b4;color:#00c8b4;}
   .badge-nda{background:rgba(0,120,255,0.15);border-color:#0078ff;color:#0078ff;}
   .badge-clat{background:rgba(0,200,100,0.15);border-color:#00c864;color:#00c864;}
-  .badge-ca{background:rgba(255,215,0,0.15);border-color:var(--gold);color:var(--gold);}
+  .badge-ca{background:rgba(200,150,12,0.2);border-color:var(--gold);color:var(--gold);}
   .form-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px;margin:16px 0;position:relative;overflow:hidden;}
-  .form-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent);}
+  .form-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold2),transparent);}
   .form-title{font-family:'Orbitron',sans-serif;font-size:13px;color:var(--gold);letter-spacing:2px;margin-bottom:18px;text-transform:uppercase;}
   .form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;}
   .form-row.single{grid-template-columns:1fr;}
@@ -44,7 +44,7 @@
   .form-group label{font-size:11px;color:var(--text2);letter-spacing:1px;text-transform:uppercase;}
   .form-group input,.form-group select,.form-group textarea{background:var(--bg3);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'Rajdhani',sans-serif;font-size:15px;font-weight:500;padding:10px 14px;outline:none;transition:border-color 0.2s,box-shadow 0.2s;-webkit-appearance:none;}
   .form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--gold);box-shadow:0 0 0 2px rgba(255,215,0,0.15);}
-  .form-group select option{background:#1a1a1a;}
+  .form-group select option{background:#FFFFFF;color:#1A1200;}
   .form-group textarea{resize:vertical;min-height:80px;}
   .btn-gold{width:100%;padding:14px;background:linear-gradient(135deg,#FFD700,#FFA500);border:none;border-radius:10px;color:#000;font-family:'Orbitron',sans-serif;font-size:14px;font-weight:900;letter-spacing:3px;cursor:pointer;position:relative;overflow:hidden;transition:transform 0.15s,box-shadow 0.15s;margin-top:8px;}
   .btn-gold::after{content:'';position:absolute;top:-50%;left:-60%;width:40%;height:200%;background:rgba(255,255,255,0.3);transform:skewX(-20deg);transition:left 0.4s;}
@@ -59,18 +59,18 @@
   .teacher-link span{color:var(--gold);cursor:pointer;text-decoration:underline;font-weight:600;}
   /* QUIZ */
   .quiz-header{display:flex;align-items:center;justify-content:space-between;padding:16px 0 10px;gap:10px;}
-  .chapter-tag{background:rgba(255,215,0,0.1);border:1px solid rgba(255,215,0,0.3);border-radius:20px;padding:5px 14px;font-size:12px;color:var(--gold);font-weight:600;letter-spacing:1px;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .chapter-tag{background:rgba(200,150,12,0.1);border:1px solid rgba(200,150,12,0.3);border-radius:20px;padding:5px 14px;font-size:12px;color:var(--gold);font-weight:600;letter-spacing:1px;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
   .timer-wrap{position:relative;width:60px;height:60px;flex-shrink:0;}
   .timer-svg{transform:rotate(-90deg);}
-  .timer-bg{fill:none;stroke:var(--bg3);stroke-width:4;}
+  .timer-bg{fill:none;stroke:#E0D8C8;stroke-width:4;}
   .timer-ring{fill:none;stroke:var(--gold);stroke-width:4;stroke-linecap:round;transition:stroke-dashoffset 1s linear,stroke 0.3s;}
   .timer-text{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:'Orbitron',sans-serif;font-size:13px;font-weight:700;color:var(--gold);}
   .timer-text.danger{color:var(--red);}.timer-ring.danger{stroke:var(--red);}
-  .progress-wrap{background:var(--bg3);border-radius:4px;height:4px;margin:10px 0;overflow:hidden;}
+  .progress-wrap{background:#E0D8C8;border-radius:4px;height:4px;margin:10px 0;overflow:hidden;}
   .progress-fill{height:100%;background:linear-gradient(90deg,var(--gold2),var(--gold));border-radius:4px;transition:width 0.4s ease;box-shadow:0 0 8px rgba(255,215,0,0.5);}
   .progress-label{display:flex;justify-content:space-between;font-size:11px;color:var(--text2);margin-top:4px;}
   .question-card{background:var(--card);border:1px solid rgba(255,215,0,0.2);border-radius:16px;padding:24px;margin:14px 0;position:relative;overflow:hidden;}
-  .question-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent);}
+  .question-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold2),transparent);}
   .question-num{font-size:11px;color:var(--gold);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;font-weight:700;}
   .question-text{font-size:17px;font-weight:500;line-height:1.6;color:var(--text);}
   .loading-dots{display:inline-flex;gap:6px;align-items:center;}
@@ -79,16 +79,16 @@
   @keyframes dot-bounce{0%,80%,100%{transform:scale(0.6);opacity:0.4;}40%{transform:scale(1);opacity:1;}}
   .options-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0;}
   .option-btn{background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:14px 16px;color:var(--text);font-family:'Rajdhani',sans-serif;font-size:15px;font-weight:500;cursor:pointer;text-align:left;transition:border-color 0.2s,background 0.2s,transform 0.15s;display:flex;align-items:flex-start;gap:10px;line-height:1.4;}
-  .option-btn:hover:not(:disabled){border-color:var(--gold);background:rgba(255,215,0,0.05);transform:translateY(-1px);}
-  .option-key{font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;color:var(--gold);background:rgba(255,215,0,0.1);border:1px solid rgba(255,215,0,0.3);border-radius:5px;padding:2px 6px;flex-shrink:0;margin-top:1px;}
-  .option-btn.correct{background:rgba(0,255,136,0.1);border-color:var(--green);animation:correct-flash 0.5s ease;}
-  .option-btn.correct .option-key{color:var(--green);background:rgba(0,255,136,0.15);border-color:var(--green);}
-  .option-btn.wrong{background:rgba(255,68,85,0.1);border-color:var(--red);animation:wrong-shake 0.4s ease;}
-  .option-btn.wrong .option-key{color:var(--red);background:rgba(255,68,85,0.15);border-color:var(--red);}
+  .option-btn:hover:not(:disabled){border-color:var(--gold);background:rgba(200,150,12,0.08);transform:translateY(-1px);}
+  .option-key{font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;color:var(--gold-dark);background:rgba(200,150,12,0.1);border:1px solid rgba(200,150,12,0.3);border-radius:5px;padding:2px 6px;flex-shrink:0;margin-top:1px;}
+  .option-btn.correct{background:rgba(26,122,74,0.1);border-color:var(--green);animation:correct-flash 0.5s ease;}
+  .option-btn.correct .option-key{color:var(--green);background:rgba(26,122,74,0.12);border-color:var(--green);}
+  .option-btn.wrong{background:rgba(192,57,43,0.1);border-color:var(--red);animation:wrong-shake 0.4s ease;}
+  .option-btn.wrong .option-key{color:var(--red);background:rgba(192,57,43,0.12);border-color:var(--red);}
   .option-btn:disabled{cursor:default;}
-  @keyframes correct-flash{0%{box-shadow:0 0 0 rgba(0,255,136,0);}50%{box-shadow:0 0 20px rgba(0,255,136,0.4);}100%{box-shadow:0 0 5px rgba(0,255,136,0.2);}}
+  @keyframes correct-flash{0%{box-shadow:0 0 0 rgba(26,122,74,0);}50%{box-shadow:0 0 20px rgba(26,122,74,0.3);}100%{box-shadow:0 0 5px rgba(26,122,74,0.15);}}
   @keyframes wrong-shake{0%,100%{transform:translateX(0);}20%{transform:translateX(-6px);}60%{transform:translateX(6px);}}
-  .explanation-box{background:rgba(255,215,0,0.05);border:1px solid rgba(255,215,0,0.2);border-radius:10px;padding:14px 16px;font-size:14px;color:var(--text2);line-height:1.6;margin-top:14px;display:none;}
+  .explanation-box{background:rgba(200,150,12,0.06);border:1px solid rgba(200,150,12,0.25);border-radius:10px;padding:14px 16px;font-size:14px;color:var(--text2);line-height:1.6;margin-top:14px;display:none;}
   .explanation-box.show{display:block;}
   .explanation-box strong{color:var(--gold);}
   .quiz-actions{display:flex;gap:10px;justify-content:space-between;margin-top:10px;padding-bottom:20px;}
@@ -98,7 +98,7 @@
   @keyframes trophy-bounce{from{transform:translateY(0);}to{transform:translateY(-10px);}}
   .score-ring-wrap{position:relative;width:140px;margin:20px auto;}
   .score-ring-svg{transform:rotate(-90deg);}
-  .score-ring-bg{fill:none;stroke:var(--bg3);stroke-width:8;}
+  .score-ring-bg{fill:none;stroke:#E8DECE;stroke-width:8;}
   .score-ring-fill{fill:none;stroke:url(#scoreGradient);stroke-width:8;stroke-linecap:round;transition:stroke-dashoffset 1.5s cubic-bezier(0.4,0,0.2,1);}
   .score-ring-text{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;}
   .score-pct{font-family:'Orbitron',sans-serif;font-size:28px;font-weight:900;color:var(--gold);display:block;line-height:1;}
@@ -108,36 +108,36 @@
   .stat-num{font-family:'Orbitron',sans-serif;font-size:22px;font-weight:700;}
   .stat-num.green{color:var(--green);}.stat-num.red{color:var(--red);}.stat-num.gold{color:var(--gold);}
   .stat-lbl{font-size:12px;color:var(--text2);margin-top:4px;}
-  .badge-earned{background:linear-gradient(135deg,#1a1500,#111);border:1px solid rgba(255,215,0,0.3);border-radius:14px;padding:16px 20px;display:flex;align-items:center;gap:14px;margin:14px 0;}
+  .badge-earned{background:linear-gradient(135deg,#FFF8E8,#FFF0CC);border:1px solid rgba(255,215,0,0.3);border-radius:14px;padding:16px 20px;display:flex;align-items:center;gap:14px;margin:14px 0;}
   .badge-icon{font-size:36px;}
   .badge-earned-title{font-family:'Orbitron',sans-serif;font-size:13px;color:var(--gold);font-weight:700;}
   .badge-earned-sub{font-size:13px;color:var(--text2);margin-top:3px;}
-  .weak-alert{background:rgba(255,68,85,0.08);border:1px solid rgba(255,68,85,0.25);border-radius:12px;padding:14px 18px;margin:12px 0;font-size:14px;color:#ff8899;display:none;}
+  .weak-alert{background:rgba(192,57,43,0.07);border:1px solid rgba(192,57,43,0.25);border-radius:12px;padding:14px 18px;margin:12px 0;font-size:14px;color:#8B1A1A;display:none;}
   .weak-alert.show{display:block;}
   .result-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0 30px;}
   .btn-whatsapp{padding:12px;background:linear-gradient(135deg,#25D366,#128C7E);border:none;border-radius:10px;color:#fff;font-family:'Rajdhani',sans-serif;font-size:14px;font-weight:700;letter-spacing:1px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:transform 0.15s,box-shadow 0.15s;}
   .btn-whatsapp:hover{transform:translateY(-1px);box-shadow:0 5px 15px rgba(37,211,102,0.3);}
   /* LEADERBOARD */
   .lb-table{width:100%;border-collapse:collapse;margin:14px 0;}
-  .lb-table th{text-align:left;padding:10px 12px;font-size:11px;color:var(--gold);letter-spacing:2px;text-transform:uppercase;border-bottom:1px solid rgba(255,215,0,0.2);font-family:'Orbitron',sans-serif;}
+  .lb-table th{text-align:left;padding:10px 12px;font-size:11px;color:var(--gold-dark);letter-spacing:2px;text-transform:uppercase;border-bottom:1px solid rgba(200,150,12,0.25);font-family:'Orbitron',sans-serif;}
   .lb-table td{padding:10px 12px;font-size:14px;border-bottom:1px solid var(--border);vertical-align:middle;}
   .lb-rank{font-family:'Orbitron',sans-serif;font-size:13px;font-weight:700;}
   .lb-rank.gold{color:var(--gold);}.lb-rank.silver{color:#C0C0C0;}.lb-rank.bronze{color:#CD7F32;}
   /* TEACHER DASHBOARD */
-  .dash-header{display:flex;align-items:center;justify-content:space-between;padding:20px 0 16px;border-bottom:1px solid rgba(255,215,0,0.15);margin-bottom:16px;}
+  .dash-header{display:flex;align-items:center;justify-content:space-between;padding:20px 0 16px;border-bottom:1px solid rgba(200,150,12,0.2);margin-bottom:16px;}
   .dash-title{font-family:'Orbitron',sans-serif;font-size:16px;color:var(--gold);font-weight:700;}
   .dash-tabs{display:flex;gap:8px;margin-bottom:20px;}
   .dash-tab{padding:10px 20px;background:var(--bg3);border:1px solid var(--border);border-radius:8px;color:var(--text2);font-family:'Rajdhani',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:all 0.2s;}
-  .dash-tab.active{background:rgba(255,215,0,0.1);border-color:var(--gold);color:var(--gold);}
+  .dash-tab.active{background:rgba(200,150,12,0.12);border-color:var(--gold);color:var(--gold-dark);}
   .dash-panel{display:none;}.dash-panel.active{display:block;}
   .filter-row{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;}
   .filter-row select{background:var(--bg3);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'Rajdhani',sans-serif;font-size:14px;padding:8px 12px;outline:none;cursor:pointer;}
   .data-table{width:100%;border-collapse:collapse;font-size:13px;}
-  .data-table th{background:rgba(255,215,0,0.08);padding:10px;text-align:left;color:var(--gold);font-size:11px;letter-spacing:1px;text-transform:uppercase;font-family:'Orbitron',sans-serif;}
+  .data-table th{background:rgba(200,150,12,0.1);padding:10px;text-align:left;color:var(--gold);font-size:11px;letter-spacing:1px;text-transform:uppercase;font-family:'Orbitron',sans-serif;}
   .data-table td{padding:9px 10px;border-bottom:1px solid var(--border);}
   /* PDF UPLOAD */
   .pdf-upload-area{border:2px dashed rgba(255,215,0,0.3);border-radius:14px;padding:30px;text-align:center;cursor:pointer;transition:border-color 0.2s,background 0.2s;margin:16px 0;}
-  .pdf-upload-area:hover,.pdf-upload-area.drag-over{border-color:var(--gold);background:rgba(255,215,0,0.05);}
+  .pdf-upload-area:hover,.pdf-upload-area.drag-over{border-color:var(--gold);background:rgba(200,150,12,0.06);}
   .pdf-upload-icon{font-size:40px;margin-bottom:10px;}
   .pdf-upload-text{color:var(--text2);font-size:14px;}
   .pdf-upload-text strong{color:var(--gold);}
@@ -150,14 +150,33 @@
   .gen-q-text{font-size:14px;color:var(--text);margin-bottom:8px;}
   .gen-q-options{display:grid;grid-template-columns:1fr 1fr;gap:6px;}
   .gen-q-opt{font-size:12px;color:var(--text2);padding:5px 8px;background:var(--bg3);border-radius:6px;}
-  .gen-q-opt.correct-opt{color:var(--green);background:rgba(0,255,136,0.08);}
+  .gen-q-opt.correct-opt{color:var(--green);background:rgba(26,122,74,0.08);}
+  /* READING COMPREHENSION PASSAGE */
+  .passage-box{background:rgba(200,150,12,0.06);border-left:4px solid var(--gold);border-radius:0 10px 10px 0;padding:16px 18px;margin-bottom:16px;font-size:15px;line-height:1.9;color:var(--text);display:none;}
+  .passage-box.show{display:block;}
+  .passage-label{font-family:'Orbitron',sans-serif;font-size:10px;color:var(--gold-dark);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;font-weight:700;}
+
   /* TEACHER LOGIN */
-  .teacher-login-card{max-width:360px;margin:80px auto;background:var(--card);border:1px solid rgba(255,215,0,0.2);border-radius:16px;padding:32px;text-align:center;}
+  .teacher-login-card{max-width:360px;margin:80px auto;background:var(--card);border:1px solid rgba(200,150,12,0.3);border-radius:16px;padding:32px;text-align:center;}
   .teacher-login-title{font-family:'Orbitron',sans-serif;color:var(--gold);font-size:15px;font-weight:700;letter-spacing:2px;margin-bottom:24px;}
   .section-title{font-family:'Orbitron',sans-serif;font-size:14px;color:var(--gold);letter-spacing:2px;margin:20px 0 12px;display:flex;align-items:center;gap:10px;}
-  .section-title::after{content:'';flex:1;height:1px;background:rgba(255,215,0,0.15);}
-  .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--card);border:1px solid rgba(255,215,0,0.3);border-radius:10px;padding:12px 24px;font-size:14px;color:var(--text);z-index:1000;transition:transform 0.3s ease;white-space:nowrap;box-shadow:0 8px 30px rgba(0,0,0,0.5);}
+  .section-title::after{content:'';flex:1;height:1px;background:rgba(200,150,12,0.2);}
+  .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--card);border:1px solid rgba(255,215,0,0.3);border-radius:10px;padding:12px 24px;font-size:14px;color:var(--text);z-index:1000;transition:transform 0.3s ease;white-space:nowrap;box-shadow:0 8px 30px rgba(100,80,0,0.15);}
   .toast.show{transform:translateX(-50%) translateY(0);}
+  /* DAILY TEST */
+  .daily-test-banner{background:linear-gradient(135deg,#FFF8E8,#FFF0CC);border:2px solid var(--gold);border-radius:16px;padding:18px 20px;margin:14px 0;position:relative;overflow:hidden;cursor:pointer;transition:transform 0.2s,box-shadow 0.2s;}
+  .daily-test-banner:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(200,150,12,0.25);}
+  .daily-test-banner::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold2),var(--gold),var(--gold2));}
+  .dt-badge{background:linear-gradient(135deg,var(--gold2),var(--gold));color:#fff;font-family:'Orbitron',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;padding:4px 12px;border-radius:20px;display:inline-block;margin-bottom:8px;}
+  .dt-title{font-family:'Orbitron',sans-serif;font-size:16px;font-weight:700;color:var(--gold-dark);margin-bottom:4px;}
+  .dt-meta{font-size:13px;color:var(--text2);display:flex;gap:14px;flex-wrap:wrap;}
+  .dt-meta span{display:flex;align-items:center;gap:4px;}
+  .dt-start-btn{background:linear-gradient(135deg,var(--gold2),var(--gold));border:none;border-radius:8px;color:#000;font-family:'Orbitron',sans-serif;font-size:12px;font-weight:700;letter-spacing:1px;padding:8px 20px;cursor:pointer;float:right;margin-top:-30px;}
+  .dt-no-test{text-align:center;padding:20px;color:var(--text2);font-size:14px;background:var(--bg2);border-radius:12px;border:1px dashed var(--border);margin:14px 0;}
+  /* Upload Questions */
+  .q-upload-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:8px;}
+  .q-upload-num{font-size:11px;color:var(--gold-dark);font-weight:700;letter-spacing:1px;margin-bottom:6px;}
+
   @media(max-width:480px){
     .form-row{grid-template-columns:1fr;}
     .options-grid{grid-template-columns:1fr;}
@@ -165,6 +184,7 @@
     .quiz-actions{flex-wrap:wrap;}
     .gen-q-options{grid-template-columns:1fr;}
     .dash-tabs{flex-wrap:wrap;}
+    .dt-start-btn{float:none;margin-top:10px;width:100%;}
   }
 </style>
 </head>
@@ -227,6 +247,9 @@
     </div>
     <button class="btn-gold" onclick="startQuiz()">⚡ START QUIZ</button>
   </div>
+  <!-- Daily Test Banner -->
+  <div id="daily-test-student-wrap"></div>
+
   <div class="teacher-link">Teacher? <span onclick="showScreen('screen-teacher-login')">Teacher Dashboard →</span></div>
   <div class="teacher-link" style="margin-top:8px;"><span onclick="showScreen('screen-leaderboard');loadLeaderboard()">🏆 Leaderboard देखो</span></div>
 </div>
@@ -248,6 +271,7 @@
   <div class="progress-label"><span id="progress-label-left">Q 1 of 10</span><span id="progress-label-right">0%</span></div>
   <div class="question-card">
     <div class="question-num" id="q-num">QUESTION 01</div>
+    <div class="passage-box" id="passage-box"><div class="passage-label">📖 Passage — पढ़ो फिर नीचे question answer करो</div><div id="passage-text"></div></div>
     <div class="question-text" id="q-text"><div class="loading-dots"><span></span><span></span><span></span></div></div>
   </div>
   <div class="options-grid" id="options-grid"></div>
@@ -318,6 +342,7 @@
   <div class="dash-tabs">
     <button class="dash-tab active" onclick="switchTab('tab-results',0)">📋 Results</button>
     <button class="dash-tab" onclick="switchTab('tab-pdf',1)">📄 PDF से Quiz</button>
+    <button class="dash-tab" onclick="switchTab('tab-dailytest',2)">📅 Daily Test</button>
   </div>
   <!-- Results Tab -->
   <div class="dash-panel active" id="tab-results">
@@ -389,11 +414,67 @@
       </div>
     </div>
   </div>
+
+  <!-- Daily Test Tab -->
+  <div class="dash-panel" id="tab-dailytest">
+    <div class="form-card">
+      <div class="form-title">📅 आज का Daily Test Set करो</div>
+      <p style="font-size:14px;color:var(--text2);margin-bottom:16px;">यहाँ test का नाम, subject और questions paste करो — Students को Login screen पर दिखेगा।</p>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Test का नाम</label>
+          <input type="text" id="dt-title" placeholder="जैसे: Newton's Laws Test, Chemistry Test...">
+        </div>
+        <div class="form-group">
+          <label>Subject / Chapter</label>
+          <input type="text" id="dt-subject" placeholder="जैसे: Physics - Motion">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Exam</label>
+          <select id="dt-exam">
+            <option value="All Students">All Students</option>
+            <option value="JEE">JEE</option><option value="NEET">NEET</option>
+            <option value="NDA">NDA</option><option value="CLAT">CLAT</option>
+            <option value="Class 10">Class 10</option><option value="Class 12">Class 12</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Time Limit (minutes)</label>
+          <select id="dt-time">
+            <option value="15">15 min</option><option value="20">20 min</option>
+            <option value="30" selected>30 min</option><option value="45">45 min</option>
+            <option value="60">60 min</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Questions paste area -->
+      <div style="margin-top:8px;">
+        <label style="font-size:11px;color:var(--text2);letter-spacing:1px;text-transform:uppercase;display:block;margin-bottom:6px;">Questions JSON paste करो (Groq format)</label>
+        <textarea id="dt-questions-json" placeholder='[{"question":"Newton का पहला नियम क्या है?","options":["जड़ता का नियम","गति का नियम","क्रिया-प्रतिक्रिया","ऊर्जा संरक्षण"],"correctIndex":0,"explanation":"..."}]' style="min-height:120px;width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:monospace;font-size:12px;padding:10px;outline:none;resize:vertical;"></textarea>
+        <div style="font-size:12px;color:var(--text2);margin-top:4px;">💡 Tip: PDF से Questions Generate करो → Preview में सभी questions का JSON मिलेगा → यहाँ paste करो</div>
+      </div>
+
+      <div id="dt-status" style="display:none;padding:10px 14px;border-radius:8px;margin-top:12px;font-size:14px;"></div>
+      <button class="btn-gold" onclick="publishDailyTest()" style="margin-top:12px;">📅 आज का Test Publish करो</button>
+    </div>
+
+    <!-- Current active test preview -->
+    <div id="dt-current-wrap" style="margin-top:8px;"></div>
+    <button class="btn-outline" onclick="clearDailyTest()" style="width:100%;margin-top:8px;margin-bottom:30px;color:var(--red);border-color:var(--red);">🗑 Current Test हटाओ</button>
+  </div>
+
 </div>
 
 <script>
 const APPS_SCRIPT_URL="https://script.google.com/macros/s/AKfycbwRtvck-c-9ZKPo4VynOdCX5gVW4wa745d0_Tix23cJhn5n-RM9SAIWl9dBA1DLz-MMgA/exec";
 const TEACHER_PWD="science123";
+const GROQ_KEY="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";
+const GROQ_URL="https://api.groq.com/openai/v1/chat/completions";
+const GROQ_MODEL="llama-3.3-70b-versatile";
 
 // ===== EXAM SYLLABUS =====
 const SYLLABUS={
@@ -422,7 +503,7 @@ const SYLLABUS={
   for(let i=0;i<60;i++) p.push({x:Math.random()*window.innerWidth,y:Math.random()*window.innerHeight,r:Math.random()*1.5+0.3,dx:(Math.random()-0.5)*0.3,dy:(Math.random()-0.5)*0.3,a:Math.random()*0.5+0.1});
   function draw(){
     ctx.clearRect(0,0,c.width,c.height);
-    p.forEach(q=>{ctx.beginPath();ctx.arc(q.x,q.y,q.r,0,Math.PI*2);ctx.fillStyle=`rgba(255,215,0,${q.a})`;ctx.fill();q.x+=q.dx;q.y+=q.dy;if(q.x<0||q.x>c.width)q.dx*=-1;if(q.y<0||q.y>c.height)q.dy*=-1;});
+    p.forEach(q=>{ctx.beginPath();ctx.arc(q.x,q.y,q.r,0,Math.PI*2);ctx.fillStyle=`rgba(180,130,0,${q.a*0.4})`;ctx.fill();q.x+=q.dx;q.y+=q.dy;if(q.x<0||q.x>c.width)q.dx*=-1;if(q.y<0||q.y>c.height)q.dy*=-1;});
     requestAnimationFrame(draw);
   }
   draw();
@@ -478,15 +559,27 @@ function setLoading(v){
 
 function renderQuestion(){
   const q=Q.questions[Q.current];if(!q)return;
-  document.getElementById('q-num').textContent=`QUESTION ${String(Q.current+1).padStart(2,'0')}`;
+  document.getElementById('q-num').textContent='QUESTION '+String(Q.current+1).padStart(2,'0');
   document.getElementById('q-text').textContent=q.question;
   document.getElementById('explanation-box').classList.remove('show');
   document.getElementById('btn-next').disabled=true;
+
+  // PASSAGE — Reading Comprehension के लिए
+  const passageBox=document.getElementById('passage-box');
+  const passageText=document.getElementById('passage-text');
+  if(q.passage && q.passage.trim().length>10){
+    passageText.textContent=q.passage;
+    passageBox.classList.add('show');
+  } else {
+    passageBox.classList.remove('show');
+    passageText.textContent='';
+  }
+
   updateProgress();
   const og=document.getElementById('options-grid');og.innerHTML='';
   ['A','B','C','D'].forEach((k,i)=>{
     const b=document.createElement('button');b.className='option-btn';
-    b.innerHTML=`<span class="option-key">${k}</span><span>${q.options[i]}</span>`;
+    b.innerHTML='<span class="option-key">'+k+'</span><span>'+q.options[i]+'</span>';
     b.onclick=()=>selectAnswer(i,b);og.appendChild(b);
   });
 }
@@ -586,7 +679,130 @@ function switchTab(tabId,idx){
   document.querySelectorAll('.dash-tab').forEach((t,i)=>t.classList.toggle('active',i===idx));
   document.querySelectorAll('.dash-panel').forEach(p=>p.classList.toggle('active',p.id===tabId));
   if(tabId==='tab-results') loadDashboard();
+  if(tabId==='tab-dailytest') loadCurrentDailyTest();
 }
+
+// ===== DAILY TEST FUNCTIONS =====
+
+function publishDailyTest(){
+  const title    = document.getElementById('dt-title').value.trim();
+  const subject  = document.getElementById('dt-subject').value.trim();
+  const exam     = document.getElementById('dt-exam').value;
+  const time     = document.getElementById('dt-time').value;
+  const qjson    = document.getElementById('dt-questions-json').value.trim();
+  const status   = document.getElementById('dt-status');
+
+  if(!title){showToast('⚠ Test का नाम लिखो!');return;}
+  if(!qjson){showToast('⚠ Questions JSON paste करो!');return;}
+
+  let questions=[];
+  try{
+    questions=JSON.parse(qjson);
+    if(!Array.isArray(questions)||questions.length===0) throw new Error('Empty');
+  }catch(e){
+    status.style.display='block';status.style.background='rgba(192,57,43,0.1)';status.style.color='var(--red)';
+    status.textContent='❌ JSON format गलत है। PDF से Generate के बाद questions copy करो।';
+    return;
+  }
+
+  const test={
+    title,subject,exam,
+    timeLimit:parseInt(time),
+    questions,
+    date: new Date().toLocaleDateString('hi-IN'),
+    publishedAt: Date.now()
+  };
+
+  localStorage.setItem('science_junction_daily_test', JSON.stringify(test));
+
+  status.style.display='block';status.style.background='rgba(26,122,74,0.1)';status.style.color='var(--green)';
+  status.textContent='✅ Test publish हो गया! Students को Login screen पर दिखेगा।';
+
+  loadCurrentDailyTest();
+  loadStudentDailyTest(); // student screen update
+  showToast('✅ Daily Test published!');
+}
+
+function clearDailyTest(){
+  if(!confirm('क्या आप current Daily Test हटाना चाहते हैं?')) return;
+  localStorage.removeItem('science_junction_daily_test');
+  loadCurrentDailyTest();
+  loadStudentDailyTest();
+  showToast('🗑 Daily Test हटा दिया।');
+}
+
+function loadCurrentDailyTest(){
+  const wrap=document.getElementById('dt-current-wrap');
+  if(!wrap) return;
+  const raw=localStorage.getItem('science_junction_daily_test');
+  if(!raw){
+    wrap.innerHTML='<div class="dt-no-test">📭 अभी कोई Active Test नहीं है।</div>';
+    return;
+  }
+  try{
+    const t=JSON.parse(raw);
+    wrap.innerHTML=`
+      <div class="section-title">✅ Active Test</div>
+      <div class="daily-test-banner">
+        <div class="dt-badge">ACTIVE TEST</div>
+        <div class="dt-title">${t.title}</div>
+        <div class="dt-meta">
+          <span>📚 ${t.subject||'-'}</span>
+          <span>👥 ${t.exam}</span>
+          <span>⏱ ${t.timeLimit} min</span>
+          <span>❓ ${t.questions.length} questions</span>
+          <span>📅 ${t.date}</span>
+        </div>
+      </div>`;
+  }catch(e){wrap.innerHTML='';}
+}
+
+function loadStudentDailyTest(){
+  const wrap=document.getElementById('daily-test-student-wrap');
+  if(!wrap) return;
+  const raw=localStorage.getItem('science_junction_daily_test');
+  if(!raw){ wrap.innerHTML=''; return; }
+  try{
+    const t=JSON.parse(raw);
+    // सिर्फ आज का test दिखाओ (24 hours)
+    if(Date.now()-t.publishedAt > 24*60*60*1000){ wrap.innerHTML=''; return; }
+    wrap.innerHTML=`
+      <div class="daily-test-banner" style="margin-top:0;margin-bottom:4px;">
+        <div class="dt-badge">📅 आज का TEST</div>
+        <button class="dt-start-btn" onclick="startDailyTest()">▶ TEST दो</button>
+        <div class="dt-title">${t.title}</div>
+        <div class="dt-meta">
+          <span>📚 ${t.subject||'-'}</span>
+          <span>👥 ${t.exam}</span>
+          <span>⏱ ${t.timeLimit} min</span>
+          <span>❓ ${t.questions.length} Questions</span>
+        </div>
+      </div>`;
+  }catch(e){wrap.innerHTML='';}
+}
+
+function startDailyTest(){
+  const name=document.getElementById('studentName').value.trim();
+  if(!name){showToast('⚠ पहले अपना नाम लिखो!');document.getElementById('studentName').focus();return;}
+  const raw=localStorage.getItem('science_junction_daily_test');
+  if(!raw){showToast('❌ कोई Daily Test available नहीं है।');return;}
+  const t=JSON.parse(raw);
+  Q.questions=t.questions;
+  Q.name=name;
+  Q.exam=t.exam;
+  Q.chapter=t.subject||t.title;
+  Q.diff='Mix';
+  Q.lang=document.getElementById('language').value;
+  Q.qcount=t.questions.length;
+  Q.current=0;Q.answers=[];Q.score=0;Q.skipped=0;
+  Q.totalTime=t.timeLimit*60;
+  showScreen('screen-quiz');
+  document.getElementById('quiz-chapter-tag').textContent='📅 '+t.title;
+  updateProgress();renderQuestion();startTimer();
+}
+
+// Page load पर student test check करो
+loadStudentDailyTest();
 
 async function loadDashboard(){
   const ef=document.getElementById('dash-filter-exam').value,df=document.getElementById('dash-filter-diff').value;
@@ -700,44 +916,104 @@ async function processPDF(file){
 
 async function generateFromPDF(){
   if(!pdfText){showToast('⚠ पहले PDF upload करो या topic type करो!');return;}
-  const qcount=document.getElementById('pdf-qcount').value;
-  const diff=document.getElementById('pdf-difficulty').value;
-  const language=document.getElementById('pdf-language').value;
-  const btn=document.getElementById('pdf-generate-btn');
-  btn.disabled=true;btn.textContent='🤖 AI Questions बना रहा है...';
-  const status=document.getElementById('pdf-status');
-  status.style.display='block';status.style.color='var(--gold)';
-  status.textContent='⏳ Groq AI questions बना रहा है... (15-25 sec लग सकते हैं)';
+  const qcount = parseInt(document.getElementById('pdf-qcount').value);
+  const diff   = document.getElementById('pdf-difficulty').value;
+  const lang   = document.getElementById('pdf-language').value;
+  const btn    = document.getElementById('pdf-generate-btn');
+  const status = document.getElementById('pdf-status');
+
+  btn.disabled=true; btn.textContent='🤖 Questions बन रहे हैं...';
+  status.style.display='block'; status.style.color='var(--gold)';
+  status.textContent='⏳ Groq AI directly questions बना रहा है... (10-20 sec)';
+
   try{
-    // URL में सिर्फ पहले 300 chars भेजो — chapter की तरह
-    // encodeURIComponent से सभी special chars safe हो जाते हैं
-    const topic = pdfText.substring(0,300).replace(/\s+/g,' ').trim();
+    // ✅ DIRECT GROQ API CALL — Apps Script bypass
+    // Groq CORS support करती है, browser से directly call होती है
+    const langInst = lang==='English'
+      ? 'Write ALL questions, options and explanations in ENGLISH only.'
+      : 'सभी प्रश्न, विकल्प और explanation हिंदी में लिखें।';
 
-    const url = APPS_SCRIPT_URL
-      + '?action=getQuestions'
-      + '&chapter=' + encodeURIComponent(topic)
-      + '&count=' + encodeURIComponent(qcount)
-      + '&difficulty=' + encodeURIComponent(diff)
-      + '&language=' + encodeURIComponent(language)
-      + '&exam=Custom'
-      + '&t=' + Date.now();
+    const diffInst = diff==='Easy'?'Easy/basic level.'
+      :diff==='Hard'?'Advanced/hard level.'
+      :diff==='Moderate'?'Medium difficulty.'
+      :'Mix of Easy, Moderate and Hard.';
 
-    const res=await fetch(url);
-    const data=await res.json();
-    if(data.questions&&data.questions.length>0){
-      generatedQuestions=data.questions;
-      status.style.color='var(--green)';
-      status.textContent='✅ '+data.questions.length+' questions successfully generate हुए!';
-      showGeneratedQuestions(data.questions);
-    }else{
-      status.style.color='var(--red)';
-      status.textContent='❌ Questions generate नहीं हुए। Error: '+(data.error||'Unknown');
+    const seed = Math.floor(Math.random()*99999);
+    const topic = pdfText.substring(0,2500);
+
+    const prompt = langInst + '
+
+'
+      + 'नीचे दिए content पर exactly ' + qcount + ' unique MCQ questions बनाओ.
+'
+      + 'Difficulty: ' + diff + ' — ' + diffInst + '
+'
+      + 'Seed: ' + seed + '
+
+'
+      + 'CONTENT:
+' + topic + '
+
+'
+      + 'RULES: Return ONLY raw JSON array. Start with [ end with ].
+'
+      + 'Format: [{"question":"...","options":["a","b","c","d"],"correctIndex":0,"explanation":"..."}]';
+
+    const res = await fetch(GROQ_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + GROQ_KEY
+      },
+      body: JSON.stringify({
+        model: GROQ_MODEL,
+        messages: [
+          {role:'system', content:'You are an MCQ generator. Return ONLY valid JSON array. No markdown, no backticks.'},
+          {role:'user', content: prompt}
+        ],
+        temperature: 0.8,
+        max_tokens: 4000
+      })
+    });
+
+    if(!res.ok){
+      const err=await res.text();
+      throw new Error('Groq API error: '+res.status+' — '+err.substring(0,100));
     }
+
+    const data = await res.json();
+    let text = data.choices[0].message.content.trim();
+    text = text.replace(/```json/gi,'').replace(/```/g,'').trim();
+    const match = text.match(/\[[\s\S]*\]/);
+    if(match) text = match[0];
+
+    const questions = JSON.parse(text);
+    if(!Array.isArray(questions)||questions.length===0) throw new Error('No questions returned');
+
+    // Normalize
+    const valid = questions
+      .filter(q=>q.question&&Array.isArray(q.options)&&q.options.length===4)
+      .map(q=>({
+        question: q.question,
+        options: q.options,
+        correctIndex: parseInt(q.correctIndex!==undefined?q.correctIndex:(q.correct||0)),
+        explanation: q.explanation||''
+      }));
+
+    if(valid.length===0) throw new Error('Valid questions नहीं मिले');
+
+    generatedQuestions = valid;
+    status.style.color='var(--green)';
+    status.textContent='✅ '+valid.length+' questions successfully generate हुए!';
+    showGeneratedQuestions(valid);
+
   }catch(err){
     status.style.color='var(--red)';
-    status.textContent='❌ Error: '+err.message;
+    status.innerHTML='❌ Error: '+err.message
+      +'<br><small style="color:var(--text2)">Console में details देखो (F12)</small>';
+    console.error('generateFromPDF error:', err);
   }
-  btn.disabled=false;btn.textContent='🤖 AI से Questions Generate करो';
+  btn.disabled=false; btn.textContent='🤖 AI से Questions Generate करो';
 }
 
 function showGeneratedQuestions(questions){
