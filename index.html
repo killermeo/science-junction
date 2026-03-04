@@ -665,6 +665,121 @@
   }
   body.dark-mode .dt-card { box-shadow: 0 4px 24px rgba(0,0,0,0.4); }
 
+
+  /* ===== STUDENT LOGIN SCREEN ===== */
+  .student-login-screen { max-width: 420px; margin: 0 auto; padding-top: 40px; }
+  .student-login-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 20px; padding: 32px 28px; margin: 20px 0;
+    position: relative; overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+  }
+  .student-login-card::before {
+    content:''; position:absolute; top:0; left:0; right:0; height:3px;
+    background: linear-gradient(90deg, var(--gold2), var(--gold), var(--gold2));
+  }
+  .student-login-title {
+    font-family:'Orbitron',sans-serif; font-size:14px; color:var(--gold);
+    letter-spacing:2px; margin-bottom:6px; text-transform:uppercase;
+  }
+  .student-login-sub { font-size:13px; color:var(--text2); margin-bottom:24px; }
+  .student-id-display {
+    background: var(--bg3); border:1px solid var(--border); border-radius:10px;
+    padding:12px 16px; font-family:'Orbitron',sans-serif; font-size:13px;
+    color:var(--gold); letter-spacing:2px; margin-bottom:8px;
+    display:flex; align-items:center; justify-content:space-between;
+  }
+
+  /* Student Management in Teacher Dashboard */
+  .student-mgmt-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px;
+  }
+  .student-mgmt-card {
+    background: var(--bg2); border:1px solid var(--border); border-radius:12px;
+    padding:14px; position:relative;
+  }
+  .student-mgmt-name {
+    font-family:'Orbitron',sans-serif; font-size:11px; color:var(--gold);
+    letter-spacing:1px; margin-bottom:4px;
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  }
+  .student-mgmt-id {
+    font-size:12px; color:var(--text2); margin-bottom:2px;
+  }
+  .student-mgmt-pwd {
+    font-size:12px; color:var(--text); font-weight:600;
+  }
+  .student-mgmt-del {
+    position:absolute; top:10px; right:10px;
+    background:rgba(192,57,43,0.1); border:1px solid var(--red);
+    border-radius:6px; color:var(--red); font-size:11px; padding:3px 8px;
+    cursor:pointer; transition:background 0.2s;
+  }
+  .student-mgmt-del:hover { background:rgba(192,57,43,0.25); }
+  .student-mgmt-status {
+    display:inline-block; padding:2px 8px; border-radius:10px;
+    font-size:10px; font-weight:700; letter-spacing:1px; margin-top:4px;
+  }
+  .status-active { background:rgba(26,122,74,0.15); color:var(--green); }
+  .status-unused { background:rgba(200,150,12,0.15); color:var(--gold); }
+  .btn-generate-student {
+    width:100%; padding:13px; background:linear-gradient(135deg,#1A7A4A,#22a85e);
+    border:none; border-radius:10px; color:#fff;
+    font-family:'Orbitron',sans-serif; font-size:12px; font-weight:700;
+    letter-spacing:2px; cursor:pointer; margin-bottom:16px;
+    transition:transform 0.15s, box-shadow 0.15s;
+  }
+  .btn-generate-student:hover { transform:translateY(-1px); box-shadow:0 6px 20px rgba(26,122,74,0.3); }
+
+  /* PDF Publish Modal */
+  .modal-overlay {
+    display:none; position:fixed; inset:0;
+    background:rgba(0,0,0,0.7); z-index:9500;
+    align-items:center; justify-content:center;
+  }
+  .modal-overlay.show { display:flex; }
+  .modal-card {
+    background:var(--card); border:2px solid var(--gold);
+    border-radius:20px; padding:28px; width:90%; max-width:400px;
+    position:relative; box-shadow:0 12px 48px rgba(0,0,0,0.3);
+  }
+  .modal-title {
+    font-family:'Orbitron',sans-serif; font-size:13px; color:var(--gold);
+    letter-spacing:2px; margin-bottom:20px; text-transform:uppercase;
+  }
+  .modal-close {
+    position:absolute; top:14px; right:16px; font-size:20px;
+    cursor:pointer; color:var(--text2); background:none; border:none;
+    transition:color 0.2s;
+  }
+  .modal-close:hover { color:var(--red); }
+  .modal-form-group { margin-bottom:14px; }
+  .modal-form-group label {
+    font-size:11px; color:var(--text2); letter-spacing:1px;
+    text-transform:uppercase; display:block; margin-bottom:5px;
+  }
+  .modal-form-group input, .modal-form-group select {
+    width:100%; background:var(--bg3); border:1px solid var(--border);
+    border-radius:8px; color:var(--text); font-family:'Rajdhani',sans-serif;
+    font-size:15px; padding:10px 14px; outline:none;
+    transition:border-color 0.2s;
+  }
+  .modal-form-group input:focus, .modal-form-group select:focus {
+    border-color:var(--gold);
+  }
+  .btn-publish-modal {
+    width:100%; padding:13px; margin-top:8px;
+    background:linear-gradient(135deg,#FFD700,#FFA500);
+    border:none; border-radius:10px; color:#000;
+    font-family:'Orbitron',sans-serif; font-size:13px; font-weight:900;
+    letter-spacing:2px; cursor:pointer;
+    transition:transform 0.15s, box-shadow 0.15s;
+  }
+  .btn-publish-modal:hover { transform:translateY(-2px); box-shadow:0 6px 20px rgba(255,165,0,0.4); }
+
+  body.dark-mode .student-mgmt-card { background:#1C1C1C; }
+  body.dark-mode .modal-card { background:#1C1C1C; border-color:var(--gold); }
+
 </style>
 </head>
 <body>
@@ -774,8 +889,8 @@
       <div class="form-group">
         <label>🌐 Language</label>
         <select id="language">
-          <option value="Hindi">हिंदी</option>
-          <option value="English">English</option>
+          <option value="Hindi">🇮🇳 हिंदी</option>
+          <option value="English">🇬🇧 English</option>
         </select>
       </div>
     </div>
@@ -845,6 +960,9 @@
   <!-- Daily test & footer links -->
   <div id="daily-test-student-wrap"></div>
 
+  <div id="student-login-btn" style="display:none;text-align:center;margin:8px 0;">
+    <button class="btn-outline" onclick="showScreen('screen-student-login')" style="width:100%;">🔐 Student ID se Login karo</button>
+  </div>
   <div class="login-footer">
     <span class="footer-link" onclick="showScreen('screen-teacher-login')">🔒 Teacher Dashboard</span>
     <span class="footer-sep">|</span>
@@ -852,6 +970,70 @@
   </div>
 
 </div>
+
+<!-- STUDENT LOGIN SCREEN -->
+<div class="screen" id="screen-student-login">
+  <div class="student-login-screen">
+    <div style="text-align:center;padding:30px 0 10px;">
+      <div style="font-family:'Orbitron',sans-serif;font-size:22px;font-weight:900;background:linear-gradient(135deg,#FFD700,#FFA500);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:3px;">SCIENCE JUNCTION</div>
+      <div style="color:var(--text2);font-size:12px;letter-spacing:3px;margin-top:4px;">STUDENT LOGIN</div>
+    </div>
+    <div class="student-login-card">
+      <div class="student-login-title">🔐 Student Login</div>
+      <div class="student-login-sub">Teacher se apna ID aur Password lo</div>
+      <div class="form-group" style="margin-bottom:12px;">
+        <label>👤 Student ID</label>
+        <input type="text" id="sl-id" placeholder="e.g. SJ-2024-001" autocomplete="off" style="text-transform:uppercase;letter-spacing:2px;">
+      </div>
+      <div class="form-group" style="margin-bottom:20px;">
+        <label>🔑 Password</label>
+        <input type="password" id="sl-pwd" placeholder="Password enter karo">
+      </div>
+      <button class="btn-gold" onclick="studentLogin()">🚀 LOGIN & QUIZ SHURU KARO</button>
+      <div id="sl-error" style="display:none;margin-top:12px;padding:10px;background:rgba(192,57,43,0.1);border:1px solid var(--red);border-radius:8px;font-size:13px;color:var(--red);text-align:center;"></div>
+    </div>
+    <div style="text-align:center;margin-top:10px;">
+      <span style="font-size:13px;color:var(--text2);cursor:pointer;text-decoration:underline;" onclick="showScreen('screen-login')">← Wapas Home par jao</span>
+    </div>
+  </div>
+</div>
+
+<!-- PDF PUBLISH MODAL -->
+<div class="modal-overlay" id="pdf-publish-modal">
+  <div class="modal-card">
+    <button class="modal-close" onclick="closePdfPublishModal()">✕</button>
+    <div class="modal-title">📤 PDF Quiz Publish karo</div>
+    <div class="modal-form-group">
+      <label>📋 Exam select karo</label>
+      <select id="modal-exam">
+        <option value="JEE">JEE</option>
+        <option value="NEET">NEET</option>
+        <option value="NDA">NDA</option>
+        <option value="CLAT">CLAT</option>
+        <option value="Class 9">Class 9</option>
+        <option value="Class 10">Class 10</option>
+        <option value="Class 11">Class 11</option>
+        <option value="Class 12">Class 12</option>
+      </select>
+    </div>
+    <div class="modal-form-group">
+      <label>📝 Test ka naam</label>
+      <input type="text" id="modal-test-title" placeholder="e.g. Physics Chapter Test">
+    </div>
+    <div class="modal-form-group">
+      <label>⏱ Time limit (minutes)</label>
+      <select id="modal-time">
+        <option value="15">15 minutes</option>
+        <option value="20">20 minutes</option>
+        <option value="30" selected>30 minutes</option>
+        <option value="45">45 minutes</option>
+        <option value="60">60 minutes</option>
+      </select>
+    </div>
+    <button class="btn-publish-modal" onclick="publishPdfAsDaily()">📅 Daily Test mein Publish karo</button>
+  </div>
+</div>
+
 <!-- QUIZ -->
 <div class="screen" id="screen-quiz">
   <div class="quiz-header">
@@ -945,6 +1127,7 @@
     <button class="dash-tab" onclick="switchTab('tab-pdf',1)">&#128196; PDF Quiz</button>
     <button class="dash-tab" onclick="switchTab('tab-dailytest',2)">&#128197; Daily Test</button>
     <button class="dash-tab" onclick="switchTab('tab-history',3)">&#128100; Student History</button>
+    <button class="dash-tab" onclick="switchTab('tab-students',4)">&#128273; Students</button>
   </div>
 
   <!-- Results Tab -->
@@ -1010,6 +1193,7 @@
         <button class="btn-whatsapp" onclick="shareGeneratedQuiz()">&#128242; WhatsApp Share</button>
         <button class="btn-gold" style="font-size:13px;" onclick="useGeneratedQuiz()">&#9654; Isi se Quiz do</button>
       </div>
+      <button class="btn-gold" style="background:linear-gradient(135deg,#1A7A4A,#22a85e);margin-bottom:8px;" onclick="openPdfPublishModal()">📅 Daily Test mein Publish karo</button>
     </div>
   </div>
 
@@ -1106,6 +1290,41 @@
 
     <div id="dt-current-wrap" style="margin-top:8px;"></div>
     <button class="btn-outline" onclick="clearDailyTest()" style="width:100%;margin-top:8px;margin-bottom:30px;color:var(--red);border-color:var(--red);">&#128465; Current Test hatao</button>
+  </div>
+
+
+  <!-- STUDENT MANAGEMENT PANEL -->
+  <div class="dash-panel" id="tab-students">
+    <div class="section-title">👥 Student ID & Password Management</div>
+    <div style="background:rgba(200,150,12,0.08);border:1px solid rgba(200,150,12,0.2);border-radius:10px;padding:12px 14px;margin-bottom:16px;font-size:13px;color:var(--text2);">
+      ⚡ Har student ko ek unique ID aur Password milega. Woh isi se login karke quiz de sakta hai.
+    </div>
+    <div class="form-group" style="margin-bottom:12px;">
+      <label>👤 Student ka Naam</label>
+      <input type="text" id="new-student-name" placeholder="Student ka poora naam likho...">
+    </div>
+    <button class="btn-generate-student" onclick="generateStudentCredentials()">⚡ ID & Password Generate karo</button>
+
+    <div id="new-cred-display" style="display:none;background:rgba(26,122,74,0.08);border:1px solid var(--green);border-radius:12px;padding:16px;margin-bottom:16px;">
+      <div style="font-size:12px;color:var(--green);letter-spacing:1px;margin-bottom:10px;font-weight:700;">✅ NAYA STUDENT REGISTERED</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <div>
+          <div style="font-size:11px;color:var(--text2);">STUDENT ID</div>
+          <div id="cred-id" style="font-family:'Orbitron',sans-serif;font-size:14px;color:var(--gold);letter-spacing:2px;margin-top:4px;"></div>
+        </div>
+        <div>
+          <div style="font-size:11px;color:var(--text2);">PASSWORD</div>
+          <div id="cred-pwd" style="font-family:'Orbitron',sans-serif;font-size:14px;color:var(--gold);letter-spacing:2px;margin-top:4px;"></div>
+        </div>
+      </div>
+      <div style="font-size:11px;color:var(--text2);margin-top:10px;">⚠️ Yeh credentials student ko de do. Screenshot le lo ya note kar lo.</div>
+    </div>
+
+    <div style="font-family:'Orbitron',sans-serif;font-size:11px;color:var(--text2);letter-spacing:2px;margin-bottom:10px;">REGISTERED STUDENTS</div>
+    <div class="student-mgmt-grid" id="student-mgmt-list">
+      <div style="color:var(--text2);font-size:13px;grid-column:1/-1;padding:10px 0;">Abhi koi student registered nahi hai.</div>
+    </div>
+    <button class="clear-all-btn" onclick="clearAllStudents()" style="margin-top:8px;">🗑️ SABHI STUDENTS DELETE KARO</button>
   </div>
 
   <!-- STUDENT HISTORY PANEL -->
@@ -1701,6 +1920,7 @@ function switchTab(tabId, idx){
   if(tabId==='tab-results') loadDashboard();
   if(tabId==='tab-dailytest'){ loadCurrentDailyTest(); dtUpdateChapters(); }
   if(tabId==='tab-history'){ renderStudentHistory(); }
+  if(tabId==='tab-students'){ renderStudentMgmt(); }
 }
 
 // ===== DAILY TEST =====
@@ -2516,6 +2736,221 @@ function clearAllHistory(){
   showToast('✅ Sabki history clear ho gayi!');
 }
 
+
+
+// ===================================================
+// UPDATE 1: Student Login System
+// ===================================================
+var STUDENTS_KEY = 'sj_students_db';
+var loggedInStudent = null;
+
+function getAllStudentDB(){
+  try { return JSON.parse(localStorage.getItem(STUDENTS_KEY) || '[]'); } catch(e){ return []; }
+}
+function saveAllStudentDB(arr){
+  localStorage.setItem(STUDENTS_KEY, JSON.stringify(arr));
+}
+
+function generateStudentCredentials(){
+  var name = document.getElementById('new-student-name').value.trim();
+  if(!name){ showToast('Student ka naam likho!'); return; }
+
+  var students = getAllStudentDB();
+
+  // Check duplicate name
+  var exists = students.filter(function(s){ return s.name.toLowerCase() === name.toLowerCase(); });
+  if(exists.length > 0){ showToast('Is naam ka student pehle se registered hai!'); return; }
+
+  // Generate unique ID
+  var id = 'SJ-' + new Date().getFullYear() + '-' + String(students.length + 1).padStart(3,'0');
+
+  // Generate random password: 2 words + 2 digits
+  var words = ['Star','Moon','Fire','Wave','Rock','Gold','Sky','Sun','Peak','Lion','Eagle','Storm'];
+  var w1 = words[Math.floor(Math.random()*words.length)];
+  var w2 = Math.floor(10 + Math.random()*90);
+  var pwd = w1 + w2;
+
+  var student = {
+    id: id,
+    name: name,
+    password: pwd,
+    createdAt: Date.now(),
+    quizCount: 0,
+    lastLogin: null,
+    active: true
+  };
+
+  students.push(student);
+  saveAllStudentDB(students);
+
+  // Show credentials
+  document.getElementById('cred-id').textContent = id;
+  document.getElementById('cred-pwd').textContent = pwd;
+  document.getElementById('new-cred-display').style.display = 'block';
+  document.getElementById('new-student-name').value = '';
+
+  renderStudentMgmt();
+  showToast('✅ ' + name + ' registered! ID: ' + id);
+}
+
+function renderStudentMgmt(){
+  var students = getAllStudentDB();
+  var list = document.getElementById('student-mgmt-list');
+  if(!list) return;
+
+  if(students.length === 0){
+    list.innerHTML = '<div style="color:var(--text2);font-size:13px;grid-column:1/-1;padding:10px 0;">Abhi koi student registered nahi hai.</div>';
+    return;
+  }
+
+  var html = '';
+  for(var i=0; i<students.length; i++){
+    var s = students[i];
+    var statusClass = s.lastLogin ? 'status-active' : 'status-unused';
+    var statusText = s.lastLogin ? 'Active' : 'Unused';
+    html += '<div class="student-mgmt-card">'
+      + '<button class="student-mgmt-del" onclick="deleteStudent(\'' + s.id + '\')">✕</button>'
+      + '<div class="student-mgmt-name">👤 ' + s.name + '</div>'
+      + '<div class="student-mgmt-id">ID: <b>' + s.id + '</b></div>'
+      + '<div class="student-mgmt-pwd">PWD: ' + s.password + '</div>'
+      + '<div class="student-mgmt-status ' + statusClass + '">' + statusText + '</div>'
+      + '</div>';
+  }
+  list.innerHTML = html;
+}
+
+function deleteStudent(id){
+  if(!confirm('Is student ko delete karna chahte ho?')) return;
+  var students = getAllStudentDB().filter(function(s){ return s.id !== id; });
+  saveAllStudentDB(students);
+  renderStudentMgmt();
+  showToast('Student delete ho gaya.');
+}
+
+function clearAllStudents(){
+  if(!confirm('Sabhi students delete karne hain? Yeh undo nahi hoga!')) return;
+  localStorage.removeItem(STUDENTS_KEY);
+  renderStudentMgmt();
+  document.getElementById('new-cred-display').style.display = 'none';
+  showToast('Sabhi students delete ho gaye.');
+}
+
+// Student Login Verify
+function studentLogin(){
+  var inputId = document.getElementById('sl-id').value.trim().toUpperCase();
+  var inputPwd = document.getElementById('sl-pwd').value.trim();
+  var errDiv = document.getElementById('sl-error');
+
+  if(!inputId || !inputPwd){
+    errDiv.textContent = 'ID aur Password dono likho!';
+    errDiv.style.display = 'block'; return;
+  }
+
+  var students = getAllStudentDB();
+  var found = null;
+  for(var i=0; i<students.length; i++){
+    if(students[i].id === inputId && students[i].password === inputPwd){
+      found = students[i]; break;
+    }
+  }
+
+  if(!found){
+    errDiv.textContent = '❌ ID ya Password galat hai. Teacher se dobara check karo.';
+    errDiv.style.display = 'block'; return;
+  }
+
+  // Update last login
+  found.lastLogin = Date.now();
+  saveAllStudentDB(students);
+
+  // Set logged in student
+  loggedInStudent = found;
+  errDiv.style.display = 'none';
+
+  // Pre-fill name on home screen
+  document.getElementById('studentName').value = found.name;
+
+  showToast('✅ Welcome ' + found.name + '!');
+  showScreen('screen-login');
+}
+
+// Override startQuiz to check student login
+var _origStartQuiz = startQuiz;
+function startQuiz(){
+  // Check if any students are registered
+  var students = getAllStudentDB();
+  if(students.length > 0 && !loggedInStudent){
+    showToast('Pehle apni Student ID se login karo!');
+    showScreen('screen-student-login');
+    return;
+  }
+  _origStartQuiz();
+}
+
+// Show student login button on home page
+function checkStudentLoginRequired(){
+  var students = getAllStudentDB();
+  var btn = document.getElementById('student-login-btn');
+  if(!btn) return;
+  if(students.length > 0 && !loggedInStudent){
+    btn.style.display = 'block';
+  } else {
+    btn.style.display = 'none';
+  }
+}
+
+// ===================================================
+// UPDATE 3: PDF → Publish as Daily Test
+// ===================================================
+function openPdfPublishModal(){
+  if(!generatedQuestions || generatedQuestions.length === 0){
+    showToast('Pehle questions generate karo!'); return;
+  }
+  // Auto-fill title from pdf status
+  var statusEl = document.getElementById('pdf-status');
+  document.getElementById('modal-test-title').value = 'PDF Quiz - ' + new Date().toLocaleDateString('hi-IN');
+  document.getElementById('pdf-publish-modal').classList.add('show');
+}
+
+function closePdfPublishModal(){
+  document.getElementById('pdf-publish-modal').classList.remove('show');
+}
+
+function publishPdfAsDaily(){
+  var exam = document.getElementById('modal-exam').value;
+  var title = document.getElementById('modal-test-title').value.trim();
+  var time = parseInt(document.getElementById('modal-time').value);
+
+  if(!title){ showToast('Test ka naam likho!'); return; }
+  if(!generatedQuestions || generatedQuestions.length === 0){
+    showToast('Koi questions nahi hain!'); return;
+  }
+
+  var test = {
+    id: 'dt_' + Date.now(),
+    title: title,
+    subject: 'PDF Based',
+    exam: exam,
+    timeLimit: time,
+    questions: generatedQuestions,
+    date: new Date().toLocaleDateString('hi-IN'),
+    publishedAt: Date.now()
+  };
+
+  // Save to daily tests array
+  var existing = [];
+  try { existing = JSON.parse(localStorage.getItem('sj_daily_tests') || '[]'); } catch(e){ existing=[]; }
+  existing = existing.filter(function(t){ return Date.now() - t.publishedAt < 24*60*60*1000; });
+  existing.push(test);
+  localStorage.setItem('sj_daily_tests', JSON.stringify(existing));
+  localStorage.setItem('science_junction_daily_test', JSON.stringify(test));
+
+  closePdfPublishModal();
+  loadStudentDailyTest();
+  showToast('✅ PDF Quiz "' + title + '" Daily Test mein publish ho gaya! (' + exam + ')');
+}
+
+// Load student mgmt when tab opens
 
 </script>
 </body>
