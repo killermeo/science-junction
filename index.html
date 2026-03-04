@@ -45,6 +45,8 @@
   .form-group input,.form-group select,.form-group textarea{background:var(--bg3);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'Rajdhani',sans-serif;font-size:15px;font-weight:500;padding:10px 14px;outline:none;transition:border-color 0.2s,box-shadow 0.2s;-webkit-appearance:none;}
   .form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--gold);box-shadow:0 0 0 2px rgba(255,215,0,0.15);}
   .form-group select option{background:#FFFFFF;color:#1A1200;}
+  .form-group select optgroup{background:#FFF8E8;color:#A07800;font-weight:700;font-style:normal;}
+  .form-group select optgroup option{color:#1A1200;font-weight:500;}
   .form-group textarea{resize:vertical;min-height:80px;}
   .btn-gold{width:100%;padding:14px;background:linear-gradient(135deg,#FFD700,#FFA500);border:none;border-radius:10px;color:#000;font-family:'Orbitron',sans-serif;font-size:14px;font-weight:900;letter-spacing:3px;cursor:pointer;position:relative;overflow:hidden;transition:transform 0.15s,box-shadow 0.15s;margin-top:8px;}
   .btn-gold::after{content:'';position:absolute;top:-50%;left:-60%;width:40%;height:200%;background:rgba(255,255,255,0.3);transform:skewX(-20deg);transition:left 0.4s;}
@@ -57,7 +59,6 @@
   .btn-ghost:hover{border-color:var(--text2);color:var(--text);}
   .teacher-link{text-align:center;margin-top:14px;font-size:13px;color:var(--text2);}
   .teacher-link span{color:var(--gold);cursor:pointer;text-decoration:underline;font-weight:600;}
-  /* QUIZ */
   .quiz-header{display:flex;align-items:center;justify-content:space-between;padding:16px 0 10px;gap:10px;}
   .chapter-tag{background:rgba(200,150,12,0.1);border:1px solid rgba(200,150,12,0.3);border-radius:20px;padding:5px 14px;font-size:12px;color:var(--gold);font-weight:600;letter-spacing:1px;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
   .timer-wrap{position:relative;width:60px;height:60px;flex-shrink:0;}
@@ -92,38 +93,34 @@
   .explanation-box.show{display:block;}
   .explanation-box strong{color:var(--gold);}
   .quiz-actions{display:flex;gap:10px;justify-content:space-between;margin-top:10px;padding-bottom:20px;}
-  /* RESULT */
   .result-hero{text-align:center;padding:30px 0 20px;}
   .trophy-icon{font-size:60px;animation:trophy-bounce 1s ease infinite alternate;display:inline-block;}
   @keyframes trophy-bounce{from{transform:translateY(0);}to{transform:translateY(-10px);}}
   .score-ring-wrap{position:relative;width:140px;margin:20px auto;}
   .score-ring-svg{transform:rotate(-90deg);}
-  .score-ring-bg{fill:none;stroke:#E8DECE;stroke-width:8;}
-  .score-ring-fill{fill:none;stroke:url(#scoreGradient);stroke-width:8;stroke-linecap:round;transition:stroke-dashoffset 1.5s cubic-bezier(0.4,0,0.2,1);}
+  .score-ring-bg{fill:none;stroke:#E0D8C8;stroke-width:8;}
+  .score-ring-fill{fill:none;stroke:url(#scoreGradient);stroke-width:8;stroke-linecap:round;transition:stroke-dashoffset 1.5s ease;}
   .score-ring-text{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;}
-  .score-pct{font-family:'Orbitron',sans-serif;font-size:28px;font-weight:900;color:var(--gold);display:block;line-height:1;}
-  .score-label{font-size:11px;color:var(--text2);letter-spacing:2px;}
-  .stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:20px 0;}
+  .score-pct{display:block;font-family:'Orbitron',sans-serif;font-size:22px;font-weight:900;color:var(--gold);}
+  .score-label{font-size:10px;color:var(--text2);letter-spacing:2px;}
+  .stats-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:16px 0;}
   .stat-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px;text-align:center;}
-  .stat-num{font-family:'Orbitron',sans-serif;font-size:22px;font-weight:700;}
-  .stat-num.green{color:var(--green);}.stat-num.red{color:var(--red);}.stat-num.gold{color:var(--gold);}
-  .stat-lbl{font-size:12px;color:var(--text2);margin-top:4px;}
-  .badge-earned{background:linear-gradient(135deg,#FFF8E8,#FFF0CC);border:1px solid rgba(255,215,0,0.3);border-radius:14px;padding:16px 20px;display:flex;align-items:center;gap:14px;margin:14px 0;}
+  .stat-num{font-family:'Orbitron',sans-serif;font-size:22px;font-weight:900;}.stat-num.green{color:var(--green);}.stat-num.red{color:var(--red);}.stat-num.gold{color:var(--gold);}
+  .stat-lbl{font-size:11px;color:var(--text2);margin-top:4px;}
+  .badge-earned{background:linear-gradient(135deg,rgba(200,150,12,0.1),rgba(255,215,0,0.08));border:1px solid rgba(200,150,12,0.3);border-radius:14px;padding:14px 18px;display:flex;align-items:center;gap:14px;margin:14px 0;}
   .badge-icon{font-size:36px;}
-  .badge-earned-title{font-family:'Orbitron',sans-serif;font-size:13px;color:var(--gold);font-weight:700;}
+  .badge-earned-title{font-family:'Orbitron',sans-serif;font-size:13px;color:var(--gold);font-weight:700;letter-spacing:1px;}
   .badge-earned-sub{font-size:13px;color:var(--text2);margin-top:3px;}
-  .weak-alert{background:rgba(192,57,43,0.07);border:1px solid rgba(192,57,43,0.25);border-radius:12px;padding:14px 18px;margin:12px 0;font-size:14px;color:#8B1A1A;display:none;}
+  .weak-alert{background:rgba(192,57,43,0.06);border:1px solid rgba(192,57,43,0.2);border-radius:10px;padding:12px 16px;font-size:14px;color:var(--red);display:none;margin:12px 0;}
   .weak-alert.show{display:block;}
-  .result-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0 30px;}
-  .btn-whatsapp{padding:12px;background:linear-gradient(135deg,#25D366,#128C7E);border:none;border-radius:10px;color:#fff;font-family:'Rajdhani',sans-serif;font-size:14px;font-weight:700;letter-spacing:1px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:transform 0.15s,box-shadow 0.15s;}
+  .result-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0;}
+  .btn-whatsapp{padding:12px 20px;background:linear-gradient(135deg,#25D366,#128C7E);border:none;border-radius:10px;color:#fff;font-family:'Rajdhani',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:transform 0.15s,box-shadow 0.15s;}
   .btn-whatsapp:hover{transform:translateY(-1px);box-shadow:0 5px 15px rgba(37,211,102,0.3);}
-  /* LEADERBOARD */
   .lb-table{width:100%;border-collapse:collapse;margin:14px 0;}
   .lb-table th{text-align:left;padding:10px 12px;font-size:11px;color:var(--gold-dark);letter-spacing:2px;text-transform:uppercase;border-bottom:1px solid rgba(200,150,12,0.25);font-family:'Orbitron',sans-serif;}
   .lb-table td{padding:10px 12px;font-size:14px;border-bottom:1px solid var(--border);vertical-align:middle;}
   .lb-rank{font-family:'Orbitron',sans-serif;font-size:13px;font-weight:700;}
   .lb-rank.gold{color:var(--gold);}.lb-rank.silver{color:#C0C0C0;}.lb-rank.bronze{color:#CD7F32;}
-  /* TEACHER DASHBOARD */
   .dash-header{display:flex;align-items:center;justify-content:space-between;padding:20px 0 16px;border-bottom:1px solid rgba(200,150,12,0.2);margin-bottom:16px;}
   .dash-title{font-family:'Orbitron',sans-serif;font-size:16px;color:var(--gold);font-weight:700;}
   .dash-tabs{display:flex;gap:8px;margin-bottom:20px;}
@@ -135,7 +132,6 @@
   .data-table{width:100%;border-collapse:collapse;font-size:13px;}
   .data-table th{background:rgba(200,150,12,0.1);padding:10px;text-align:left;color:var(--gold);font-size:11px;letter-spacing:1px;text-transform:uppercase;font-family:'Orbitron',sans-serif;}
   .data-table td{padding:9px 10px;border-bottom:1px solid var(--border);}
-  /* PDF UPLOAD */
   .pdf-upload-area{border:2px dashed rgba(255,215,0,0.3);border-radius:14px;padding:30px;text-align:center;cursor:pointer;transition:border-color 0.2s,background 0.2s;margin:16px 0;}
   .pdf-upload-area:hover,.pdf-upload-area.drag-over{border-color:var(--gold);background:rgba(200,150,12,0.06);}
   .pdf-upload-icon{font-size:40px;margin-bottom:10px;}
@@ -151,19 +147,15 @@
   .gen-q-options{display:grid;grid-template-columns:1fr 1fr;gap:6px;}
   .gen-q-opt{font-size:12px;color:var(--text2);padding:5px 8px;background:var(--bg3);border-radius:6px;}
   .gen-q-opt.correct-opt{color:var(--green);background:rgba(26,122,74,0.08);}
-  /* READING COMPREHENSION PASSAGE */
   .passage-box{background:rgba(200,150,12,0.06);border-left:4px solid var(--gold);border-radius:0 10px 10px 0;padding:16px 18px;margin-bottom:16px;font-size:15px;line-height:1.9;color:var(--text);display:none;}
   .passage-box.show{display:block;}
   .passage-label{font-family:'Orbitron',sans-serif;font-size:10px;color:var(--gold-dark);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;font-weight:700;}
-
-  /* TEACHER LOGIN */
   .teacher-login-card{max-width:360px;margin:80px auto;background:var(--card);border:1px solid rgba(200,150,12,0.3);border-radius:16px;padding:32px;text-align:center;}
   .teacher-login-title{font-family:'Orbitron',sans-serif;color:var(--gold);font-size:15px;font-weight:700;letter-spacing:2px;margin-bottom:24px;}
   .section-title{font-family:'Orbitron',sans-serif;font-size:14px;color:var(--gold);letter-spacing:2px;margin:20px 0 12px;display:flex;align-items:center;gap:10px;}
   .section-title::after{content:'';flex:1;height:1px;background:rgba(200,150,12,0.2);}
   .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--card);border:1px solid rgba(255,215,0,0.3);border-radius:10px;padding:12px 24px;font-size:14px;color:var(--text);z-index:1000;transition:transform 0.3s ease;white-space:nowrap;box-shadow:0 8px 30px rgba(100,80,0,0.15);}
   .toast.show{transform:translateX(-50%) translateY(0);}
-  /* DAILY TEST */
   .daily-test-banner{background:linear-gradient(135deg,#FFF8E8,#FFF0CC);border:2px solid var(--gold);border-radius:16px;padding:18px 20px;margin:14px 0;position:relative;overflow:hidden;cursor:pointer;transition:transform 0.2s,box-shadow 0.2s;}
   .daily-test-banner:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(200,150,12,0.25);}
   .daily-test-banner::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold2),var(--gold),var(--gold2));}
@@ -173,10 +165,8 @@
   .dt-meta span{display:flex;align-items:center;gap:4px;}
   .dt-start-btn{background:linear-gradient(135deg,var(--gold2),var(--gold));border:none;border-radius:8px;color:#000;font-family:'Orbitron',sans-serif;font-size:12px;font-weight:700;letter-spacing:1px;padding:8px 20px;cursor:pointer;float:right;margin-top:-30px;}
   .dt-no-test{text-align:center;padding:20px;color:var(--text2);font-size:14px;background:var(--bg2);border-radius:12px;border:1px dashed var(--border);margin:14px 0;}
-  /* Upload Questions */
   .q-upload-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:8px;}
   .q-upload-num{font-size:11px;color:var(--gold-dark);font-weight:700;letter-spacing:1px;margin-bottom:6px;}
-
   @media(max-width:480px){
     .form-row{grid-template-columns:1fr;}
     .options-grid{grid-template-columns:1fr;}
@@ -199,7 +189,7 @@
     <div class="logo-tagline">Knowledge is Power</div>
   </div>
   <div class="banner">
-    <div class="banner-avatar">👨‍🏫</div>
+    <div class="banner-avatar">&#x1F468;&#x200D;&#x1F3EB;</div>
     <div class="banner-info">
       <div class="banner-name">DR. HARISH SHAHI</div>
       <div class="banner-sub">Expert Educator | Science Junction</div>
@@ -208,50 +198,71 @@
         <span class="badge badge-jee">JEE</span>
         <span class="badge badge-nda">NDA</span>
         <span class="badge badge-clat">CLAT</span>
-        <span class="badge badge-ca">CA · CS · CMA</span>
+        <span class="badge badge-ca">CA &middot; CS &middot; CMA</span>
       </div>
     </div>
   </div>
   <div class="form-card">
-    <div class="form-title">⚡ Student Login</div>
+    <div class="form-title">&#9889; STUDENT LOGIN</div>
     <div class="form-row">
-      <div class="form-group"><label>Your Name</label><input type="text" id="studentName" placeholder="नाम लिखो..."></div>
-      <div class="form-group"><label>Language</label><select id="language"><option value="Hindi">हिंदी</option><option value="English">English</option></select></div>
+      <div class="form-group"><label>Your Name</label><input type="text" id="studentName" placeholder="&#2344;&#2366;&#2350; &#2354;&#2367;&#2326;&#2379;..."></div>
+      <div class="form-group"><label>Language</label>
+        <select id="language">
+          <option value="Hindi">&#2361;&#2367;&#2306;&#2342;&#2368;</option>
+          <option value="English">English</option>
+        </select>
+      </div>
     </div>
     <div class="form-row">
       <div class="form-group"><label>Exam</label>
         <select id="exam" onchange="updateChapters()">
-          <option value="JEE">JEE</option><option value="NEET">NEET</option>
-          <option value="NDA">NDA</option><option value="CLAT">CLAT</option>
-          <option value="Class 9">Class 9</option><option value="Class 10">Class 10</option>
-          <option value="Class 11">Class 11</option><option value="Class 12">Class 12</option>
+          <option value="JEE">JEE</option>
+          <option value="NEET">NEET</option>
+          <option value="NDA">NDA</option>
+          <option value="CLAT">CLAT</option>
+          <option value="Class 9">Class 9</option>
+          <option value="Class 10">Class 10</option>
+          <option value="Class 11">Class 11</option>
+          <option value="Class 12">Class 12</option>
         </select>
       </div>
       <div class="form-group" id="stream-group" style="display:none;"><label>Stream</label>
         <select id="stream" onchange="updateChapters()">
-          <option value="Science">Science</option><option value="Math">Math</option>
-          <option value="Agriculture">Agriculture</option><option value="Arts">Arts</option>
+          <option value="Science">Science</option>
+          <option value="Math">Math</option>
+          <option value="Agriculture">Agriculture</option>
+          <option value="Arts">Arts</option>
         </select>
       </div>
     </div>
     <div class="form-row">
       <div class="form-group"><label>Subject / Chapter</label><select id="chapter"></select></div>
       <div class="form-group"><label>Difficulty</label>
-        <select id="difficulty"><option value="Easy">Easy</option><option value="Moderate">Moderate</option><option value="Hard">Hard</option><option value="Mix">Mix</option></select>
+        <select id="difficulty">
+          <option value="Easy">Easy</option>
+          <option value="Moderate">Moderate</option>
+          <option value="Hard">Hard</option>
+          <option value="Mix">Mix</option>
+        </select>
       </div>
     </div>
     <div class="form-row">
       <div class="form-group"><label>Questions</label>
-        <select id="qcount"><option value="5">5</option><option value="10" selected>10</option><option value="15">15</option><option value="20">20</option><option value="25">25</option><option value="30">30</option></select>
+        <select id="qcount">
+          <option value="5">5</option>
+          <option value="10" selected>10</option>
+          <option value="15">15</option>
+          <option value="20">20</option>
+          <option value="25">25</option>
+          <option value="30">30</option>
+        </select>
       </div>
     </div>
-    <button class="btn-gold" onclick="startQuiz()">⚡ START QUIZ</button>
+    <button class="btn-gold" onclick="startQuiz()">&#9889; START QUIZ</button>
   </div>
-  <!-- Daily Test Banner -->
   <div id="daily-test-student-wrap"></div>
-
-  <div class="teacher-link">Teacher? <span onclick="showScreen('screen-teacher-login')">Teacher Dashboard →</span></div>
-  <div class="teacher-link" style="margin-top:8px;"><span onclick="showScreen('screen-leaderboard');loadLeaderboard()">🏆 Leaderboard देखो</span></div>
+  <div class="teacher-link">Teacher? <span onclick="showScreen('screen-teacher-login')">Teacher Dashboard &#8594;</span></div>
+  <div class="teacher-link" style="margin-top:8px;"><span onclick="showScreen('screen-leaderboard');loadLeaderboard()">&#127942; Leaderboard &#2342;&#2375;&#2326;&#2379;</span></div>
 </div>
 
 <!-- QUIZ -->
@@ -271,22 +282,25 @@
   <div class="progress-label"><span id="progress-label-left">Q 1 of 10</span><span id="progress-label-right">0%</span></div>
   <div class="question-card">
     <div class="question-num" id="q-num">QUESTION 01</div>
-    <div class="passage-box" id="passage-box"><div class="passage-label">📖 Passage — पढ़ो फिर नीचे question answer करो</div><div id="passage-text"></div></div>
+    <div class="passage-box" id="passage-box">
+      <div class="passage-label">&#128214; Passage &#8212; &#2346;&#2397;&#2379; &#2347;&#2367;&#2352; &#2344;&#2368;&#2330;&#2375; question answer &#2325;&#2352;&#2379;</div>
+      <div id="passage-text"></div>
+    </div>
     <div class="question-text" id="q-text"><div class="loading-dots"><span></span><span></span><span></span></div></div>
   </div>
   <div class="options-grid" id="options-grid"></div>
-  <div class="explanation-box" id="explanation-box"><strong>💡 Explanation:</strong> <span id="explanation-text"></span></div>
+  <div class="explanation-box" id="explanation-box"><strong>&#128161; Explanation:</strong> <span id="explanation-text"></span></div>
   <div class="quiz-actions">
-    <button class="btn-ghost" onclick="goBack()">← Back</button>
-    <button class="btn-ghost" onclick="skipQuestion()">Skip →</button>
-    <button class="btn-gold" style="width:auto;padding:10px 28px;font-size:13px;" onclick="nextQuestion()" id="btn-next" disabled>NEXT ▶</button>
+    <button class="btn-ghost" onclick="goBack()">&#8592; Back</button>
+    <button class="btn-ghost" onclick="skipQuestion()">Skip &#8594;</button>
+    <button class="btn-gold" style="width:auto;padding:10px 28px;font-size:13px;" onclick="nextQuestion()" id="btn-next" disabled>NEXT &#9654;</button>
   </div>
 </div>
 
 <!-- RESULT -->
 <div class="screen" id="screen-result">
   <div class="result-hero">
-    <div class="trophy-icon" id="trophy-icon">🏆</div>
+    <div class="trophy-icon" id="trophy-icon">&#127942;</div>
     <div style="margin-top:10px;font-family:'Orbitron',sans-serif;font-size:18px;color:var(--gold);font-weight:700;" id="result-title">Quiz Complete!</div>
     <div style="color:var(--text2);font-size:14px;margin-top:4px;" id="result-subtitle"></div>
   </div>
@@ -299,51 +313,52 @@
     <div class="score-ring-text"><span class="score-pct" id="score-pct">0%</span><span class="score-label">SCORE</span></div>
   </div>
   <div class="stats-row">
-    <div class="stat-card"><div class="stat-num green" id="stat-correct">0</div><div class="stat-lbl">✅ Correct</div></div>
-    <div class="stat-card"><div class="stat-num red" id="stat-wrong">0</div><div class="stat-lbl">❌ Wrong</div></div>
-    <div class="stat-card"><div class="stat-num gold" id="stat-skip">0</div><div class="stat-lbl">⏭ Skipped</div></div>
+    <div class="stat-card"><div class="stat-num green" id="stat-correct">0</div><div class="stat-lbl">&#9989; Correct</div></div>
+    <div class="stat-card"><div class="stat-num red" id="stat-wrong">0</div><div class="stat-lbl">&#10060; Wrong</div></div>
+    <div class="stat-card"><div class="stat-num gold" id="stat-skip">0</div><div class="stat-lbl">&#9197; Skipped</div></div>
   </div>
-  <div class="badge-earned"><div class="badge-icon" id="badge-icon">🥉</div><div><div class="badge-earned-title" id="badge-title">BRONZE ACHIEVER</div><div class="badge-earned-sub" id="badge-sub">Keep practicing!</div></div></div>
-  <div class="weak-alert" id="weak-alert"><strong>⚠ Weak Area:</strong> <span id="weak-text"></span></div>
+  <div class="badge-earned"><div class="badge-icon" id="badge-icon">&#129351;</div><div><div class="badge-earned-title" id="badge-title">BRONZE ACHIEVER</div><div class="badge-earned-sub" id="badge-sub">Keep practicing!</div></div></div>
+  <div class="weak-alert" id="weak-alert"><strong>&#9888; Weak Area:</strong> <span id="weak-text"></span></div>
   <div class="result-actions">
-    <button class="btn-whatsapp" onclick="shareWhatsApp()">📲 WhatsApp Share</button>
-    <button class="btn-gold" style="width:100%;font-size:13px;" onclick="retryQuiz()">🔁 RETRY</button>
+    <button class="btn-whatsapp" onclick="shareWhatsApp()">&#128242; WhatsApp Share</button>
+    <button class="btn-gold" style="width:100%;font-size:13px;" onclick="retryQuiz()">&#128257; RETRY</button>
   </div>
-  <button class="btn-ghost" style="width:100%;margin-bottom:30px;" onclick="showScreen('screen-login')">← Back to Home</button>
+  <button class="btn-ghost" style="width:100%;margin-bottom:30px;" onclick="showScreen('screen-login')">&#8592; Back to Home</button>
 </div>
 
 <!-- LEADERBOARD -->
 <div class="screen" id="screen-leaderboard">
-  <div class="section-title" style="margin-top:24px;">🏆 Leaderboard</div>
+  <div class="section-title" style="margin-top:24px;">&#127942; Leaderboard</div>
   <div id="lb-loading" style="text-align:center;padding:30px;color:var(--text2);">Loading...</div>
   <table class="lb-table" id="lb-table" style="display:none;">
     <thead><tr><th>#</th><th>Name</th><th>Exam</th><th>Score</th><th>Date</th></tr></thead>
     <tbody id="lb-body"></tbody>
   </table>
-  <button class="btn-ghost" style="width:100%;margin-top:16px;margin-bottom:30px;" onclick="showScreen('screen-login')">← Back</button>
+  <button class="btn-ghost" style="width:100%;margin-top:16px;margin-bottom:30px;" onclick="showScreen('screen-login')">&#8592; Back</button>
 </div>
 
 <!-- TEACHER LOGIN -->
 <div class="screen" id="screen-teacher-login">
   <div class="teacher-login-card">
-    <div class="teacher-login-title">🔐 TEACHER LOGIN</div>
-    <div class="form-group" style="margin-bottom:16px;"><label>Password</label><input type="password" id="teacher-pwd" placeholder="Password enter करो"></div>
+    <div class="teacher-login-title">&#128272; TEACHER LOGIN</div>
+    <div class="form-group" style="margin-bottom:16px;"><label>Password</label><input type="password" id="teacher-pwd" placeholder="Password enter karo"></div>
     <button class="btn-gold" onclick="teacherLogin()">LOGIN</button>
-    <div style="margin-top:14px;"><button class="btn-ghost" style="width:100%;" onclick="showScreen('screen-login')">← Back</button></div>
+    <div style="margin-top:14px;"><button class="btn-ghost" style="width:100%;" onclick="showScreen('screen-login')">&#8592; Back</button></div>
   </div>
 </div>
 
 <!-- TEACHER DASHBOARD -->
 <div class="screen" id="screen-dashboard">
   <div class="dash-header">
-    <div class="dash-title">📊 Teacher Dashboard</div>
+    <div class="dash-title">&#128202; Teacher Dashboard</div>
     <button class="btn-ghost" onclick="showScreen('screen-login')">Logout</button>
   </div>
   <div class="dash-tabs">
-    <button class="dash-tab active" onclick="switchTab('tab-results',0)">📋 Results</button>
-    <button class="dash-tab" onclick="switchTab('tab-pdf',1)">📄 PDF से Quiz</button>
-    <button class="dash-tab" onclick="switchTab('tab-dailytest',2)">📅 Daily Test</button>
+    <button class="dash-tab active" onclick="switchTab('tab-results',0)">&#128203; Results</button>
+    <button class="dash-tab" onclick="switchTab('tab-pdf',1)">&#128196; PDF Quiz</button>
+    <button class="dash-tab" onclick="switchTab('tab-dailytest',2)">&#128197; Daily Test</button>
   </div>
+
   <!-- Results Tab -->
   <div class="dash-panel active" id="tab-results">
     <div class="filter-row">
@@ -361,36 +376,31 @@
         <tbody id="dash-body"></tbody>
       </table>
     </div>
-    <button class="btn-outline" onclick="exportCSV()" style="margin-top:16px;width:100%;">⬇ Export CSV</button>
+    <button class="btn-outline" onclick="exportCSV()" style="margin-top:16px;width:100%;">&#8595; Export CSV</button>
   </div>
+
   <!-- PDF Tab -->
   <div class="dash-panel" id="tab-pdf">
     <div class="form-card">
-      <div class="form-title">📄 PDF / Topic से AI Questions Generate करो</div>
-
-      <!-- Option 1: PDF Upload -->
-      <div style="font-size:12px;color:var(--text2);margin-bottom:8px;letter-spacing:1px;">OPTION 1 — PDF UPLOAD (Text-based PDF)</div>
+      <div class="form-title">&#128196; PDF / Topic se AI Questions Generate karo</div>
+      <div style="font-size:12px;color:var(--text2);margin-bottom:8px;letter-spacing:1px;">OPTION 1 &#8212; PDF UPLOAD (Text-based PDF)</div>
       <div class="pdf-upload-area" id="pdf-drop-area" onclick="document.getElementById('pdf-file-input').click()">
-        <div class="pdf-upload-icon">📁</div>
-        <div class="pdf-upload-text" id="pdf-upload-label"><strong>Click करो या PDF drag करो</strong><br>Text-based PDF चाहिए (जिसमें text copy हो सके) — max 15MB</div>
+        <div class="pdf-upload-icon">&#128193;</div>
+        <div class="pdf-upload-text" id="pdf-upload-label"><strong>Click karo ya PDF drag karo</strong><br>Text-based PDF chahiye &#8212; max 15MB</div>
         <input type="file" id="pdf-file-input" class="pdf-input" accept=".pdf" onchange="handlePDFSelect(this)">
       </div>
       <div class="pdf-status" id="pdf-status"></div>
-
-      <!-- Option 2: Manual Topic -->
       <div style="height:1px;background:rgba(255,215,0,0.08);margin:16px 0;"></div>
-      <div style="font-size:12px;color:var(--text2);margin-bottom:8px;letter-spacing:1px;">OPTION 2 — TOPIC TYPE करो (Scanned PDF या directly topic)</div>
+      <div style="font-size:12px;color:var(--text2);margin-bottom:8px;letter-spacing:1px;">OPTION 2 &#8212; TOPIC TYPE karo (Scanned PDF ya directly topic)</div>
       <div class="form-group" style="margin-bottom:12px;">
-        <label>Topic / Subject यहाँ लिखो</label>
-        <textarea id="manual-topic" placeholder="जैसे: Rajasthan ki rajdhani Jaipur, Newton ke teen niyam, Photosynthesis process, Indian Constitution ke fundamental rights..." style="min-height:90px;background:var(--bg3);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:Rajdhani,sans-serif;font-size:14px;padding:10px 14px;outline:none;resize:vertical;"></textarea>
+        <label>Topic / Subject yahan likho</label>
+        <textarea id="manual-topic" placeholder="Jaise: Newton ke teen niyam, Photosynthesis process, Indian Constitution..." style="min-height:90px;background:var(--bg3);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:Rajdhani,sans-serif;font-size:14px;padding:10px 14px;outline:none;resize:vertical;"></textarea>
       </div>
-      <button class="btn-outline" style="width:100%;" onclick="useManualTopic()">✍️ इस Topic से Questions बनाओ</button>
-
-      <!-- Settings (shown after PDF read or manual topic) -->
+      <button class="btn-outline" style="width:100%;" onclick="useManualTopic()">&#9997; Is Topic se Questions banao</button>
       <div id="pdf-settings" style="display:none;margin-top:16px;">
         <div style="height:1px;background:rgba(255,215,0,0.1);margin:16px 0;"></div>
         <div class="form-row">
-          <div class="form-group"><label>Questions कितने?</label>
+          <div class="form-group"><label>Questions kitne?</label>
             <select id="pdf-qcount"><option value="5">5</option><option value="10" selected>10</option><option value="15">15</option><option value="20">20</option></select>
           </div>
           <div class="form-group"><label>Difficulty</label>
@@ -399,18 +409,18 @@
         </div>
         <div class="form-row single">
           <div class="form-group"><label>Language</label>
-            <select id="pdf-language"><option value="Hindi">हिंदी</option><option value="English">English</option></select>
+            <select id="pdf-language"><option value="Hindi">&#2361;&#2367;&#2306;&#2342;&#2368;</option><option value="English">English</option></select>
           </div>
         </div>
-        <button class="btn-gold" id="pdf-generate-btn" onclick="generateFromPDF()">🤖 AI से Questions Generate करो</button>
+        <button class="btn-gold" id="pdf-generate-btn" onclick="generateFromPDF()">&#129302; AI se Questions Generate karo</button>
       </div>
     </div>
     <div id="generated-questions-wrap" style="display:none;">
-      <div class="section-title">✅ Generated Questions</div>
+      <div class="section-title">&#9989; Generated Questions</div>
       <div class="generated-questions" id="generated-questions-list"></div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:30px;">
-        <button class="btn-whatsapp" onclick="shareGeneratedQuiz()">📲 WhatsApp Share</button>
-        <button class="btn-gold" style="font-size:13px;" onclick="useGeneratedQuiz()">▶ इसी से Quiz दो</button>
+        <button class="btn-whatsapp" onclick="shareGeneratedQuiz()">&#128242; WhatsApp Share</button>
+        <button class="btn-gold" style="font-size:13px;" onclick="useGeneratedQuiz()">&#9654; Isi se Quiz do</button>
       </div>
     </div>
   </div>
@@ -418,17 +428,16 @@
   <!-- Daily Test Tab -->
   <div class="dash-panel" id="tab-dailytest">
     <div class="form-card">
-      <div class="form-title">📅 आज का Daily Test Set करो</div>
-      <p style="font-size:14px;color:var(--text2);margin-bottom:16px;">यहाँ test का नाम, subject और questions paste करो — Students को Login screen पर दिखेगा।</p>
-
+      <div class="form-title">&#128197; Aaj ka Daily Test Set karo</div>
+      <p style="font-size:14px;color:var(--text2);margin-bottom:16px;">Yahan test ka naam, subject aur questions paste karo &#8212; Students ko Login screen par dikhega.</p>
       <div class="form-row">
         <div class="form-group">
-          <label>Test का नाम</label>
-          <input type="text" id="dt-title" placeholder="जैसे: Newton's Laws Test, Chemistry Test...">
+          <label>Test ka Naam</label>
+          <input type="text" id="dt-title" placeholder="Jaise: Newton's Laws Test...">
         </div>
         <div class="form-group">
           <label>Subject / Chapter</label>
-          <input type="text" id="dt-subject" placeholder="जैसे: Physics - Motion">
+          <input type="text" id="dt-subject" placeholder="Jaise: Physics - Motion">
         </div>
       </div>
       <div class="form-row">
@@ -450,521 +459,570 @@
           </select>
         </div>
       </div>
-
-      <!-- Questions paste area -->
       <div style="margin-top:8px;">
-        <label style="font-size:11px;color:var(--text2);letter-spacing:1px;text-transform:uppercase;display:block;margin-bottom:6px;">Questions JSON paste करो (Groq format)</label>
-        <textarea id="dt-questions-json" placeholder='[{"question":"Newton का पहला नियम क्या है?","options":["जड़ता का नियम","गति का नियम","क्रिया-प्रतिक्रिया","ऊर्जा संरक्षण"],"correctIndex":0,"explanation":"..."}]' style="min-height:120px;width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:monospace;font-size:12px;padding:10px;outline:none;resize:vertical;"></textarea>
-        <div style="font-size:12px;color:var(--text2);margin-top:4px;">💡 Tip: PDF से Questions Generate करो → Preview में सभी questions का JSON मिलेगा → यहाँ paste करो</div>
+        <label style="font-size:11px;color:var(--text2);letter-spacing:1px;text-transform:uppercase;display:block;margin-bottom:6px;">Questions JSON paste karo (Groq format)</label>
+        <textarea id="dt-questions-json" placeholder='[{"question":"Newton ka pehla niyam...","options":["...","...","...","..."],"correctIndex":0,"explanation":"..."}]' style="min-height:120px;width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:monospace;font-size:12px;padding:10px;outline:none;resize:vertical;"></textarea>
+        <div style="font-size:12px;color:var(--text2);margin-top:4px;">&#128161; Tip: PDF se Generate karo &rarr; Preview mein JSON milega &rarr; yahan paste karo</div>
       </div>
-
       <div id="dt-status" style="display:none;padding:10px 14px;border-radius:8px;margin-top:12px;font-size:14px;"></div>
-      <button class="btn-gold" onclick="publishDailyTest()" style="margin-top:12px;">📅 आज का Test Publish करो</button>
+      <button class="btn-gold" onclick="publishDailyTest()" style="margin-top:12px;">&#128197; Aaj ka Test Publish karo</button>
     </div>
-
-    <!-- Current active test preview -->
     <div id="dt-current-wrap" style="margin-top:8px;"></div>
-    <button class="btn-outline" onclick="clearDailyTest()" style="width:100%;margin-top:8px;margin-bottom:30px;color:var(--red);border-color:var(--red);">🗑 Current Test हटाओ</button>
+    <button class="btn-outline" onclick="clearDailyTest()" style="width:100%;margin-top:8px;margin-bottom:30px;color:var(--red);border-color:var(--red);">&#128465; Current Test hatao</button>
   </div>
-
 </div>
 
 <script>
-const APPS_SCRIPT_URL="https://script.google.com/macros/s/AKfycbwRtvck-c-9ZKPo4VynOdCX5gVW4wa745d0_Tix23cJhn5n-RM9SAIWl9dBA1DLz-MMgA/exec";
-const TEACHER_PWD="science123";
-const GROQ_KEY="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";
-const GROQ_URL="https://api.groq.com/openai/v1/chat/completions";
-const GROQ_MODEL="llama-3.3-70b-versatile";
+var APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwRtvck-c-9ZKPo4VynOdCX5gVW4wa745d0_Tix23cJhn5n-RM9SAIWl9dBA1DLz-MMgA/exec";
+var TEACHER_PWD = "science123";
+var GROQ_KEY = "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";
+var GROQ_URL = "https://api.groq.com/openai/v1/chat/completions";
+var GROQ_MODEL = "llama-3.3-70b-versatile";
 
 // ===== EXAM SYLLABUS =====
-const SYLLABUS={
-  "JEE":["Physics - Motion & Laws of Motion","Physics - Work, Energy & Power","Physics - Rotational Motion","Physics - Gravitation","Physics - Thermodynamics","Physics - Waves & Oscillations","Physics - Electrostatics","Physics - Current Electricity","Physics - Magnetic Effects of Current","Physics - Electromagnetic Induction","Physics - Ray & Wave Optics","Physics - Modern Physics & Semiconductors","Chemistry - Atomic Structure","Chemistry - Chemical Bonding","Chemistry - Thermodynamics","Chemistry - Equilibrium","Chemistry - Electrochemistry","Chemistry - Organic - Basic Concepts","Chemistry - Hydrocarbons","Chemistry - Organic - Functional Groups","Chemistry - Coordination Compounds","Math - Sets, Relations & Functions","Math - Complex Numbers","Math - Quadratic Equations","Math - Permutations & Combinations","Math - Binomial Theorem","Math - Matrices & Determinants","Math - Trigonometry","Math - Coordinate Geometry","Math - Calculus - Limits & Continuity","Math - Calculus - Differentiation","Math - Calculus - Integration","Math - Vectors & 3D Geometry","Math - Statistics & Probability"],
-  "NEET":["Physics - Motion","Physics - Laws of Motion","Physics - Work & Energy","Physics - Gravitation","Physics - Thermodynamics","Physics - Optics","Physics - Dual Nature of Radiation","Physics - Nuclei & Atoms","Chemistry - Atomic Structure","Chemistry - Chemical Bonding","Chemistry - States of Matter","Chemistry - Equilibrium","Chemistry - Redox Reactions","Chemistry - Organic Chemistry - Basics","Chemistry - Hydrocarbons","Chemistry - Biomolecules","Chemistry - Polymers","Chemistry - Chemistry in Everyday Life","Biology - Cell Structure & Function","Biology - Cell Division - Mitosis & Meiosis","Biology - Biomolecules","Biology - Transport in Plants","Biology - Mineral Nutrition","Biology - Photosynthesis","Biology - Respiration in Plants","Biology - Plant Growth & Development","Biology - Digestion & Absorption","Biology - Breathing & Gas Exchange","Biology - Body Fluids & Circulation","Biology - Excretory Products","Biology - Locomotion & Movement","Biology - Neural Control & Coordination","Biology - Chemical Coordination","Biology - Reproduction in Organisms","Biology - Sexual Reproduction in Flowering Plants","Biology - Human Reproduction","Biology - Genetics - Mendel's Laws","Biology - Molecular Basis of Inheritance","Biology - Evolution","Biology - Human Health & Disease","Biology - Biotechnology","Biology - Ecology & Ecosystem"],
-  "NDA":["Math - Sets, Relations & Functions","Math - Complex Numbers","Math - Matrices & Determinants","Math - Quadratic Equations & Inequalities","Math - Permutations & Combinations","Math - Binomial Theorem","Math - Logarithms","Math - Trigonometry - Ratios & Identities","Math - Trigonometry - Inverse Functions","Math - Coordinate Geometry - 2D","Math - Coordinate Geometry - 3D","Math - Differential Calculus","Math - Integral Calculus","Math - Differential Equations","Math - Vectors","Math - Statistics","Math - Probability","Physics - Motion & Newton's Laws","Physics - Work, Energy & Power","Physics - Heat & Thermodynamics","Physics - Waves & Sound","Physics - Optics","Physics - Electricity & Magnetism","Physics - Modern Physics","Chemistry - States of Matter","Chemistry - Atomic Structure","Chemistry - Chemical Equilibrium & Acids-Bases","Chemistry - Metals & Non-Metals","Chemistry - Organic Chemistry Basics","Biology - Cell","Biology - Human Body Systems","Biology - Genetics Basics","General Knowledge - History of India","General Knowledge - Geography of India & World","General Knowledge - Indian Polity & Constitution","General Knowledge - Economy","General Knowledge - Science & Technology","General Knowledge - Current Affairs","English - Reading Comprehension","English - Grammar","English - Vocabulary & Synonyms"],
-  "CLAT":["English - Reading Comprehension","English - Grammar & Error Spotting","English - Vocabulary","English - Para Jumbles","Legal Reasoning - Contracts","Legal Reasoning - Torts","Legal Reasoning - Constitutional Law","Legal Reasoning - Criminal Law (IPC)","Legal Reasoning - Family Law","Legal Reasoning - Property Law","Logical Reasoning - Analogies","Logical Reasoning - Number & Letter Series","Logical Reasoning - Syllogisms","Logical Reasoning - Blood Relations","Logical Reasoning - Direction Sense","Logical Reasoning - Coding-Decoding","General Knowledge - Indian Constitution","General Knowledge - Current Affairs","General Knowledge - History of India","General Knowledge - Geography","General Knowledge - Economy","General Knowledge - Science & Tech","Quantitative Techniques - Number System","Quantitative Techniques - Percentages","Quantitative Techniques - Data Interpretation"],
-  "Class 9":["Science - Matter in Our Surroundings","Science - Is Matter Around Us Pure","Science - Atoms and Molecules","Science - Structure of the Atom","Science - Cell - Fundamental Unit of Life","Science - Tissues","Science - Diversity in Living Organisms","Science - Motion","Science - Force and Laws of Motion","Science - Gravitation","Science - Work and Energy","Science - Sound","Science - Why Do We Fall Ill","Science - Natural Resources","Math - Number Systems","Math - Polynomials","Math - Coordinate Geometry","Math - Linear Equations in Two Variables","Math - Introduction to Euclid's Geometry","Math - Lines and Angles","Math - Triangles","Math - Quadrilaterals","Math - Areas of Parallelograms and Triangles","Math - Circles","Math - Constructions","Math - Heron's Formula","Math - Surface Areas and Volumes","Math - Statistics","Math - Probability"],
-  "Class 10":["Science - Chemical Reactions and Equations","Science - Acids, Bases and Salts","Science - Metals and Non-Metals","Science - Carbon and its Compounds","Science - Periodic Classification","Science - Life Processes","Science - Control and Coordination","Science - How Do Organisms Reproduce","Science - Heredity and Evolution","Science - Light - Reflection and Refraction","Science - Human Eye and Colourful World","Science - Electricity","Science - Magnetic Effects of Electric Current","Science - Our Environment","Math - Real Numbers","Math - Polynomials","Math - Pair of Linear Equations","Math - Quadratic Equations","Math - Arithmetic Progressions","Math - Triangles","Math - Coordinate Geometry","Math - Introduction to Trigonometry","Math - Applications of Trigonometry","Math - Circles","Math - Constructions","Math - Areas Related to Circles","Math - Surface Areas and Volumes","Math - Statistics","Math - Probability"],
-  "Class 11_Science":["Physics - Units & Measurements","Physics - Motion in a Straight Line","Physics - Motion in a Plane","Physics - Laws of Motion","Physics - Work, Energy & Power","Physics - System of Particles & Rotational Motion","Physics - Gravitation","Physics - Mechanical Properties of Solids","Physics - Mechanical Properties of Fluids","Physics - Thermal Properties","Physics - Thermodynamics","Physics - Kinetic Theory","Physics - Oscillations","Physics - Waves","Chemistry - Basic Concepts of Chemistry","Chemistry - Structure of Atom","Chemistry - Classification of Elements","Chemistry - Chemical Bonding","Chemistry - States of Matter","Chemistry - Thermodynamics","Chemistry - Equilibrium","Chemistry - Redox Reactions","Chemistry - Hydrogen","Chemistry - s-Block Elements","Chemistry - p-Block Elements (Basic)","Chemistry - Organic Chemistry - Basic Principles","Chemistry - Hydrocarbons","Biology - Living World","Biology - Biological Classification","Biology - Plant Kingdom","Biology - Animal Kingdom","Biology - Morphology of Flowering Plants","Biology - Anatomy of Flowering Plants","Biology - Cell Structure","Biology - Biomolecules","Biology - Cell Cycle & Division","Math - Sets","Math - Relations & Functions","Math - Trigonometric Functions","Math - Principle of Mathematical Induction","Math - Complex Numbers & Quadratic Equations","Math - Linear Inequalities","Math - Permutations & Combinations","Math - Binomial Theorem","Math - Sequences & Series","Math - Straight Lines","Math - Conic Sections","Math - 3D Geometry - Intro","Math - Limits & Derivatives","Math - Statistics","Math - Probability"],
-  "Class 11_Math":["Sets","Relations & Functions","Trigonometric Functions","Principle of Mathematical Induction","Complex Numbers & Quadratic Equations","Linear Inequalities","Permutations & Combinations","Binomial Theorem","Sequences & Series","Straight Lines","Conic Sections","Introduction to 3D Geometry","Limits & Derivatives","Mathematical Reasoning","Statistics","Probability"],
-  "Class 11_Agriculture":["Agrometeorology & Climate","Soil Science & Soil Health","Genetics & Plant Breeding","Biochemistry & Microbiology","Crop Production - Kharif","Crop Production - Rabi","Horticulture - Fruits","Horticulture - Vegetables","Animal Husbandry - Cattle","Animal Husbandry - Poultry","Farm Management & Economics"],
-  "Class 11_Arts":["History - Early Societies","History - Early Empires","History - Changing Traditions","Political Science - Indian Constitution","Political Science - Rights in the Indian Constitution","Political Science - Election & Representation","Geography - Physical Geography Basics","Geography - India - Physical Environment","Economics - Introduction to Economics","Economics - Collection & Presentation of Data","Economics - Statistical Tools","Sociology - Introducing Sociology","Sociology - Social Change","Psychology - Introduction to Psychology"],
-  "Class 12_Science":["Physics - Electric Charges & Fields","Physics - Electrostatic Potential","Physics - Current Electricity","Physics - Moving Charges & Magnetism","Physics - Magnetism & Matter","Physics - Electromagnetic Induction","Physics - Alternating Current","Physics - Electromagnetic Waves","Physics - Ray Optics","Physics - Wave Optics","Physics - Dual Nature of Radiation","Physics - Atoms","Physics - Nuclei","Physics - Semiconductor Electronics","Chemistry - Solid State","Chemistry - Solutions","Chemistry - Electrochemistry","Chemistry - Chemical Kinetics","Chemistry - Surface Chemistry","Chemistry - General Principles of Isolation of Metals","Chemistry - p-Block Elements","Chemistry - d and f-Block Elements","Chemistry - Coordination Compounds","Chemistry - Haloalkanes & Haloarenes","Chemistry - Alcohols, Phenols & Ethers","Chemistry - Aldehydes, Ketones & Carboxylic Acids","Chemistry - Amines","Chemistry - Biomolecules","Chemistry - Polymers","Chemistry - Chemistry in Everyday Life","Biology - Reproduction in Organisms","Biology - Sexual Reproduction in Flowering Plants","Biology - Human Reproduction","Biology - Reproductive Health","Biology - Principles of Inheritance & Variation","Biology - Molecular Basis of Inheritance","Biology - Evolution","Biology - Human Health & Disease","Biology - Strategies for Enhancement of Food Production","Biology - Microbes in Human Welfare","Biology - Biotechnology - Principles & Processes","Biology - Biotechnology - Applications","Biology - Organisms & Populations","Biology - Ecosystem","Biology - Biodiversity & Conservation","Math - Relations & Functions","Math - Inverse Trigonometric Functions","Math - Matrices","Math - Determinants","Math - Continuity & Differentiability","Math - Application of Derivatives","Math - Integrals","Math - Application of Integrals","Math - Differential Equations","Math - Vector Algebra","Math - 3D Geometry","Math - Linear Programming","Math - Probability"],
-  "Class 12_Math":["Relations & Functions","Inverse Trigonometric Functions","Matrices","Determinants","Continuity & Differentiability","Application of Derivatives","Integrals","Application of Integrals","Differential Equations","Vector Algebra","Three Dimensional Geometry","Linear Programming","Probability"],
-  "Class 12_Agriculture":["Crop Production & Management","Plant Nutrition & Soil Fertility","Plant Protection - Diseases & Pests","Farm Machinery & Technology","Irrigation & Water Management","Post Harvest Technology","Agricultural Economics & Marketing"],
-  "Class 12_Arts":["History - Bricks, Beads & Bones","History - Kings, Farmers & Towns","History - Kinship, Caste & Class","History - Thinkers, Beliefs & Buildings","History - Through the Eyes of Travellers","History - Bhakti-Sufi Traditions","History - An Imperial Capital - Vijayanagara","History - Peasants, Zamindars & State","History - Colonialism & Countryside","History - Rebels & the Raj","History - Mahatma Gandhi & the Nationalist Movement","History - Framing the Constitution","Political Science - Cold War Era","Political Science - End of Bipolarity","Political Science - Contemporary South Asia","Political Science - International Organisations","Political Science - Security in Contemporary World","Political Science - Environment & Natural Resources","Political Science - Globalisation","Political Science - Challenges of Nation Building","Political Science - Era of One-Party Dominance","Political Science - Politics of Planned Development","Political Science - India's External Relations","Political Science - Challenges to Congress Dominance","Political Science - Crisis of Democratic Order","Political Science - Rise of Popular Movements","Political Science - Regional Aspirations","Political Science - Recent Developments in Indian Politics","Geography - Human Geography - Nature & Scope","Geography - People - Population","Geography - Human Activities","Geography - Transport, Communication & Trade","Geography - Human Settlements","Geography - Resources & Development","Geography - Water Resources","Geography - Agriculture","Geography - Mineral & Energy Resources","Geography - Manufacturing Industries","Geography - Planning & Sustainable Development","Economics - Macroeconomics - Introduction","Economics - National Income Accounting","Economics - Money & Banking","Economics - Determination of Income & Employment","Economics - Government Budget & Economy","Economics - Open Economy Macroeconomics","Economics - Indian Economy - Development Experience","Economics - Economic Reforms Since 1991","Economics - Agriculture","Economics - Industry & Services","Economics - Infrastructure","Economics - Sustainable Economic Development","Sociology - Indian Society - Introducing","Sociology - Demographic Structure","Sociology - Social Institutions - Continuity & Change","Sociology - Market as a Social Institution","Sociology - Pattern of Social Inequality","Sociology - Cultural Change","Sociology - Struggle for Development","Sociology - Environmental & Social Change","Sociology - Social Movements","Psychology - Variations in Psychological Attributes","Psychology - Self & Personality","Psychology - Meeting Life Challenges","Psychology - Psychological Disorders","Psychology - Therapeutic Approaches","Psychology - Attitude & Social Cognition","Psychology - Social Influence & Group Processes","Psychology - Psychology & Life","Psychology - Developing Psychological Skills"]
+var SYLLABUS = {
+  "JEE": ["Physics - Motion & Laws of Motion","Physics - Work, Energy & Power","Physics - Rotational Motion","Physics - Gravitation","Physics - Thermodynamics","Physics - Waves & Oscillations","Physics - Electrostatics","Physics - Current Electricity","Physics - Magnetic Effects of Current","Physics - Electromagnetic Induction","Physics - Ray & Wave Optics","Physics - Modern Physics & Semiconductors","Chemistry - Atomic Structure","Chemistry - Chemical Bonding","Chemistry - Thermodynamics","Chemistry - Equilibrium","Chemistry - Electrochemistry","Chemistry - Organic - Basic Concepts","Chemistry - Hydrocarbons","Chemistry - Organic - Functional Groups","Chemistry - Coordination Compounds","Math - Sets, Relations & Functions","Math - Complex Numbers","Math - Quadratic Equations","Math - Permutations & Combinations","Math - Binomial Theorem","Math - Matrices & Determinants","Math - Trigonometry","Math - Coordinate Geometry","Math - Calculus - Limits & Continuity","Math - Calculus - Differentiation","Math - Calculus - Integration","Math - Vectors & 3D Geometry","Math - Statistics & Probability"],
+  "NEET": ["Physics - Motion","Physics - Laws of Motion","Physics - Work & Energy","Physics - Gravitation","Physics - Thermodynamics","Physics - Optics","Physics - Dual Nature of Radiation","Physics - Nuclei & Atoms","Chemistry - Atomic Structure","Chemistry - Chemical Bonding","Chemistry - States of Matter","Chemistry - Equilibrium","Chemistry - Redox Reactions","Chemistry - Organic Chemistry - Basics","Chemistry - Hydrocarbons","Chemistry - Biomolecules","Chemistry - Polymers","Chemistry - Chemistry in Everyday Life","Biology - Cell Structure & Function","Biology - Cell Division - Mitosis & Meiosis","Biology - Biomolecules","Biology - Transport in Plants","Biology - Mineral Nutrition","Biology - Photosynthesis","Biology - Respiration in Plants","Biology - Plant Growth & Development","Biology - Digestion & Absorption","Biology - Breathing & Gas Exchange","Biology - Body Fluids & Circulation","Biology - Excretory Products","Biology - Locomotion & Movement","Biology - Neural Control & Coordination","Biology - Chemical Coordination","Biology - Reproduction in Organisms","Biology - Sexual Reproduction in Flowering Plants","Biology - Human Reproduction","Biology - Genetics - Mendel's Laws","Biology - Molecular Basis of Inheritance","Biology - Evolution","Biology - Human Health & Disease","Biology - Biotechnology","Biology - Ecology & Ecosystem"],
+  "NDA": ["Math - Sets, Relations & Functions","Math - Complex Numbers","Math - Matrices & Determinants","Math - Quadratic Equations & Inequalities","Math - Permutations & Combinations","Math - Binomial Theorem","Math - Logarithms","Math - Trigonometry - Ratios & Identities","Math - Trigonometry - Inverse Functions","Math - Coordinate Geometry - 2D","Math - Coordinate Geometry - 3D","Math - Differential Calculus","Math - Integral Calculus","Math - Differential Equations","Math - Vectors","Math - Statistics","Math - Probability","Physics - Motion & Newton's Laws","Physics - Work, Energy & Power","Physics - Heat & Thermodynamics","Physics - Waves & Sound","Physics - Optics","Physics - Electricity & Magnetism","Physics - Modern Physics","Chemistry - States of Matter","Chemistry - Atomic Structure","Chemistry - Chemical Equilibrium & Acids-Bases","Chemistry - Metals & Non-Metals","Chemistry - Organic Chemistry Basics","Biology - Cell","Biology - Human Body Systems","Biology - Genetics Basics","General Knowledge - History of India","General Knowledge - Geography of India & World","General Knowledge - Indian Polity & Constitution","General Knowledge - Economy","General Knowledge - Science & Technology","General Knowledge - Current Affairs","English - Reading Comprehension","English - Grammar","English - Vocabulary & Synonyms"],
+  "CLAT": ["English - Reading Comprehension","English - Grammar & Error Spotting","English - Vocabulary","English - Para Jumbles","Legal Reasoning - Contracts","Legal Reasoning - Torts","Legal Reasoning - Constitutional Law","Legal Reasoning - Criminal Law (IPC)","Legal Reasoning - Family Law","Legal Reasoning - Property Law","Logical Reasoning - Analogies","Logical Reasoning - Number & Letter Series","Logical Reasoning - Syllogisms","Logical Reasoning - Blood Relations","Logical Reasoning - Direction Sense","Logical Reasoning - Coding-Decoding","General Knowledge - Indian Constitution","General Knowledge - Current Affairs","General Knowledge - History of India","General Knowledge - Geography","General Knowledge - Economy","General Knowledge - Science & Tech","Quantitative Techniques - Number System","Quantitative Techniques - Percentages","Quantitative Techniques - Data Interpretation"],
+  "Class 9": ["Science - Matter in Our Surroundings","Science - Is Matter Around Us Pure","Science - Atoms and Molecules","Science - Structure of the Atom","Science - Cell - Fundamental Unit of Life","Science - Tissues","Science - Diversity in Living Organisms","Science - Motion","Science - Force and Laws of Motion","Science - Gravitation","Science - Work and Energy","Science - Sound","Science - Why Do We Fall Ill","Science - Natural Resources","Math - Number Systems","Math - Polynomials","Math - Coordinate Geometry","Math - Linear Equations in Two Variables","Math - Introduction to Euclid's Geometry","Math - Lines and Angles","Math - Triangles","Math - Quadrilaterals","Math - Areas of Parallelograms and Triangles","Math - Circles","Math - Constructions","Math - Heron's Formula","Math - Surface Areas and Volumes","Math - Statistics","Math - Probability"],
+  "Class 10": ["Science - Chemical Reactions and Equations","Science - Acids, Bases and Salts","Science - Metals and Non-Metals","Science - Carbon and its Compounds","Science - Periodic Classification","Science - Life Processes","Science - Control and Coordination","Science - How Do Organisms Reproduce","Science - Heredity and Evolution","Science - Light - Reflection and Refraction","Science - Human Eye and Colourful World","Science - Electricity","Science - Magnetic Effects of Electric Current","Science - Our Environment","Math - Real Numbers","Math - Polynomials","Math - Pair of Linear Equations","Math - Quadratic Equations","Math - Arithmetic Progressions","Math - Triangles","Math - Coordinate Geometry","Math - Introduction to Trigonometry","Math - Applications of Trigonometry","Math - Circles","Math - Constructions","Math - Areas Related to Circles","Math - Surface Areas and Volumes","Math - Statistics","Math - Probability"],
+  "Class 11_Science": ["Physics - Units & Measurements","Physics - Motion in a Straight Line","Physics - Motion in a Plane","Physics - Laws of Motion","Physics - Work, Energy & Power","Physics - System of Particles & Rotational Motion","Physics - Gravitation","Physics - Mechanical Properties of Solids","Physics - Mechanical Properties of Fluids","Physics - Thermal Properties","Physics - Thermodynamics","Physics - Kinetic Theory","Physics - Oscillations","Physics - Waves","Chemistry - Basic Concepts of Chemistry","Chemistry - Structure of Atom","Chemistry - Classification of Elements","Chemistry - Chemical Bonding","Chemistry - States of Matter","Chemistry - Thermodynamics","Chemistry - Equilibrium","Chemistry - Redox Reactions","Chemistry - Hydrogen","Chemistry - s-Block Elements","Chemistry - p-Block Elements (Basic)","Chemistry - Organic Chemistry - Basic Principles","Chemistry - Hydrocarbons","Biology - Living World","Biology - Biological Classification","Biology - Plant Kingdom","Biology - Animal Kingdom","Biology - Morphology of Flowering Plants","Biology - Anatomy of Flowering Plants","Biology - Cell Structure","Biology - Biomolecules","Biology - Cell Cycle & Division","Math - Sets","Math - Relations & Functions","Math - Trigonometric Functions","Math - Principle of Mathematical Induction","Math - Complex Numbers & Quadratic Equations","Math - Linear Inequalities","Math - Permutations & Combinations","Math - Binomial Theorem","Math - Sequences & Series","Math - Straight Lines","Math - Conic Sections","Math - 3D Geometry - Intro","Math - Limits & Derivatives","Math - Statistics","Math - Probability"],
+  "Class 11_Math": ["Math - Sets","Math - Relations & Functions","Math - Trigonometric Functions","Math - Principle of Mathematical Induction","Math - Complex Numbers & Quadratic Equations","Math - Linear Inequalities","Math - Permutations & Combinations","Math - Binomial Theorem","Math - Sequences & Series","Math - Straight Lines","Math - Conic Sections","Math - Introduction to 3D Geometry","Math - Limits & Derivatives","Math - Mathematical Reasoning","Math - Statistics","Math - Probability"],
+  "Class 11_Agriculture": ["Agriculture - Agrometeorology & Climate","Agriculture - Soil Science & Soil Health","Agriculture - Genetics & Plant Breeding","Agriculture - Biochemistry & Microbiology","Agriculture - Crop Production - Kharif","Agriculture - Crop Production - Rabi","Agriculture - Horticulture - Fruits","Agriculture - Horticulture - Vegetables","Agriculture - Animal Husbandry - Cattle","Agriculture - Animal Husbandry - Poultry","Agriculture - Farm Management & Economics"],
+  "Class 11_Arts": ["History - Early Societies","History - Early Empires","History - Changing Traditions","Political Science - Indian Constitution","Political Science - Rights in the Indian Constitution","Political Science - Election & Representation","Geography - Physical Geography Basics","Geography - India - Physical Environment","Economics - Introduction to Economics","Economics - Collection & Presentation of Data","Economics - Statistical Tools","Sociology - Introducing Sociology","Sociology - Social Change","Psychology - Introduction to Psychology"],
+  "Class 12_Science": ["Physics - Electric Charges & Fields","Physics - Electrostatic Potential","Physics - Current Electricity","Physics - Moving Charges & Magnetism","Physics - Magnetism & Matter","Physics - Electromagnetic Induction","Physics - Alternating Current","Physics - Electromagnetic Waves","Physics - Ray Optics","Physics - Wave Optics","Physics - Dual Nature of Radiation","Physics - Atoms","Physics - Nuclei","Physics - Semiconductor Electronics","Chemistry - Solid State","Chemistry - Solutions","Chemistry - Electrochemistry","Chemistry - Chemical Kinetics","Chemistry - Surface Chemistry","Chemistry - General Principles of Isolation of Metals","Chemistry - p-Block Elements","Chemistry - d and f-Block Elements","Chemistry - Coordination Compounds","Chemistry - Haloalkanes & Haloarenes","Chemistry - Alcohols, Phenols & Ethers","Chemistry - Aldehydes, Ketones & Carboxylic Acids","Chemistry - Amines","Chemistry - Biomolecules","Chemistry - Polymers","Chemistry - Chemistry in Everyday Life","Biology - Reproduction in Organisms","Biology - Sexual Reproduction in Flowering Plants","Biology - Human Reproduction","Biology - Reproductive Health","Biology - Principles of Inheritance & Variation","Biology - Molecular Basis of Inheritance","Biology - Evolution","Biology - Human Health & Disease","Biology - Strategies for Enhancement of Food Production","Biology - Microbes in Human Welfare","Biology - Biotechnology - Principles & Processes","Biology - Biotechnology - Applications","Biology - Organisms & Populations","Biology - Ecosystem","Biology - Biodiversity & Conservation","Math - Relations & Functions","Math - Inverse Trigonometric Functions","Math - Matrices","Math - Determinants","Math - Continuity & Differentiability","Math - Application of Derivatives","Math - Integrals","Math - Application of Integrals","Math - Differential Equations","Math - Vector Algebra","Math - 3D Geometry","Math - Linear Programming","Math - Probability"],
+  "Class 12_Math": ["Math - Relations & Functions","Math - Inverse Trigonometric Functions","Math - Matrices","Math - Determinants","Math - Continuity & Differentiability","Math - Application of Derivatives","Math - Integrals","Math - Application of Integrals","Math - Differential Equations","Math - Vector Algebra","Math - Three Dimensional Geometry","Math - Linear Programming","Math - Probability"],
+  "Class 12_Agriculture": ["Agriculture - Crop Production & Management","Agriculture - Plant Nutrition & Soil Fertility","Agriculture - Plant Protection - Diseases & Pests","Agriculture - Farm Machinery & Technology","Agriculture - Irrigation & Water Management","Agriculture - Post Harvest Technology","Agriculture - Agricultural Economics & Marketing"],
+  "Class 12_Arts": ["History - Bricks, Beads & Bones","History - Kings, Farmers & Towns","History - Kinship, Caste & Class","History - Thinkers, Beliefs & Buildings","History - Through the Eyes of Travellers","History - Bhakti-Sufi Traditions","History - An Imperial Capital - Vijayanagara","History - Peasants, Zamindars & State","History - Colonialism & Countryside","History - Rebels & the Raj","History - Mahatma Gandhi & the Nationalist Movement","History - Framing the Constitution","Political Science - Cold War Era","Political Science - End of Bipolarity","Political Science - Contemporary South Asia","Political Science - International Organisations","Political Science - Security in Contemporary World","Political Science - Environment & Natural Resources","Political Science - Globalisation","Political Science - Challenges of Nation Building","Political Science - Era of One-Party Dominance","Political Science - Politics of Planned Development","Political Science - India's External Relations","Political Science - Challenges to Congress Dominance","Political Science - Crisis of Democratic Order","Political Science - Rise of Popular Movements","Political Science - Regional Aspirations","Political Science - Recent Developments in Indian Politics","Geography - Human Geography - Nature & Scope","Geography - People - Population","Geography - Human Activities","Geography - Transport, Communication & Trade","Geography - Human Settlements","Geography - Resources & Development","Geography - Water Resources","Geography - Agriculture","Geography - Mineral & Energy Resources","Geography - Manufacturing Industries","Geography - Planning & Sustainable Development","Economics - Macroeconomics - Introduction","Economics - National Income Accounting","Economics - Money & Banking","Economics - Determination of Income & Employment","Economics - Government Budget & Economy","Economics - Open Economy Macroeconomics","Economics - Indian Economy - Development Experience","Economics - Economic Reforms Since 1991","Economics - Agriculture","Economics - Industry & Services","Economics - Infrastructure","Economics - Sustainable Economic Development","Sociology - Indian Society - Introducing","Sociology - Demographic Structure","Sociology - Social Institutions - Continuity & Change","Sociology - Market as a Social Institution","Sociology - Pattern of Social Inequality","Sociology - Cultural Change","Sociology - Struggle for Development","Sociology - Environmental & Social Change","Sociology - Social Movements","Psychology - Variations in Psychological Attributes","Psychology - Self & Personality","Psychology - Meeting Life Challenges","Psychology - Psychological Disorders","Psychology - Therapeutic Approaches","Psychology - Attitude & Social Cognition","Psychology - Social Influence & Group Processes","Psychology - Psychology & Life","Psychology - Developing Psychological Skills"]
 };
 
 // PARTICLES
 (function(){
-  const c=document.getElementById('particles-canvas'),ctx=c.getContext('2d');
-  let p=[];
-  function r(){c.width=window.innerWidth;c.height=window.innerHeight;}
-  r(); window.addEventListener('resize',r);
-  for(let i=0;i<60;i++) p.push({x:Math.random()*window.innerWidth,y:Math.random()*window.innerHeight,r:Math.random()*1.5+0.3,dx:(Math.random()-0.5)*0.3,dy:(Math.random()-0.5)*0.3,a:Math.random()*0.5+0.1});
+  var c = document.getElementById('particles-canvas');
+  var ctx = c.getContext('2d');
+  var p = [];
+  function resize(){ c.width = window.innerWidth; c.height = window.innerHeight; }
+  resize();
+  window.addEventListener('resize', resize);
+  for(var i = 0; i < 60; i++){
+    p.push({x:Math.random()*window.innerWidth, y:Math.random()*window.innerHeight, r:Math.random()*1.5+0.3, dx:(Math.random()-0.5)*0.3, dy:(Math.random()-0.5)*0.3, a:Math.random()*0.5+0.1});
+  }
   function draw(){
     ctx.clearRect(0,0,c.width,c.height);
-    p.forEach(q=>{ctx.beginPath();ctx.arc(q.x,q.y,q.r,0,Math.PI*2);ctx.fillStyle=`rgba(180,130,0,${q.a*0.4})`;ctx.fill();q.x+=q.dx;q.y+=q.dy;if(q.x<0||q.x>c.width)q.dx*=-1;if(q.y<0||q.y>c.height)q.dy*=-1;});
+    for(var j=0;j<p.length;j++){
+      var q=p[j];
+      ctx.beginPath(); ctx.arc(q.x,q.y,q.r,0,Math.PI*2);
+      ctx.fillStyle='rgba(180,130,0,'+q.a*0.4+')'; ctx.fill();
+      q.x+=q.dx; q.y+=q.dy;
+      if(q.x<0||q.x>c.width) q.dx*=-1;
+      if(q.y<0||q.y>c.height) q.dy*=-1;
+    }
     requestAnimationFrame(draw);
   }
   draw();
 })();
 
-function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);}
-function showToast(msg,dur=2500){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),dur);}
+function showScreen(id){
+  var screens = document.querySelectorAll('.screen');
+  for(var i=0;i<screens.length;i++) screens[i].classList.remove('active');
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+}
 
-// CHAPTERS
+function showToast(msg, dur){
+  if(!dur) dur = 2500;
+  var t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(function(){ t.classList.remove('show'); }, dur);
+}
+
+// ===== SUBJECT-WISE CHAPTER DROPDOWN =====
 function updateChapters(){
-  const exam=document.getElementById('exam').value;
-  const sg=document.getElementById('stream-group');
-  const isHigh=exam==='Class 11'||exam==='Class 12';
-  sg.style.display=isHigh?'flex':'none';
-  let key=exam;
-  if(isHigh) key=exam+'_'+(document.getElementById('stream').value);
-  const chapters=SYLLABUS[key]||SYLLABUS[exam]||['General Topics'];
-  const sel=document.getElementById('chapter');
-  sel.innerHTML=chapters.map(c=>`<option value="${c}">${c}</option>`).join('');
+  var exam = document.getElementById('exam').value;
+  var sg = document.getElementById('stream-group');
+  var isHigh = (exam === 'Class 11' || exam === 'Class 12');
+  sg.style.display = isHigh ? 'flex' : 'none';
+
+  var key = exam;
+  if(isHigh) key = exam + '_' + document.getElementById('stream').value;
+
+  var chapters = SYLLABUS[key] || SYLLABUS[exam] || ['General Topics'];
+  var sel = document.getElementById('chapter');
+
+  // Subject-wise grouping
+  var groups = {};
+  var groupOrder = [];
+  for(var i=0; i<chapters.length; i++){
+    var c = chapters[i];
+    var subject = 'General';
+    var dashIdx = c.indexOf(' - ');
+    if(dashIdx !== -1) subject = c.substring(0, dashIdx).trim();
+    if(!groups[subject]){
+      groups[subject] = [];
+      groupOrder.push(subject);
+    }
+    groups[subject].push(c);
+  }
+
+  var html = '';
+  if(groupOrder.length <= 1){
+    // Single subject - flat list
+    for(var i=0; i<chapters.length; i++){
+      html += '<option value="' + chapters[i] + '">' + chapters[i] + '</option>';
+    }
+  } else {
+    // Multiple subjects - use optgroup
+    for(var s=0; s<groupOrder.length; s++){
+      var subj = groupOrder[s];
+      html += '<optgroup label="[ ' + subj + ' ]">';
+      var items = groups[subj];
+      for(var k=0; k<items.length; k++){
+        var item = items[k];
+        var dashI = item.indexOf(' - ');
+        var label = dashI !== -1 ? item.substring(dashI + 3) : item;
+        html += '<option value="' + item + '">' + label + '</option>';
+      }
+      html += '</optgroup>';
+    }
+  }
+  sel.innerHTML = html;
 }
 updateChapters();
 
-// QUIZ STATE
-let Q={questions:[],current:0,answers:[],score:0,skipped:0,totalTime:0,timerInt:null,timeLeft:0,name:'',exam:'',chapter:'',diff:'',lang:'',qcount:10};
+// ===== QUIZ STATE =====
+var Q = {questions:[],current:0,answers:[],score:0,skipped:0,totalTime:0,timerInt:null,timeLeft:0,name:'',exam:'',chapter:'',diff:'',lang:'',qcount:10};
 
 async function startQuiz(){
-  const name=document.getElementById('studentName').value.trim();
-  if(!name){showToast('⚠ कृपया नाम लिखो!');return;}
-  Q.name=name; Q.exam=document.getElementById('exam').value;
-  Q.chapter=document.getElementById('chapter').value;
-  Q.diff=document.getElementById('difficulty').value;
-  Q.lang=document.getElementById('language').value;
-  Q.qcount=parseInt(document.getElementById('qcount').value);
-  Q.questions=[];Q.current=0;Q.answers=[];Q.score=0;Q.skipped=0;
-  Q.totalTime=Q.qcount*60;
+  var name = document.getElementById('studentName').value.trim();
+  if(!name){ showToast('Please apna naam likho!'); return; }
+  Q.name = name;
+  Q.exam = document.getElementById('exam').value;
+  Q.chapter = document.getElementById('chapter').value;
+  Q.diff = document.getElementById('difficulty').value;
+  Q.lang = document.getElementById('language').value;
+  Q.qcount = parseInt(document.getElementById('qcount').value);
+  Q.questions = []; Q.current = 0; Q.answers = []; Q.score = 0; Q.skipped = 0;
+  Q.totalTime = Q.qcount * 60;
   showScreen('screen-quiz');
-  document.getElementById('quiz-chapter-tag').textContent=Q.chapter;
-  updateProgress(); setLoading(true);
+  document.getElementById('quiz-chapter-tag').textContent = Q.chapter;
+  updateProgress();
+  setLoading(true);
   try{
-    const url=`${APPS_SCRIPT_URL}?action=getQuestions&chapter=${encodeURIComponent(Q.chapter)}&difficulty=${encodeURIComponent(Q.diff)}&language=${encodeURIComponent(Q.lang)}&count=${Q.qcount}&exam=${encodeURIComponent(Q.exam)}&t=${Date.now()}`;
-    const res=await fetch(url);
-    const data=await res.json();
-    if(data.questions&&data.questions.length>0){
-      Q.questions=data.questions;
-      setLoading(false);renderQuestion();startTimer();
-    }else{showToast('❌ Questions load नहीं हुए।');showScreen('screen-login');}
-  }catch(e){showToast('❌ Network error। Internet check करो।');showScreen('screen-login');}
+    var url = APPS_SCRIPT_URL + '?action=getQuestions&chapter=' + encodeURIComponent(Q.chapter) + '&difficulty=' + encodeURIComponent(Q.diff) + '&language=' + encodeURIComponent(Q.lang) + '&count=' + Q.qcount + '&exam=' + encodeURIComponent(Q.exam) + '&t=' + Date.now();
+    var res = await fetch(url);
+    var data = await res.json();
+    if(data.questions && data.questions.length > 0){
+      Q.questions = data.questions;
+      setLoading(false); renderQuestion(); startTimer();
+    } else {
+      showToast('Questions load nahi hue.'); showScreen('screen-login');
+    }
+  } catch(e){
+    showToast('Network error. Internet check karo.'); showScreen('screen-login');
+  }
 }
 
 function setLoading(v){
-  if(v){document.getElementById('q-text').innerHTML='<div class="loading-dots"><span></span><span></span><span></span></div> AI Questions Generate हो रहे हैं...';document.getElementById('options-grid').innerHTML='';document.getElementById('btn-next').disabled=true;}
+  if(v){
+    document.getElementById('q-text').innerHTML = '<div class="loading-dots"><span></span><span></span><span></span></div> AI Questions Generate ho rahe hain...';
+    document.getElementById('options-grid').innerHTML = '';
+    document.getElementById('btn-next').disabled = true;
+  }
 }
 
 function renderQuestion(){
-  const q=Q.questions[Q.current];if(!q)return;
-  document.getElementById('q-num').textContent='QUESTION '+String(Q.current+1).padStart(2,'0');
-  document.getElementById('q-text').textContent=q.question;
+  var q = Q.questions[Q.current];
+  if(!q) return;
+  document.getElementById('q-num').textContent = 'QUESTION ' + String(Q.current+1).padStart(2,'0');
+  document.getElementById('q-text').textContent = q.question;
   document.getElementById('explanation-box').classList.remove('show');
-  document.getElementById('btn-next').disabled=true;
+  document.getElementById('btn-next').disabled = true;
 
-  // PASSAGE — Reading Comprehension के लिए
-  const passageBox=document.getElementById('passage-box');
-  const passageText=document.getElementById('passage-text');
-  if(q.passage && q.passage.trim().length>10){
-    passageText.textContent=q.passage;
+  var passageBox = document.getElementById('passage-box');
+  var passageText = document.getElementById('passage-text');
+  if(q.passage && q.passage.trim().length > 10){
+    passageText.textContent = q.passage;
     passageBox.classList.add('show');
   } else {
     passageBox.classList.remove('show');
-    passageText.textContent='';
+    passageText.textContent = '';
   }
 
   updateProgress();
-  const og=document.getElementById('options-grid');og.innerHTML='';
-  ['A','B','C','D'].forEach((k,i)=>{
-    const b=document.createElement('button');b.className='option-btn';
-    b.innerHTML='<span class="option-key">'+k+'</span><span>'+q.options[i]+'</span>';
-    b.onclick=()=>selectAnswer(i,b);og.appendChild(b);
-  });
+  var og = document.getElementById('options-grid');
+  og.innerHTML = '';
+  var keys = ['A','B','C','D'];
+  for(var i=0; i<4; i++){
+    (function(idx){
+      var b = document.createElement('button');
+      b.className = 'option-btn';
+      b.innerHTML = '<span class="option-key">' + keys[idx] + '</span><span>' + q.options[idx] + '</span>';
+      b.onclick = function(){ selectAnswer(idx, b); };
+      og.appendChild(b);
+    })(i);
+  }
 }
 
-function selectAnswer(idx,btn){
-  const q=Q.questions[Q.current];
-  const btns=document.querySelectorAll('.option-btn');
-  btns.forEach(b=>b.disabled=true);
-  const ci=(q.correctIndex!==undefined)?parseInt(q.correctIndex):(q.correct!==undefined?parseInt(q.correct):0);
-  if(idx===ci){btn.classList.add('correct');Q.answers[Q.current]=true;Q.score++;}
-  else{btn.classList.add('wrong');btns[ci].classList.add('correct');Q.answers[Q.current]=false;}
-  if(q.explanation){document.getElementById('explanation-text').textContent=q.explanation;document.getElementById('explanation-box').classList.add('show');}
-  document.getElementById('btn-next').disabled=false;
+function selectAnswer(idx, btn){
+  var q = Q.questions[Q.current];
+  var btns = document.querySelectorAll('.option-btn');
+  for(var i=0;i<btns.length;i++) btns[i].disabled = true;
+  var ci = (q.correctIndex !== undefined) ? parseInt(q.correctIndex) : (q.correct !== undefined ? parseInt(q.correct) : 0);
+  if(idx === ci){
+    btn.classList.add('correct'); Q.answers[Q.current] = true; Q.score++;
+  } else {
+    btn.classList.add('wrong'); btns[ci].classList.add('correct'); Q.answers[Q.current] = false;
+  }
+  if(q.explanation){
+    document.getElementById('explanation-text').textContent = q.explanation;
+    document.getElementById('explanation-box').classList.add('show');
+  }
+  document.getElementById('btn-next').disabled = false;
 }
 
-function nextQuestion(){if(Q.current<Q.questions.length-1){Q.current++;renderQuestion();}else endQuiz();}
-function skipQuestion(){Q.answers[Q.current]='skip';Q.skipped++;if(Q.current<Q.questions.length-1){Q.current++;renderQuestion();}else endQuiz();}
-function goBack(){if(Q.current>0){Q.current--;renderQuestion();}}
+function nextQuestion(){ if(Q.current < Q.questions.length-1){ Q.current++; renderQuestion(); } else endQuiz(); }
+function skipQuestion(){ Q.answers[Q.current]='skip'; Q.skipped++; if(Q.current < Q.questions.length-1){ Q.current++; renderQuestion(); } else endQuiz(); }
+function goBack(){ if(Q.current > 0){ Q.current--; renderQuestion(); } }
 
 function updateProgress(){
-  const t=Q.qcount,c=Q.current+1,p=Math.round(((c-1)/t)*100);
-  document.getElementById('progress-fill').style.width=p+'%';
-  document.getElementById('progress-label-left').textContent=`Q ${c} of ${t}`;
-  document.getElementById('progress-label-right').textContent=p+'%';
+  var t = Q.qcount, c = Q.current+1, pct = Math.round(((c-1)/t)*100);
+  document.getElementById('progress-fill').style.width = pct+'%';
+  document.getElementById('progress-label-left').textContent = 'Q '+c+' of '+t;
+  document.getElementById('progress-label-right').textContent = pct+'%';
 }
 
 function startTimer(){
-  Q.timeLeft=Q.totalTime;updateTimerUI();
-  Q.timerInt=setInterval(()=>{Q.timeLeft--;updateTimerUI();if(Q.timeLeft<=0){clearInterval(Q.timerInt);endQuiz();}},1000);
+  Q.timeLeft = Q.totalTime; updateTimerUI();
+  Q.timerInt = setInterval(function(){
+    Q.timeLeft--; updateTimerUI();
+    if(Q.timeLeft <= 0){ clearInterval(Q.timerInt); endQuiz(); }
+  }, 1000);
 }
+
 function updateTimerUI(){
-  const t=Q.timeLeft,m=Math.floor(t/60),s=t%60;
-  const txt=document.getElementById('timer-text'),ring=document.getElementById('timer-ring');
-  txt.textContent=m>0?`${m}:${String(s).padStart(2,'0')}`:`${s}s`;
-  ring.style.strokeDashoffset=163.4*(1-t/Q.totalTime);
-  const d=t<=10;txt.className='timer-text'+(d?' danger':'');ring.className='timer-ring'+(d?' danger':'');
+  var t = Q.timeLeft, m = Math.floor(t/60), s = t%60;
+  var txt = document.getElementById('timer-text'), ring = document.getElementById('timer-ring');
+  txt.textContent = m > 0 ? m+':'+String(s).padStart(2,'0') : s+'s';
+  ring.style.strokeDashoffset = 163.4*(1-t/Q.totalTime);
+  var d = t<=10;
+  txt.className = 'timer-text'+(d?' danger':'');
+  ring.className = 'timer-ring'+(d?' danger':'');
 }
 
 function endQuiz(){
   clearInterval(Q.timerInt);
-  const tot=Q.questions.length,cor=Q.score,wr=tot-cor-Q.skipped,pct=Math.round((cor/tot)*100);
+  var tot = Q.questions.length, cor = Q.score, wr = tot-cor-Q.skipped, pct = Math.round((cor/tot)*100);
   showScreen('screen-result');
-  document.getElementById('trophy-icon').textContent=pct>=80?'🏆':pct>=50?'⭐':'💪';
-  document.getElementById('result-title').textContent=pct>=80?'Excellent Performance!':pct>=50?'Good Effort!':'Keep Practicing!';
-  document.getElementById('result-subtitle').textContent=`${Q.name} — ${Q.chapter}`;
-  document.getElementById('score-pct').textContent=pct+'%';
-  setTimeout(()=>{document.getElementById('score-ring-fill').style.strokeDashoffset=364.4*(1-pct/100);},200);
-  document.getElementById('stat-correct').textContent=cor;
-  document.getElementById('stat-wrong').textContent=wr;
-  document.getElementById('stat-skip').textContent=Q.skipped;
-  let bi,bt,bs;
-  if(pct>=80){bi='🥇';bt='GOLD CHAMPION';bs='Outstanding! तुमने कमाल किया!';}
-  else if(pct>=60){bi='🥈';bt='SILVER PERFORMER';bs='अच्छा किया! थोड़ी और practice करो.';}
-  else if(pct>=40){bi='🥉';bt='BRONZE ACHIEVER';bs='मेहनत जारी रखो!';}
-  else{bi='📚';bt='KEEP LEARNING';bs='और पढ़ो, success मिलेगी!';}
-  document.getElementById('badge-icon').textContent=bi;
-  document.getElementById('badge-title').textContent=bt;
-  document.getElementById('badge-sub').textContent=bs;
-  if(pct<50){document.getElementById('weak-text').textContent=`${Q.chapter} — इस chapter में और practice करो।`;document.getElementById('weak-alert').classList.add('show');}
-  saveResult(cor,tot,pct);
+  document.getElementById('trophy-icon').textContent = pct>=80?'&#127942;':pct>=50?'&#11088;':'&#128170;';
+  document.getElementById('result-title').textContent = pct>=80?'Excellent Performance!':pct>=50?'Good Effort!':'Keep Practicing!';
+  document.getElementById('result-subtitle').textContent = Q.name+' — '+Q.chapter;
+  document.getElementById('score-pct').textContent = pct+'%';
+  setTimeout(function(){ document.getElementById('score-ring-fill').style.strokeDashoffset = 364.4*(1-pct/100); }, 200);
+  document.getElementById('stat-correct').textContent = cor;
+  document.getElementById('stat-wrong').textContent = wr;
+  document.getElementById('stat-skip').textContent = Q.skipped;
+  var bi,bt,bs;
+  if(pct>=80){ bi='&#129351;'; bt='GOLD CHAMPION'; bs='Outstanding! Tumne kamaal kiya!'; }
+  else if(pct>=60){ bi='&#129352;'; bt='SILVER PERFORMER'; bs='Accha kiya! Thodi aur practice karo.'; }
+  else if(pct>=40){ bi='&#129353;'; bt='BRONZE ACHIEVER'; bs='Mehnat jaari rakho!'; }
+  else { bi='&#128218;'; bt='KEEP LEARNING'; bs='Aur padho, success milegi!'; }
+  document.getElementById('badge-icon').innerHTML = bi;
+  document.getElementById('badge-title').textContent = bt;
+  document.getElementById('badge-sub').textContent = bs;
+  if(pct < 50){
+    document.getElementById('weak-text').textContent = Q.chapter+' — is chapter mein aur practice karo.';
+    document.getElementById('weak-alert').classList.add('show');
+  }
+  saveResult(cor, tot, pct);
 }
 
-async function saveResult(cor,tot,pct){
-  try{const p=new URLSearchParams({action:'saveResult',name:Q.name,exam:Q.exam,chapter:Q.chapter,difficulty:Q.diff,language:Q.lang,correct:cor,total:tot,score:pct});await fetch(`${APPS_SCRIPT_URL}?${p}`);}catch(e){}
+async function saveResult(cor, tot, pct){
+  try{
+    var p = new URLSearchParams({action:'saveResult',name:Q.name,exam:Q.exam,chapter:Q.chapter,difficulty:Q.diff,language:Q.lang,correct:cor,total:tot,score:pct});
+    await fetch(APPS_SCRIPT_URL+'?'+p);
+  } catch(e){}
 }
-function retryQuiz(){showScreen('screen-login');}
+
+function retryQuiz(){ showScreen('screen-login'); }
+
 function shareWhatsApp(){
-  const pct=document.getElementById('score-pct').textContent;
-  const msg=`🎯 Science Junction Quiz Result!\n👤 ${Q.name}\n📚 ${Q.chapter}\n⚡ Difficulty: ${Q.diff}\n🏆 Score: ${pct}\n✅ Correct: ${Q.score}/${Q.questions.length}\n\n🔗 Try: https://killermeo.github.io/science-junction`;
-  window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`,'_blank');
+  var pct = document.getElementById('score-pct').textContent;
+  var msg = 'Science Junction Quiz Result!\nName: '+Q.name+'\nChapter: '+Q.chapter+'\nDifficulty: '+Q.diff+'\nScore: '+pct+'\nCorrect: '+Q.score+'/'+Q.questions.length+'\n\nTry: https://killermeo.github.io/science-junction';
+  window.open('https://wa.me/?text='+encodeURIComponent(msg), '_blank');
 }
 
 // LEADERBOARD
 async function loadLeaderboard(){
-  document.getElementById('lb-loading').style.display='block';
-  document.getElementById('lb-table').style.display='none';
+  document.getElementById('lb-loading').style.display = 'block';
+  document.getElementById('lb-table').style.display = 'none';
   try{
-    const res=await fetch(`${APPS_SCRIPT_URL}?action=getLeaderboard&t=${Date.now()}`);
-    const data=await res.json();
-    const body=document.getElementById('lb-body');body.innerHTML='';
-    if(data.leaderboard&&data.leaderboard.length){
-      data.leaderboard.slice(0,20).forEach((r,i)=>{
-        const rc=i===0?'gold':i===1?'silver':i===2?'bronze':'';
-        const m=i===0?'🥇':i===1?'🥈':i===2?'🥉':'';
-        body.innerHTML+=`<tr><td><span class="lb-rank ${rc}">${m||i+1}</span></td><td>${r.name}</td><td>${r.exam||''}</td><td style="color:var(--gold);font-family:'Orbitron',sans-serif;font-weight:700;">${r.score}%</td><td style="color:var(--text2);font-size:12px;">${r.date||''}</td></tr>`;
-      });
-      document.getElementById('lb-loading').style.display='none';
-      document.getElementById('lb-table').style.display='table';
-    }else{document.getElementById('lb-loading').textContent='अभी कोई data नहीं है।';}
-  }catch(e){document.getElementById('lb-loading').textContent='Error loading leaderboard.';}
+    var res = await fetch(APPS_SCRIPT_URL+'?action=getLeaderboard&t='+Date.now());
+    var data = await res.json();
+    var body = document.getElementById('lb-body');
+    body.innerHTML = '';
+    if(data.leaderboard && data.leaderboard.length){
+      var lb = data.leaderboard.slice(0,20);
+      for(var i=0;i<lb.length;i++){
+        var r = lb[i];
+        var rc = i===0?'gold':i===1?'silver':i===2?'bronze':'';
+        var m = i===0?'&#129351;':i===1?'&#129352;':i===2?'&#129353;':'';
+        body.innerHTML += '<tr><td><span class="lb-rank '+rc+'">'+(m||i+1)+'</span></td><td>'+r.name+'</td><td>'+(r.exam||'')+'</td><td style="color:var(--gold);font-family:Orbitron,sans-serif;font-weight:700;">'+r.score+'%</td><td style="color:var(--text2);font-size:12px;">'+(r.date||'')+'</td></tr>';
+      }
+      document.getElementById('lb-loading').style.display = 'none';
+      document.getElementById('lb-table').style.display = 'table';
+    } else {
+      document.getElementById('lb-loading').textContent = 'Abhi koi data nahi hai.';
+    }
+  } catch(e){
+    document.getElementById('lb-loading').textContent = 'Error loading leaderboard.';
+  }
 }
 
 // TEACHER
-function teacherLogin(){const pwd=document.getElementById('teacher-pwd').value;if(pwd===TEACHER_PWD){showScreen('screen-dashboard');loadDashboard();}else showToast('❌ Wrong password!');}
+function teacherLogin(){
+  var pwd = document.getElementById('teacher-pwd').value;
+  if(pwd === TEACHER_PWD){ showScreen('screen-dashboard'); loadDashboard(); }
+  else showToast('Wrong password!');
+}
 
-function switchTab(tabId,idx){
-  document.querySelectorAll('.dash-tab').forEach((t,i)=>t.classList.toggle('active',i===idx));
-  document.querySelectorAll('.dash-panel').forEach(p=>p.classList.toggle('active',p.id===tabId));
+function switchTab(tabId, idx){
+  var tabs = document.querySelectorAll('.dash-tab');
+  for(var i=0;i<tabs.length;i++) tabs[i].classList.toggle('active', i===idx);
+  var panels = document.querySelectorAll('.dash-panel');
+  for(var i=0;i<panels.length;i++) panels[i].classList.toggle('active', panels[i].id===tabId);
   if(tabId==='tab-results') loadDashboard();
   if(tabId==='tab-dailytest') loadCurrentDailyTest();
 }
 
-// ===== DAILY TEST FUNCTIONS =====
-
+// ===== DAILY TEST =====
 function publishDailyTest(){
-  const title    = document.getElementById('dt-title').value.trim();
-  const subject  = document.getElementById('dt-subject').value.trim();
-  const exam     = document.getElementById('dt-exam').value;
-  const time     = document.getElementById('dt-time').value;
-  const qjson    = document.getElementById('dt-questions-json').value.trim();
-  const status   = document.getElementById('dt-status');
+  var title = document.getElementById('dt-title').value.trim();
+  var subject = document.getElementById('dt-subject').value.trim();
+  var exam = document.getElementById('dt-exam').value;
+  var time = document.getElementById('dt-time').value;
+  var qjson = document.getElementById('dt-questions-json').value.trim();
+  var status = document.getElementById('dt-status');
 
-  if(!title){showToast('⚠ Test का नाम लिखो!');return;}
-  if(!qjson){showToast('⚠ Questions JSON paste करो!');return;}
+  if(!title){ showToast('Test ka naam likho!'); return; }
+  if(!qjson){ showToast('Questions JSON paste karo!'); return; }
 
-  let questions=[];
+  var questions = [];
   try{
-    questions=JSON.parse(qjson);
-    if(!Array.isArray(questions)||questions.length===0) throw new Error('Empty');
-  }catch(e){
-    status.style.display='block';status.style.background='rgba(192,57,43,0.1)';status.style.color='var(--red)';
-    status.textContent='❌ JSON format गलत है। PDF से Generate के बाद questions copy करो।';
+    questions = JSON.parse(qjson);
+    if(!Array.isArray(questions) || questions.length===0) throw new Error('Empty');
+  } catch(e){
+    status.style.display='block'; status.style.background='rgba(192,57,43,0.1)'; status.style.color='var(--red)';
+    status.textContent='JSON format galat hai. PDF se Generate ke baad questions copy karo.';
     return;
   }
 
-  const test={
-    title,subject,exam,
-    timeLimit:parseInt(time),
-    questions,
-    date: new Date().toLocaleDateString('hi-IN'),
-    publishedAt: Date.now()
-  };
-
+  var test = {title:title, subject:subject, exam:exam, timeLimit:parseInt(time), questions:questions, date:new Date().toLocaleDateString('hi-IN'), publishedAt:Date.now()};
   localStorage.setItem('science_junction_daily_test', JSON.stringify(test));
-
-  status.style.display='block';status.style.background='rgba(26,122,74,0.1)';status.style.color='var(--green)';
-  status.textContent='✅ Test publish हो गया! Students को Login screen पर दिखेगा।';
-
+  status.style.display='block'; status.style.background='rgba(26,122,74,0.1)'; status.style.color='var(--green)';
+  status.textContent='Test publish ho gaya! Students ko Login screen par dikhega.';
   loadCurrentDailyTest();
-  loadStudentDailyTest(); // student screen update
-  showToast('✅ Daily Test published!');
+  loadStudentDailyTest();
+  showToast('Daily Test published!');
 }
 
 function clearDailyTest(){
-  if(!confirm('क्या आप current Daily Test हटाना चाहते हैं?')) return;
+  if(!confirm('Kya aap current Daily Test hatana chahte hain?')) return;
   localStorage.removeItem('science_junction_daily_test');
   loadCurrentDailyTest();
   loadStudentDailyTest();
-  showToast('🗑 Daily Test हटा दिया।');
+  showToast('Daily Test hata diya.');
 }
 
 function loadCurrentDailyTest(){
-  const wrap=document.getElementById('dt-current-wrap');
+  var wrap = document.getElementById('dt-current-wrap');
   if(!wrap) return;
-  const raw=localStorage.getItem('science_junction_daily_test');
-  if(!raw){
-    wrap.innerHTML='<div class="dt-no-test">📭 अभी कोई Active Test नहीं है।</div>';
-    return;
-  }
+  var raw = localStorage.getItem('science_junction_daily_test');
+  if(!raw){ wrap.innerHTML='<div class="dt-no-test">Abhi koi Active Test nahi hai.</div>'; return; }
   try{
-    const t=JSON.parse(raw);
-    wrap.innerHTML=`
-      <div class="section-title">✅ Active Test</div>
-      <div class="daily-test-banner">
-        <div class="dt-badge">ACTIVE TEST</div>
-        <div class="dt-title">${t.title}</div>
-        <div class="dt-meta">
-          <span>📚 ${t.subject||'-'}</span>
-          <span>👥 ${t.exam}</span>
-          <span>⏱ ${t.timeLimit} min</span>
-          <span>❓ ${t.questions.length} questions</span>
-          <span>📅 ${t.date}</span>
-        </div>
-      </div>`;
-  }catch(e){wrap.innerHTML='';}
+    var t = JSON.parse(raw);
+    wrap.innerHTML = '<div class="section-title">Active Test</div><div class="daily-test-banner"><div class="dt-badge">ACTIVE TEST</div><div class="dt-title">'+t.title+'</div><div class="dt-meta"><span>Subject: '+(t.subject||'-')+'</span><span>Exam: '+t.exam+'</span><span>Time: '+t.timeLimit+' min</span><span>Questions: '+t.questions.length+'</span><span>Date: '+t.date+'</span></div></div>';
+  } catch(e){ wrap.innerHTML=''; }
 }
 
 function loadStudentDailyTest(){
-  const wrap=document.getElementById('daily-test-student-wrap');
+  var wrap = document.getElementById('daily-test-student-wrap');
   if(!wrap) return;
-  const raw=localStorage.getItem('science_junction_daily_test');
+  var raw = localStorage.getItem('science_junction_daily_test');
   if(!raw){ wrap.innerHTML=''; return; }
   try{
-    const t=JSON.parse(raw);
-    // सिर्फ आज का test दिखाओ (24 hours)
+    var t = JSON.parse(raw);
     if(Date.now()-t.publishedAt > 24*60*60*1000){ wrap.innerHTML=''; return; }
-    wrap.innerHTML=`
-      <div class="daily-test-banner" style="margin-top:0;margin-bottom:4px;">
-        <div class="dt-badge">📅 आज का TEST</div>
-        <button class="dt-start-btn" onclick="startDailyTest()">▶ TEST दो</button>
-        <div class="dt-title">${t.title}</div>
-        <div class="dt-meta">
-          <span>📚 ${t.subject||'-'}</span>
-          <span>👥 ${t.exam}</span>
-          <span>⏱ ${t.timeLimit} min</span>
-          <span>❓ ${t.questions.length} Questions</span>
-        </div>
-      </div>`;
-  }catch(e){wrap.innerHTML='';}
+    wrap.innerHTML = '<div class="daily-test-banner" style="margin-top:0;margin-bottom:4px;"><div class="dt-badge">Aaj ka TEST</div><button class="dt-start-btn" onclick="startDailyTest()">TEST do</button><div class="dt-title">'+t.title+'</div><div class="dt-meta"><span>Subject: '+(t.subject||'-')+'</span><span>Exam: '+t.exam+'</span><span>Time: '+t.timeLimit+' min</span><span>Questions: '+t.questions.length+'</span></div></div>';
+  } catch(e){ wrap.innerHTML=''; }
 }
 
 function startDailyTest(){
-  const name=document.getElementById('studentName').value.trim();
-  if(!name){showToast('⚠ पहले अपना नाम लिखो!');document.getElementById('studentName').focus();return;}
-  const raw=localStorage.getItem('science_junction_daily_test');
-  if(!raw){showToast('❌ कोई Daily Test available नहीं है।');return;}
-  const t=JSON.parse(raw);
-  Q.questions=t.questions;
-  Q.name=name;
-  Q.exam=t.exam;
-  Q.chapter=t.subject||t.title;
-  Q.diff='Mix';
-  Q.lang=document.getElementById('language').value;
-  Q.qcount=t.questions.length;
-  Q.current=0;Q.answers=[];Q.score=0;Q.skipped=0;
-  Q.totalTime=t.timeLimit*60;
+  var name = document.getElementById('studentName').value.trim();
+  if(!name){ showToast('Pehle apna naam likho!'); document.getElementById('studentName').focus(); return; }
+  var raw = localStorage.getItem('science_junction_daily_test');
+  if(!raw){ showToast('Koi Daily Test available nahi hai.'); return; }
+  var t = JSON.parse(raw);
+  Q.questions = t.questions; Q.name = name; Q.exam = t.exam;
+  Q.chapter = t.subject||t.title; Q.diff = 'Mix';
+  Q.lang = document.getElementById('language').value;
+  Q.qcount = t.questions.length; Q.current = 0; Q.answers = []; Q.score = 0; Q.skipped = 0;
+  Q.totalTime = t.timeLimit * 60;
   showScreen('screen-quiz');
-  document.getElementById('quiz-chapter-tag').textContent='📅 '+t.title;
-  updateProgress();renderQuestion();startTimer();
+  document.getElementById('quiz-chapter-tag').textContent = 'Daily Test: '+t.title;
+  updateProgress(); renderQuestion(); startTimer();
 }
 
-// Page load पर student test check करो
 loadStudentDailyTest();
 
 async function loadDashboard(){
-  const ef=document.getElementById('dash-filter-exam').value,df=document.getElementById('dash-filter-diff').value;
-  document.getElementById('dash-loading').style.display='block';
-  document.getElementById('dash-table').style.display='none';
+  var ef = document.getElementById('dash-filter-exam').value;
+  var df = document.getElementById('dash-filter-diff').value;
+  document.getElementById('dash-loading').style.display = 'block';
+  document.getElementById('dash-table').style.display = 'none';
   try{
-    const res=await fetch(`${APPS_SCRIPT_URL}?action=getAllResults&t=${Date.now()}`);
-    const data=await res.json();
-    let rows=data.results||[];
-    if(ef) rows=rows.filter(r=>r.exam===ef);
-    if(df) rows=rows.filter(r=>r.difficulty===df);
-    const body=document.getElementById('dash-body');body.innerHTML='';
-    rows.forEach(r=>{
-      const sc=r.score>=80?'var(--green)':r.score>=50?'var(--gold)':'var(--red)';
-      body.innerHTML+=`<tr><td>${r.name}</td><td>${r.exam||''}</td><td>${r.chapter||''}</td><td>${r.difficulty||''}</td><td style="color:${sc};font-weight:700;">${r.score}%</td><td style="font-size:12px;color:var(--text2);">${r.date||''}</td></tr>`;
-    });
-    document.getElementById('dash-loading').style.display='none';
-    document.getElementById('dash-table').style.display='table';
-  }catch(e){document.getElementById('dash-loading').textContent='Error loading data.';}
+    var res = await fetch(APPS_SCRIPT_URL+'?action=getAllResults&t='+Date.now());
+    var data = await res.json();
+    var rows = data.results||[];
+    if(ef) rows = rows.filter(function(r){ return r.exam===ef; });
+    if(df) rows = rows.filter(function(r){ return r.difficulty===df; });
+    var body = document.getElementById('dash-body');
+    body.innerHTML = '';
+    for(var i=0;i<rows.length;i++){
+      var r = rows[i];
+      var sc = r.score>=80?'var(--green)':r.score>=50?'var(--gold)':'var(--red)';
+      body.innerHTML += '<tr><td>'+r.name+'</td><td>'+(r.exam||'')+'</td><td>'+(r.chapter||'')+'</td><td>'+(r.difficulty||'')+'</td><td style="color:'+sc+';font-weight:700;">'+r.score+'%</td><td style="font-size:12px;color:var(--text2);">'+(r.date||'')+'</td></tr>';
+    }
+    document.getElementById('dash-loading').style.display = 'none';
+    document.getElementById('dash-table').style.display = 'table';
+  } catch(e){
+    document.getElementById('dash-loading').textContent = 'Error loading data.';
+  }
 }
 
 function exportCSV(){
-  const rows=document.querySelectorAll('#dash-body tr');
-  let csv='Name,Exam,Chapter,Difficulty,Score,Date\n';
-  rows.forEach(r=>{csv+=[...r.querySelectorAll('td')].map(c=>c.textContent.trim()).join(',')+'\n';});
-  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));a.download='results.csv';a.click();
+  var rows = document.querySelectorAll('#dash-body tr');
+  var csv = 'Name,Exam,Chapter,Difficulty,Score,Date\n';
+  for(var i=0;i<rows.length;i++){
+    var cells = rows[i].querySelectorAll('td');
+    var rowData = [];
+    for(var j=0;j<cells.length;j++) rowData.push(cells[j].textContent.trim());
+    csv += rowData.join(',') + '\n';
+  }
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([csv],{type:'text/csv'}));
+  a.download = 'results.csv';
+  a.click();
 }
 
 // PDF UPLOAD
-let pdfText='',generatedQuestions=[];
+var pdfText = '';
+var generatedQuestions = [];
 
-// PDF.js load करो — proper text extraction के लिए
 (function(){
-  const s=document.createElement('script');
-  s.src='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
-  s.onload=()=>{ if(window.pdfjsLib) pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js'; };
+  var s = document.createElement('script');
+  s.src = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
+  s.onload = function(){
+    if(window.pdfjsLib) pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+  };
   document.head.appendChild(s);
 })();
 
-const dropArea=document.getElementById('pdf-drop-area');
-dropArea.addEventListener('dragover',e=>{e.preventDefault();dropArea.classList.add('drag-over');});
-dropArea.addEventListener('dragleave',()=>dropArea.classList.remove('drag-over'));
-dropArea.addEventListener('drop',e=>{e.preventDefault();dropArea.classList.remove('drag-over');const f=e.dataTransfer.files[0];if(f)processPDF(f);});
-function handlePDFSelect(input){const f=input.files[0];if(f)processPDF(f);}
+var dropArea = document.getElementById('pdf-drop-area');
+dropArea.addEventListener('dragover', function(e){ e.preventDefault(); dropArea.classList.add('drag-over'); });
+dropArea.addEventListener('dragleave', function(){ dropArea.classList.remove('drag-over'); });
+dropArea.addEventListener('drop', function(e){ e.preventDefault(); dropArea.classList.remove('drag-over'); var f=e.dataTransfer.files[0]; if(f) processPDF(f); });
 
-// Manual topic use करो
+function handlePDFSelect(input){ var f = input.files[0]; if(f) processPDF(f); }
+
 function useManualTopic(){
-  const t=document.getElementById('manual-topic').value.trim();
-  if(!t){showToast('⚠ Topic लिखो!');return;}
-  pdfText=t;  // topic text store करो
-  const status=document.getElementById('pdf-status');
-  status.style.display='block';
-  status.style.color='var(--green)';
-  status.textContent='✅ Topic ready है! नीचे settings set करो और Generate button दबाओ।';
-  document.getElementById('pdf-settings').style.display='block';
+  var t = document.getElementById('manual-topic').value.trim();
+  if(!t){ showToast('Topic likho!'); return; }
+  pdfText = t;
+  var status = document.getElementById('pdf-status');
+  status.style.display = 'block'; status.style.color = 'var(--green)';
+  status.textContent = 'Topic ready hai! Niche settings set karo aur Generate button dabao.';
+  document.getElementById('pdf-settings').style.display = 'block';
   document.getElementById('pdf-settings').scrollIntoView({behavior:'smooth'});
 }
 
 async function processPDF(file){
-  if(file.type!=='application/pdf'){showToast('❌ सिर्फ PDF file चलेगी!');return;}
-  if(file.size>15*1024*1024){showToast('❌ File 15MB से छोटी होनी चाहिए!');return;}
-  const status=document.getElementById('pdf-status');
-  status.style.display='block';status.style.color='var(--gold)';
-  status.textContent='📖 PDF text extract हो रहा है...';
-
+  if(file.type !== 'application/pdf'){ showToast('Sirf PDF file chalegi!'); return; }
+  if(file.size > 15*1024*1024){ showToast('File 15MB se chhoti honi chahiye!'); return; }
+  var status = document.getElementById('pdf-status');
+  status.style.display='block'; status.style.color='var(--gold)';
+  status.textContent = 'PDF text extract ho raha hai...';
   try{
-    // Wait for PDF.js
-    let tries=0;
-    while(!window.pdfjsLib && tries<30){ await new Promise(r=>setTimeout(r,200)); tries++; }
-    if(!window.pdfjsLib) throw new Error('PDF.js load नहीं हुई। Internet check करो।');
-
-    const ab=await file.arrayBuffer();
-    const pdf=await pdfjsLib.getDocument({data:ab}).promise;
-    const maxPages=Math.min(pdf.numPages,15);
-    status.textContent=`📄 ${pdf.numPages} pages मिले, text extract हो रहा है...`;
-
-    let fullText='';
-    for(let i=1;i<=maxPages;i++){
-      const page=await pdf.getPage(i);
-      const content=await page.getTextContent();
-      fullText+=content.items.map(item=>item.str).join(' ')+' ';
+    var tries = 0;
+    while(!window.pdfjsLib && tries < 30){
+      await new Promise(function(r){ setTimeout(r, 200); });
+      tries++;
     }
-
-    // Clean: सिर्फ readable chars रखो
-    const cleaned=fullText
-      .replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F-\x9F]/g,' ')
-      .replace(/\s+/g,' ').trim();
-
-    // Check readable है?
-    const readable=(cleaned.match(/[\u0900-\u097F\x20-\x7E]/g)||[]).length;
-    const ratio=cleaned.length>0?readable/cleaned.length:0;
-
-    if(cleaned.length<50 || ratio<0.6){
+    if(!window.pdfjsLib) throw new Error('PDF.js load nahi hui. Internet check karo.');
+    var ab = await file.arrayBuffer();
+    var pdf = await pdfjsLib.getDocument({data:ab}).promise;
+    var maxPages = Math.min(pdf.numPages, 15);
+    status.textContent = pdf.numPages+' pages mile, text extract ho raha hai...';
+    var fullText = '';
+    for(var i=1; i<=maxPages; i++){
+      var page = await pdf.getPage(i);
+      var content = await page.getTextContent();
+      fullText += content.items.map(function(item){ return item.str; }).join(' ') + ' ';
+    }
+    var cleaned = fullText.replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F-\x9F]/g,' ').replace(/\s+/g,' ').trim();
+    var readable = (cleaned.match(/[\u0900-\u097F\x20-\x7E]/g)||[]).length;
+    var ratio = cleaned.length > 0 ? readable/cleaned.length : 0;
+    if(cleaned.length < 50 || ratio < 0.6){
       status.style.color='var(--red)';
-      status.innerHTML='❌ <strong>यह Scanned/Image PDF है — text नहीं निकल सका।</strong><br>नीचे OPTION 2 में topic manually type करो।';
+      status.innerHTML = 'Yeh Scanned/Image PDF hai — text nahi nikal saka.<br>Niche OPTION 2 mein topic manually type karo.';
       return;
     }
-
-    pdfText=cleaned.substring(0,4000);
-    status.style.color='var(--green)';
-    status.innerHTML=`✅ <strong>${pdf.numPages} pages read हुए!</strong> ${Math.round(pdfText.length)} chars मिले — अब questions generate करो।`;
-    document.getElementById('pdf-settings').style.display='block';
-    document.getElementById('pdf-upload-label').innerHTML=`<strong style="color:var(--green)">📄 ${file.name}</strong><br>✅ Ready!`;
+    pdfText = cleaned.substring(0, 4000);
+    status.style.color = 'var(--green)';
+    status.innerHTML = pdf.numPages+' pages read hue! '+Math.round(pdfText.length)+' chars mile — ab questions generate karo.';
+    document.getElementById('pdf-settings').style.display = 'block';
+    document.getElementById('pdf-upload-label').innerHTML = '<strong style="color:var(--green)">'+file.name+'</strong><br>Ready!';
     document.getElementById('pdf-settings').scrollIntoView({behavior:'smooth'});
-
-  }catch(err){
-    status.style.color='var(--red)';
-    status.innerHTML=`❌ Error: ${err.message}<br>नीचे OPTION 2 में topic manually type करो।`;
+  } catch(err){
+    status.style.color = 'var(--red)';
+    status.innerHTML = 'Error: '+err.message+'<br>Niche OPTION 2 mein topic manually type karo.';
   }
 }
 
 async function generateFromPDF(){
-  if(!pdfText){showToast('⚠ पहले PDF upload करो या topic type करो!');return;}
-  const qcount = parseInt(document.getElementById('pdf-qcount').value);
-  const diff   = document.getElementById('pdf-difficulty').value;
-  const lang   = document.getElementById('pdf-language').value;
-  const btn    = document.getElementById('pdf-generate-btn');
-  const status = document.getElementById('pdf-status');
+  if(!pdfText){ showToast('Pehle PDF upload karo ya topic type karo!'); return; }
+  var qcount = parseInt(document.getElementById('pdf-qcount').value);
+  var diff = document.getElementById('pdf-difficulty').value;
+  var lang = document.getElementById('pdf-language').value;
+  var btn = document.getElementById('pdf-generate-btn');
+  var status = document.getElementById('pdf-status');
 
-  btn.disabled=true; btn.textContent='🤖 Questions बन रहे हैं...';
+  btn.disabled = true; btn.textContent = 'Questions ban rahe hain...';
   status.style.display='block'; status.style.color='var(--gold)';
-  status.textContent='⏳ Groq AI directly questions बना रहा है... (10-20 sec)';
+  status.textContent = 'Groq AI questions bana raha hai... (10-20 sec)';
 
   try{
-    // ✅ DIRECT GROQ API CALL — Apps Script bypass
-    // Groq CORS support करती है, browser से directly call होती है
-    const langInst = lang==='English'
+    var langInst = lang === 'English'
       ? 'Write ALL questions, options and explanations in ENGLISH only.'
-      : 'सभी प्रश्न, विकल्प और explanation हिंदी में लिखें।';
-
-    const diffInst = diff==='Easy'?'Easy/basic level.'
-      :diff==='Hard'?'Advanced/hard level.'
-      :diff==='Moderate'?'Medium difficulty.'
-      :'Mix of Easy, Moderate and Hard.';
-
-    const seed = Math.floor(Math.random()*99999);
-    const topic = pdfText.substring(0,2500);
-
-    const prompt = langInst + '
-
-'
-      + 'नीचे दिए content पर exactly ' + qcount + ' unique MCQ questions बनाओ.
-'
-      + 'Difficulty: ' + diff + ' — ' + diffInst + '
-'
-      + 'Seed: ' + seed + '
-
-'
-      + 'CONTENT:
-' + topic + '
-
-'
-      + 'RULES: Return ONLY raw JSON array. Start with [ end with ].
-'
+      : 'Sabhi prashn, vikalp aur explanation Hindi mein likhen.';
+    var diffInst = diff==='Easy' ? 'Easy/basic level.'
+      : diff==='Hard' ? 'Advanced/hard level.'
+      : diff==='Moderate' ? 'Medium difficulty.'
+      : 'Mix of Easy, Moderate and Hard.';
+    var seed = Math.floor(Math.random()*99999);
+    var topic = pdfText.substring(0, 2500);
+    var prompt = langInst + '\n\n'
+      + 'Niche diye content par exactly ' + qcount + ' unique MCQ questions banao.\n'
+      + 'Difficulty: ' + diff + ' - ' + diffInst + '\n'
+      + 'Seed: ' + seed + '\n\n'
+      + 'CONTENT:\n' + topic + '\n\n'
+      + 'RULES: Return ONLY raw JSON array. Start with [ end with ].\n'
       + 'Format: [{"question":"...","options":["a","b","c","d"],"correctIndex":0,"explanation":"..."}]';
 
-    const res = await fetch(GROQ_URL, {
+    var res = await fetch(GROQ_URL, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + GROQ_KEY
-      },
+      headers: {'Content-Type':'application/json','Authorization':'Bearer '+GROQ_KEY},
       body: JSON.stringify({
         model: GROQ_MODEL,
         messages: [
@@ -977,79 +1035,81 @@ async function generateFromPDF(){
     });
 
     if(!res.ok){
-      const err=await res.text();
-      throw new Error('Groq API error: '+res.status+' — '+err.substring(0,100));
+      var errText = await res.text();
+      throw new Error('Groq API error: '+res.status+' - '+errText.substring(0,100));
     }
 
-    const data = await res.json();
-    let text = data.choices[0].message.content.trim();
+    var data = await res.json();
+    var text = data.choices[0].message.content.trim();
     text = text.replace(/```json/gi,'').replace(/```/g,'').trim();
-    const match = text.match(/\[[\s\S]*\]/);
+    var match = text.match(/\[[\s\S]*\]/);
     if(match) text = match[0];
 
-    const questions = JSON.parse(text);
-    if(!Array.isArray(questions)||questions.length===0) throw new Error('No questions returned');
+    var questions = JSON.parse(text);
+    if(!Array.isArray(questions) || questions.length === 0) throw new Error('No questions returned');
 
-    // Normalize
-    const valid = questions
-      .filter(q=>q.question&&Array.isArray(q.options)&&q.options.length===4)
-      .map(q=>({
-        question: q.question,
-        options: q.options,
-        correctIndex: parseInt(q.correctIndex!==undefined?q.correctIndex:(q.correct||0)),
-        explanation: q.explanation||''
-      }));
+    var valid = questions.filter(function(q){ return q.question && Array.isArray(q.options) && q.options.length===4; })
+      .map(function(q){ return {question:q.question, options:q.options, correctIndex:parseInt(q.correctIndex!==undefined?q.correctIndex:(q.correct||0)), explanation:q.explanation||''}; });
 
-    if(valid.length===0) throw new Error('Valid questions नहीं मिले');
+    if(valid.length === 0) throw new Error('Valid questions nahi mile');
 
     generatedQuestions = valid;
-    status.style.color='var(--green)';
-    status.textContent='✅ '+valid.length+' questions successfully generate हुए!';
+    status.style.color = 'var(--green)';
+    status.textContent = valid.length+' questions successfully generate hue!';
     showGeneratedQuestions(valid);
 
-  }catch(err){
-    status.style.color='var(--red)';
-    status.innerHTML='❌ Error: '+err.message
-      +'<br><small style="color:var(--text2)">Console में details देखो (F12)</small>';
+  } catch(err){
+    status.style.color = 'var(--red)';
+    status.innerHTML = 'Error: '+err.message+'<br><small style="color:var(--text2)">Console mein details dekho (F12)</small>';
     console.error('generateFromPDF error:', err);
   }
-  btn.disabled=false; btn.textContent='🤖 AI से Questions Generate करो';
+  btn.disabled = false;
+  btn.textContent = 'AI se Questions Generate karo';
 }
 
 function showGeneratedQuestions(questions){
-  const wrap=document.getElementById('generated-questions-wrap');
-  const list=document.getElementById('generated-questions-list');
-  wrap.style.display='block';list.innerHTML='';
-  const keys=['A','B','C','D'];
-  questions.forEach((q,i)=>{
-    const ci=(q.correctIndex!==undefined)?q.correctIndex:(q.correct||0);
-    list.innerHTML+=`<div class="gen-q-card"><div class="gen-q-num">Q${i+1}</div><div class="gen-q-text">${q.question}</div><div class="gen-q-options">${q.options.map((o,j)=>`<div class="gen-q-opt ${j===ci?'correct-opt':''}">${keys[j]}. ${o}</div>`).join('')}</div>${q.explanation?`<div style="font-size:12px;color:var(--text2);margin-top:8px;">💡 ${q.explanation}</div>`:''}</div>`;
-  });
+  var wrap = document.getElementById('generated-questions-wrap');
+  var list = document.getElementById('generated-questions-list');
+  wrap.style.display = 'block'; list.innerHTML = '';
+  var keys = ['A','B','C','D'];
+  for(var i=0; i<questions.length; i++){
+    var q = questions[i];
+    var ci = (q.correctIndex !== undefined) ? q.correctIndex : (q.correct||0);
+    var optsHtml = '';
+    for(var j=0; j<q.options.length; j++){
+      optsHtml += '<div class="gen-q-opt'+(j===ci?' correct-opt':'')+'">'+keys[j]+'. '+q.options[j]+'</div>';
+    }
+    var expHtml = q.explanation ? '<div style="font-size:12px;color:var(--text2);margin-top:8px;">Explanation: '+q.explanation+'</div>' : '';
+    list.innerHTML += '<div class="gen-q-card"><div class="gen-q-num">Q'+(i+1)+'</div><div class="gen-q-text">'+q.question+'</div><div class="gen-q-options">'+optsHtml+'</div>'+expHtml+'</div>';
+  }
   wrap.scrollIntoView({behavior:'smooth'});
 }
 
 function useGeneratedQuiz(){
-  if(!generatedQuestions.length){showToast('⚠ पहले questions generate करो!');return;}
-  Q.questions=generatedQuestions;Q.name='Teacher Test';Q.exam='Custom';
-  Q.chapter='PDF Based Quiz';Q.diff=document.getElementById('pdf-difficulty').value;
+  if(!generatedQuestions.length){ showToast('Pehle questions generate karo!'); return; }
+  Q.questions = generatedQuestions; Q.name='Teacher Test'; Q.exam='Custom';
+  Q.chapter='PDF Based Quiz'; Q.diff=document.getElementById('pdf-difficulty').value;
   Q.lang=document.getElementById('pdf-language').value;
-  Q.qcount=generatedQuestions.length;Q.current=0;Q.answers=[];Q.score=0;Q.skipped=0;Q.totalTime=Q.qcount*60;
+  Q.qcount=generatedQuestions.length; Q.current=0; Q.answers=[]; Q.score=0; Q.skipped=0;
+  Q.totalTime=Q.qcount*60;
   showScreen('screen-quiz');
-  document.getElementById('quiz-chapter-tag').textContent='PDF Quiz';
-  updateProgress();renderQuestion();startTimer();
+  document.getElementById('quiz-chapter-tag').textContent = 'PDF Quiz';
+  updateProgress(); renderQuestion(); startTimer();
 }
 
 function shareGeneratedQuiz(){
-  if(!generatedQuestions.length){showToast('⚠ पहले questions generate करो!');return;}
-  let msg='📚 *Science Junction — PDF Quiz*\n\n';
-  const keys=['A','B','C','D'];
-  generatedQuestions.slice(0,5).forEach((q,i)=>{
-    msg+=`*Q${i+1}.* ${q.question}\n`;
-    q.options.forEach((o,j)=>{msg+=`${keys[j]}. ${o}\n`;});
-    msg+='\n';
-  });
-  msg+=`\n🔗 Full quiz: https://killermeo.github.io/science-junction`;
-  window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`,'_blank');
+  if(!generatedQuestions.length){ showToast('Pehle questions generate karo!'); return; }
+  var msg = 'Science Junction - PDF Quiz\n\n';
+  var keys = ['A','B','C','D'];
+  var slice = generatedQuestions.slice(0,5);
+  for(var i=0; i<slice.length; i++){
+    var q = slice[i];
+    msg += 'Q'+(i+1)+'. '+q.question+'\n';
+    for(var j=0; j<q.options.length; j++) msg += keys[j]+'. '+q.options[j]+'\n';
+    msg += '\n';
+  }
+  msg += '\nFull quiz: https://killermeo.github.io/science-junction';
+  window.open('https://wa.me/?text='+encodeURIComponent(msg), '_blank');
 }
 </script>
 </body>
