@@ -1212,7 +1212,7 @@ async function startQuiz(){
   setLoading(true);
 
   try {
-    const res = await fetch(`${APPS_SCRIPT_URL}?action=getQuestions&chapter=${encodeURIComponent(quizData.chapter)}&difficulty=${encodeURIComponent(quizData.difficulty)}&language=${encodeURIComponent(quizData.language)}&count=${quizData.qcount}`);
+    const res = await fetch(`${APPS_SCRIPT_URL}?action=getQuestions&chapter=${encodeURIComponent(quizData.chapter)}&difficulty=${encodeURIComponent(quizData.difficulty)}&language=${encodeURIComponent(quizData.language)}&count=${quizData.qcount}&exam=${encodeURIComponent(quizData.exam)}`);
     const data = await res.json();
     if(data.questions && data.questions.length > 0){
       quizData.questions = data.questions;
@@ -1266,7 +1266,7 @@ function selectAnswer(idx, btn){
   const btns = document.querySelectorAll('.option-btn');
   btns.forEach(b=>b.disabled=true);
 
-  const correct = q.correctIndex;
+  const correct = (q.correctIndex !== undefined) ? q.correctIndex : (q.correct !== undefined ? q.correct : 0);
   if(idx === correct){
     btn.classList.add('correct');
     quizData.answers[quizData.current] = true;
@@ -1405,9 +1405,9 @@ async function saveResult(correct, total, pct){
       chapter: quizData.chapter,
       difficulty: quizData.difficulty,
       language: quizData.language,
-      correct, total,
-      score: pct,
-      date: new Date().toLocaleDateString('hi-IN')
+      correct: correct,
+      total: total,
+      score: pct
     });
     await fetch(`${APPS_SCRIPT_URL}?${params}`);
   } catch(e){}
