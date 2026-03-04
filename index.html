@@ -147,9 +147,10 @@
   .gen-q-options{display:grid;grid-template-columns:1fr 1fr;gap:6px;}
   .gen-q-opt{font-size:12px;color:var(--text2);padding:5px 8px;background:var(--bg3);border-radius:6px;}
   .gen-q-opt.correct-opt{color:var(--green);background:rgba(26,122,74,0.08);}
-  .passage-box{background:rgba(200,150,12,0.06);border-left:4px solid var(--gold);border-radius:0 10px 10px 0;padding:16px 18px;margin-bottom:16px;font-size:15px;line-height:1.9;color:var(--text);display:none;}
+  .passage-box{background:rgba(200,150,12,0.06);border-left:4px solid var(--gold);border-radius:0 12px 12px 0;padding:18px 20px;margin-bottom:18px;font-size:15px;line-height:1.9;color:var(--text);display:none;max-height:260px;overflow-y:auto;border:1px solid rgba(200,150,12,0.25);border-left:4px solid var(--gold);}
   .passage-box.show{display:block;}
-  .passage-label{font-family:'Orbitron',sans-serif;font-size:10px;color:var(--gold-dark);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;font-weight:700;}
+  .passage-label{font-family:'Orbitron',sans-serif;font-size:10px;color:var(--gold-dark);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;font-weight:700;display:flex;align-items:center;gap:6px;}
+  .passage-label::after{content:'SCROLL TO READ';font-size:8px;color:var(--text2);letter-spacing:1px;}
   .teacher-login-card{max-width:360px;margin:80px auto;background:var(--card);border:1px solid rgba(200,150,12,0.3);border-radius:16px;padding:32px;text-align:center;}
   .teacher-login-title{font-family:'Orbitron',sans-serif;color:var(--gold);font-size:15px;font-weight:700;letter-spacing:2px;margin-bottom:24px;}
   .section-title{font-family:'Orbitron',sans-serif;font-size:14px;color:var(--gold);letter-spacing:2px;margin:20px 0 12px;display:flex;align-items:center;gap:10px;}
@@ -283,8 +284,8 @@
   <div class="question-card">
     <div class="question-num" id="q-num">QUESTION 01</div>
     <div class="passage-box" id="passage-box">
-      <div class="passage-label">&#128214; Passage &#8212; &#2346;&#2397;&#2379; &#2347;&#2367;&#2352; &#2344;&#2368;&#2330;&#2375; question answer &#2325;&#2352;&#2379;</div>
-      <div id="passage-text"></div>
+      <div class="passage-label">&#128214; Passage &#8212; Pehle padho, phir answer karo</div>
+      <div id="passage-text" style="white-space:pre-wrap;"></div>
     </div>
     <div class="question-text" id="q-text"><div class="loading-dots"><span></span><span></span><span></span></div></div>
   </div>
@@ -609,6 +610,21 @@ async function startQuiz(){
   document.getElementById('quiz-chapter-tag').textContent = Q.chapter;
   updateProgress();
   setLoading(true);
+
+  // Reading Comprehension detect karo — direct Groq call karo for guaranteed passage
+  var chLower = Q.chapter.toLowerCase();
+  var isRC = chLower.indexOf('reading comprehension') !== -1
+          || chLower.indexOf('reading comp') !== -1
+          || chLower.indexOf('comprehension') !== -1;
+
+  if(isRC){
+    await startReadingComprehensionQuiz();
+  } else {
+    await startNormalQuiz();
+  }
+}
+
+async function startNormalQuiz(){
   try{
     var url = APPS_SCRIPT_URL + '?action=getQuestions&chapter=' + encodeURIComponent(Q.chapter) + '&difficulty=' + encodeURIComponent(Q.diff) + '&language=' + encodeURIComponent(Q.lang) + '&count=' + Q.qcount + '&exam=' + encodeURIComponent(Q.exam) + '&t=' + Date.now();
     var res = await fetch(url);
@@ -621,6 +637,96 @@ async function startQuiz(){
     }
   } catch(e){
     showToast('Network error. Internet check karo.'); showScreen('screen-login');
+  }
+}
+
+async function startReadingComprehensionQuiz(){
+  try{
+    var langInst = Q.lang === 'English'
+      ? 'Write the passage AND all questions, options, explanations in ENGLISH only.'
+      : 'Passage aur sabhi prashn, vikalp, explanation Hindi mein likhen.';
+
+    var diffInst = Q.diff==='Easy' ? 'Easy/basic level.'
+      : Q.diff==='Hard' ? 'Advanced/hard level.'
+      : Q.diff==='Moderate' ? 'Medium difficulty.'
+      : 'Mix of Easy, Moderate and Hard.';
+
+    var seed = Math.floor(Math.random()*99999);
+
+    var prompt = langInst + '\n\n'
+      + 'Generate a Reading Comprehension set for ' + Q.exam + ' exam.\n'
+      + 'Difficulty: ' + Q.diff + ' - ' + diffInst + '\n'
+      + 'Seed: ' + seed + '\n\n'
+      + 'STEP 1: Write ONE meaningful academic/legal/social passage of 180-220 words.\n'
+      + 'STEP 2: Generate exactly ' + Q.qcount + ' MCQ questions based ONLY on that passage.\n\n'
+      + 'CRITICAL RULES:\n'
+      + '1. EVERY question object MUST have a "passage" field with the FULL passage text (copy same passage in every object)\n'
+      + '2. All questions must be answerable from the passage only\n'
+      + '3. Return ONLY raw JSON array — NO markdown, NO backticks, NO extra text\n'
+      + '4. Start with [ and end with ]\n'
+      + '5. correctIndex is 0-based (0=A, 1=B, 2=C, 3=D)\n\n'
+      + 'Format (passage field required in EVERY object):\n'
+      + '[{"passage":"Full passage text here...","question":"Question?","options":["Option A","Option B","Option C","Option D"],"correctIndex":1,"explanation":"Because passage says..."}]';
+
+    var res = await fetch(GROQ_URL, {
+      method: 'POST',
+      headers: {'Content-Type':'application/json','Authorization':'Bearer '+GROQ_KEY},
+      body: JSON.stringify({
+        model: GROQ_MODEL,
+        messages: [
+          {role:'system', content:'You are a Reading Comprehension question generator for CLAT/NDA entrance exams. Generate one passage and MCQ questions. EVERY question object must include the full "passage" field. Return ONLY valid JSON array. No markdown, no backticks.'},
+          {role:'user', content: prompt}
+        ],
+        temperature: 0.75,
+        max_tokens: 5000
+      })
+    });
+
+    if(!res.ok){
+      var errText = await res.text();
+      throw new Error('Groq error: ' + res.status);
+    }
+
+    var data = await res.json();
+    var text = data.choices[0].message.content.trim();
+    text = text.replace(/```json/gi,'').replace(/```/g,'').trim();
+    var match = text.match(/\[[\s\S]*\]/);
+    if(match) text = match[0];
+
+    var questions = JSON.parse(text);
+    if(!Array.isArray(questions) || questions.length === 0) throw new Error('No questions returned');
+
+    // Validate & normalize — passage ensure karo
+    var passageGlobal = '';
+    // Pehle kisi bhi question se passage nikaalo
+    for(var i=0; i<questions.length; i++){
+      if(questions[i].passage && questions[i].passage.trim().length > 20){
+        passageGlobal = questions[i].passage.trim();
+        break;
+      }
+    }
+
+    var valid = questions
+      .filter(function(q){ return q.question && Array.isArray(q.options) && q.options.length === 4; })
+      .map(function(q){
+        return {
+          passage: (q.passage && q.passage.trim().length > 20) ? q.passage.trim() : passageGlobal,
+          question: q.question,
+          options: q.options,
+          correctIndex: parseInt(q.correctIndex !== undefined ? q.correctIndex : (q.correct || 0)),
+          explanation: q.explanation || ''
+        };
+      });
+
+    if(valid.length === 0) throw new Error('Valid questions nahi mile');
+
+    Q.questions = valid;
+    setLoading(false); renderQuestion(); startTimer();
+
+  } catch(e){
+    showToast('Reading Comprehension load nahi hua. Dobara try karo.');
+    console.error('RC error:', e);
+    showScreen('screen-login');
   }
 }
 
