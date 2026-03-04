@@ -341,14 +341,29 @@
   <!-- PDF Tab -->
   <div class="dash-panel" id="tab-pdf">
     <div class="form-card">
-      <div class="form-title">📄 PDF से AI Questions Generate करो</div>
+      <div class="form-title">📄 PDF / Topic से AI Questions Generate करो</div>
+
+      <!-- Option 1: PDF Upload -->
+      <div style="font-size:12px;color:var(--text2);margin-bottom:8px;letter-spacing:1px;">OPTION 1 — PDF UPLOAD (Text-based PDF)</div>
       <div class="pdf-upload-area" id="pdf-drop-area" onclick="document.getElementById('pdf-file-input').click()">
         <div class="pdf-upload-icon">📁</div>
-        <div class="pdf-upload-text" id="pdf-upload-label"><strong>Click करो या PDF drag करो</strong><br>PDF file select करो (max 10MB)</div>
+        <div class="pdf-upload-text" id="pdf-upload-label"><strong>Click करो या PDF drag करो</strong><br>Text-based PDF चाहिए (जिसमें text copy हो सके) — max 15MB</div>
         <input type="file" id="pdf-file-input" class="pdf-input" accept=".pdf" onchange="handlePDFSelect(this)">
       </div>
       <div class="pdf-status" id="pdf-status"></div>
-      <div id="pdf-settings" style="display:none;">
+
+      <!-- Option 2: Manual Topic -->
+      <div style="height:1px;background:rgba(255,215,0,0.08);margin:16px 0;"></div>
+      <div style="font-size:12px;color:var(--text2);margin-bottom:8px;letter-spacing:1px;">OPTION 2 — TOPIC TYPE करो (Scanned PDF या directly topic)</div>
+      <div class="form-group" style="margin-bottom:12px;">
+        <label>Topic / Subject यहाँ लिखो</label>
+        <textarea id="manual-topic" placeholder="जैसे: Rajasthan ki rajdhani Jaipur, Newton ke teen niyam, Photosynthesis process, Indian Constitution ke fundamental rights..." style="min-height:90px;background:var(--bg3);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:Rajdhani,sans-serif;font-size:14px;padding:10px 14px;outline:none;resize:vertical;"></textarea>
+      </div>
+      <button class="btn-outline" style="width:100%;" onclick="useManualTopic()">✍️ इस Topic से Questions बनाओ</button>
+
+      <!-- Settings (shown after PDF read or manual topic) -->
+      <div id="pdf-settings" style="display:none;margin-top:16px;">
+        <div style="height:1px;background:rgba(255,215,0,0.1);margin:16px 0;"></div>
         <div class="form-row">
           <div class="form-group"><label>Questions कितने?</label>
             <select id="pdf-qcount"><option value="5">5</option><option value="10" selected>10</option><option value="15">15</option><option value="20">20</option></select>
@@ -602,36 +617,88 @@ function exportCSV(){
 
 // PDF UPLOAD
 let pdfText='',generatedQuestions=[];
+
+// PDF.js load करो — proper text extraction के लिए
+(function(){
+  const s=document.createElement('script');
+  s.src='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
+  s.onload=()=>{ if(window.pdfjsLib) pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js'; };
+  document.head.appendChild(s);
+})();
+
 const dropArea=document.getElementById('pdf-drop-area');
 dropArea.addEventListener('dragover',e=>{e.preventDefault();dropArea.classList.add('drag-over');});
 dropArea.addEventListener('dragleave',()=>dropArea.classList.remove('drag-over'));
 dropArea.addEventListener('drop',e=>{e.preventDefault();dropArea.classList.remove('drag-over');const f=e.dataTransfer.files[0];if(f)processPDF(f);});
 function handlePDFSelect(input){const f=input.files[0];if(f)processPDF(f);}
 
+// Manual topic use करो
+function useManualTopic(){
+  const t=document.getElementById('manual-topic').value.trim();
+  if(!t){showToast('⚠ Topic लिखो!');return;}
+  pdfText=t;
+  document.getElementById('pdf-settings').style.display='block';
+  document.getElementById('pdf-status').style.display='block';
+  document.getElementById('pdf-status').style.color='var(--green)';
+  document.getElementById('pdf-status').textContent='✅ Topic ready है! — अब questions generate करो।';
+  document.getElementById('pdf-settings').scrollIntoView({behavior:'smooth'});
+}
+
 async function processPDF(file){
   if(file.type!=='application/pdf'){showToast('❌ सिर्फ PDF file चलेगी!');return;}
-  if(file.size>10*1024*1024){showToast('❌ File 10MB से छोटी होनी चाहिए!');return;}
+  if(file.size>15*1024*1024){showToast('❌ File 15MB से छोटी होनी चाहिए!');return;}
   const status=document.getElementById('pdf-status');
   status.style.display='block';status.style.color='var(--gold)';
-  status.textContent='📖 PDF पढ़ी जा रही है...';
+  status.textContent='📖 PDF text extract हो रहा है...';
+
   try{
+    // Wait for PDF.js
+    let tries=0;
+    while(!window.pdfjsLib && tries<30){ await new Promise(r=>setTimeout(r,200)); tries++; }
+    if(!window.pdfjsLib) throw new Error('PDF.js load नहीं हुई। Internet check करो।');
+
     const ab=await file.arrayBuffer();
-    const raw=new TextDecoder('utf-8',{fatal:false}).decode(new Uint8Array(ab));
-    let text='';
-    const btM=[...raw.matchAll(/BT([\s\S]*?)ET/g)];
-    for(const m of btM){const sM=[...m[1].matchAll(/\((.*?)\)/g)];for(const s of sM){const cl=s[1].replace(/\\n/g,' ').replace(/\\/g,'').trim();if(cl.length>2)text+=cl+' ';}}
-    if(text.length<100){text=raw.replace(/[^\x20-\x7E\u0900-\u097F]/g,' ').replace(/\s+/g,' ').trim().substring(0,3000);}
-    pdfText=text.substring(0,4000);
-    if(pdfText.length<50){status.style.color='var(--red)';status.textContent='❌ PDF से text नहीं निकल पाया। Text-based PDF use करो।';return;}
+    const pdf=await pdfjsLib.getDocument({data:ab}).promise;
+    const maxPages=Math.min(pdf.numPages,15);
+    status.textContent=`📄 ${pdf.numPages} pages मिले, text extract हो रहा है...`;
+
+    let fullText='';
+    for(let i=1;i<=maxPages;i++){
+      const page=await pdf.getPage(i);
+      const content=await page.getTextContent();
+      fullText+=content.items.map(item=>item.str).join(' ')+' ';
+    }
+
+    // Clean: सिर्फ readable chars रखो
+    const cleaned=fullText
+      .replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F-\x9F]/g,' ')
+      .replace(/\s+/g,' ').trim();
+
+    // Check readable है?
+    const readable=(cleaned.match(/[\u0900-\u097F\x20-\x7E]/g)||[]).length;
+    const ratio=cleaned.length>0?readable/cleaned.length:0;
+
+    if(cleaned.length<50 || ratio<0.6){
+      status.style.color='var(--red)';
+      status.innerHTML='❌ <strong>यह Scanned/Image PDF है — text नहीं निकल सका।</strong><br>नीचे OPTION 2 में topic manually type करो।';
+      return;
+    }
+
+    pdfText=cleaned.substring(0,4000);
     status.style.color='var(--green)';
-    status.textContent=`✅ PDF successfully read! — अब questions generate करो।`;
+    status.innerHTML=`✅ <strong>${pdf.numPages} pages read हुए!</strong> ${Math.round(pdfText.length)} chars मिले — अब questions generate करो।`;
     document.getElementById('pdf-settings').style.display='block';
-    document.getElementById('pdf-upload-label').innerHTML=`<strong style="color:var(--green)">📄 ${file.name}</strong><br>File ready है!`;
-  }catch(err){status.style.color='var(--red)';status.textContent='❌ Error: '+err.message;}
+    document.getElementById('pdf-upload-label').innerHTML=`<strong style="color:var(--green)">📄 ${file.name}</strong><br>✅ Ready!`;
+    document.getElementById('pdf-settings').scrollIntoView({behavior:'smooth'});
+
+  }catch(err){
+    status.style.color='var(--red)';
+    status.innerHTML=`❌ Error: ${err.message}<br>नीचे OPTION 2 में topic manually type करो।`;
+  }
 }
 
 async function generateFromPDF(){
-  if(!pdfText){showToast('⚠ पहले PDF upload करो!');return;}
+  if(!pdfText){showToast('⚠ पहले PDF upload करो या topic type करो!');return;}
   const qcount=document.getElementById('pdf-qcount').value;
   const diff=document.getElementById('pdf-difficulty').value;
   const language=document.getElementById('pdf-language').value;
@@ -639,12 +706,21 @@ async function generateFromPDF(){
   btn.disabled=true;btn.textContent='🤖 AI Questions बना रहा है...';
   const status=document.getElementById('pdf-status');
   status.style.display='block';status.style.color='var(--gold)';
-  status.textContent=`⏳ Groq AI ${qcount} questions बना रहा है... (10-20 sec लग सकते हैं)`;
+  status.textContent=`⏳ Groq AI ${qcount} questions बना रहा है... (15-25 sec लग सकते हैं)`;
   try{
-    // PDF content को chapter की जगह pass करते हैं
-    const chapterText='PDF Content: '+pdfText.substring(0,800);
-    const url=`${APPS_SCRIPT_URL}?action=getQuestions&chapter=${encodeURIComponent(chapterText)}&difficulty=${encodeURIComponent(diff)}&language=${encodeURIComponent(language)}&count=${qcount}&exam=Custom&t=${Date.now()}`;
-    const res=await fetch(url);
+    // POST request use करो — URL में text नहीं जाएगा (special chars safe)
+    const payload={
+      action:'generateFromContent',
+      content: pdfText.substring(0,3000),
+      count: parseInt(qcount),
+      difficulty: diff,
+      language: language
+    };
+    const res=await fetch(APPS_SCRIPT_URL,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify(payload)
+    });
     const data=await res.json();
     if(data.questions&&data.questions.length>0){
       generatedQuestions=data.questions;
@@ -653,7 +729,7 @@ async function generateFromPDF(){
       showGeneratedQuestions(data.questions);
     }else{
       status.style.color='var(--red)';
-      status.textContent='❌ Questions generate नहीं हुए। फिर try करो।';
+      status.textContent='❌ Questions generate नहीं हुए। Error: '+(data.error||'Unknown');
     }
   }catch(err){status.style.color='var(--red)';status.textContent='❌ Error: '+err.message;}
   btn.disabled=false;btn.textContent='🤖 AI से Questions Generate करो';
