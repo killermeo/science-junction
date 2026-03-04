@@ -636,11 +636,12 @@ function handlePDFSelect(input){const f=input.files[0];if(f)processPDF(f);}
 function useManualTopic(){
   const t=document.getElementById('manual-topic').value.trim();
   if(!t){showToast('⚠ Topic लिखो!');return;}
-  pdfText=t;
+  pdfText=t;  // topic text store करो
+  const status=document.getElementById('pdf-status');
+  status.style.display='block';
+  status.style.color='var(--green)';
+  status.textContent='✅ Topic ready है! नीचे settings set करो और Generate button दबाओ।';
   document.getElementById('pdf-settings').style.display='block';
-  document.getElementById('pdf-status').style.display='block';
-  document.getElementById('pdf-status').style.color='var(--green)';
-  document.getElementById('pdf-status').textContent='✅ Topic ready है! — अब questions generate करो।';
   document.getElementById('pdf-settings').scrollIntoView({behavior:'smooth'});
 }
 
@@ -706,32 +707,36 @@ async function generateFromPDF(){
   btn.disabled=true;btn.textContent='🤖 AI Questions बना रहा है...';
   const status=document.getElementById('pdf-status');
   status.style.display='block';status.style.color='var(--gold)';
-  status.textContent=`⏳ Groq AI ${qcount} questions बना रहा है... (15-25 sec लग सकते हैं)`;
+  status.textContent='⏳ Groq AI questions बना रहा है... (15-25 sec लग सकते हैं)';
   try{
-    // POST request use करो — URL में text नहीं जाएगा (special chars safe)
-    const payload={
-      action:'generateFromContent',
-      content: pdfText.substring(0,3000),
-      count: parseInt(qcount),
-      difficulty: diff,
-      language: language
-    };
-    const res=await fetch(APPS_SCRIPT_URL,{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify(payload)
-    });
+    // URL में सिर्फ पहले 300 chars भेजो — chapter की तरह
+    // encodeURIComponent से सभी special chars safe हो जाते हैं
+    const topic = pdfText.substring(0,300).replace(/\s+/g,' ').trim();
+
+    const url = APPS_SCRIPT_URL
+      + '?action=getQuestions'
+      + '&chapter=' + encodeURIComponent(topic)
+      + '&count=' + encodeURIComponent(qcount)
+      + '&difficulty=' + encodeURIComponent(diff)
+      + '&language=' + encodeURIComponent(language)
+      + '&exam=Custom'
+      + '&t=' + Date.now();
+
+    const res=await fetch(url);
     const data=await res.json();
     if(data.questions&&data.questions.length>0){
       generatedQuestions=data.questions;
       status.style.color='var(--green)';
-      status.textContent=`✅ ${data.questions.length} questions successfully generate हुए!`;
+      status.textContent='✅ '+data.questions.length+' questions successfully generate हुए!';
       showGeneratedQuestions(data.questions);
     }else{
       status.style.color='var(--red)';
       status.textContent='❌ Questions generate नहीं हुए। Error: '+(data.error||'Unknown');
     }
-  }catch(err){status.style.color='var(--red)';status.textContent='❌ Error: '+err.message;}
+  }catch(err){
+    status.style.color='var(--red)';
+    status.textContent='❌ Error: '+err.message;
+  }
   btn.disabled=false;btn.textContent='🤖 AI से Questions Generate करो';
 }
 
