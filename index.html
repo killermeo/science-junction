@@ -1583,6 +1583,14 @@ function updateProgress(){
 }
 
 function startTimer(){
+  // Reset pause state
+  isPaused = false;
+  var po = document.getElementById('pause-overlay');
+  if(po) po.classList.remove('show');
+  var tw = document.querySelector('.timer-wrap');
+  if(tw) tw.classList.remove('timer-paused');
+  var ph = document.getElementById('pause-hint');
+  if(ph) ph.textContent = 'TAP TO PAUSE';
   Q.timeLeft = Q.totalTime; updateTimerUI();
   Q.timerInt = setInterval(function(){
     Q.timeLeft--; updateTimerUI();
@@ -1624,9 +1632,12 @@ function endQuiz(){
     document.getElementById('weak-text').textContent = Q.chapter+' — is chapter mein aur practice karo.';
     document.getElementById('weak-alert').classList.add('show');
   }
+  Q_timeUsed = Q.totalTime - Q.timeLeft;
   saveResult(cor, tot, pct);
   // Questions ko history mein save karo — future mein repeat avoid karne ke liye
   saveQuestionHistory(Q.chapter, Q.questions);
+  // Analytics render
+  setTimeout(function(){ renderAnalytics(); }, 100);
 }
 
 async function saveResult(cor, tot, pct){
@@ -2299,14 +2310,7 @@ function resumeQuiz(){
 }
 
 // Reset pause state on new quiz
-var _origStartTimer = startTimer;
-function startTimer(){
-  isPaused = false;
-  document.getElementById('pause-overlay').classList.remove('show');
-  if(document.querySelector('.timer-wrap')) document.querySelector('.timer-wrap').classList.remove('timer-paused');
-  if(document.getElementById('pause-hint')) document.getElementById('pause-hint').textContent = 'TAP TO PAUSE';
-  _origStartTimer();
-}
+// startTimer patched directly below
 
 // ===================================================
 // FEATURE: DIFFICULTY ANALYTICS
@@ -2314,12 +2318,7 @@ function startTimer(){
 var Q_timeUsed = 0; // track time used
 
 // Override endQuiz to record time used
-var _origEndQuiz = endQuiz;
-function endQuiz(){
-  Q_timeUsed = Q.totalTime - Q.timeLeft;
-  _origEndQuiz();
-  renderAnalytics();
-}
+// endQuiz patched directly below
 
 function renderAnalytics(){
   var tot = Q.questions.length;
