@@ -1087,8 +1087,8 @@ async function startNormalQuiz(){
     var avoidPrompt = buildAvoidPrompt(Q.chapter);
 
     var langInst = Q.lang === 'English'
-      ? 'Write ALL questions, options, and explanations in ENGLISH only. Do not use Hindi.'
-      : 'Sabhi prashn, vikalp aur explanation HINDI mein likhen.';
+      ? 'Write ALL questions, options, and explanations in ENGLISH only. Do not use Hindi at all.'
+      : 'IMPORTANT: Write ALL questions, ALL options, and ALL explanations in Hindi language using Devanagari script only. Do not use English. Example: "न्यूटन का पहला नियम क्या है?" not "Newton ka pehla niyam kya hai?"';
 
     var diffInst = Q.diff==='Easy' ? 'All questions easy/basic level.'
       : Q.diff==='Hard' ? 'All questions advanced/hard level.'
@@ -1126,7 +1126,7 @@ async function startNormalQuiz(){
       body: JSON.stringify({
         model: GROQ_MODEL,
         messages: [
-          {role:'system', content:'You are an expert MCQ generator for Indian competitive exams. Return ONLY valid JSON array. No markdown, no backticks.'},
+          {role:'system', content:'You are an expert MCQ generator for Indian competitive exams. When the user asks in Hindi, write ALL output in Hindi using Devanagari script only. Return ONLY valid JSON array. No markdown, no backticks.'},
           {role:'user', content: prompt}
         ],
         temperature: 0.9,
@@ -1181,7 +1181,7 @@ async function startReadingComprehensionQuiz(){
   try{
     var langInst = Q.lang === 'English'
       ? 'Write the passage AND all questions, options, explanations in ENGLISH only.'
-      : 'Passage aur sabhi prashn, vikalp, explanation Hindi mein likhen.';
+      : 'IMPORTANT: Write the passage AND all questions, options, explanations in Hindi language using Devanagari script only. Do not use English at all.';
 
     var diffInst = Q.diff==='Easy' ? 'Easy/basic level.'
       : Q.diff==='Hard' ? 'Advanced/hard level.'
@@ -1536,7 +1536,7 @@ async function dtGenerateQuestions(){
       body: JSON.stringify({
         model: GROQ_MODEL,
         messages: [
-          {role:'system', content:'You are an MCQ generator. Return ONLY valid JSON array. No markdown.'},
+          {role:'system', content:'You are an MCQ generator. When asked to write in Hindi, use Devanagari script only. Return ONLY valid JSON array. No markdown.'},
           {role:'user', content: promptParts.join('\n')}
         ],
         temperature: 0.85, max_tokens: 4000
@@ -1823,7 +1823,7 @@ async function generateFromPDF(){
       body: JSON.stringify({
         model: GROQ_MODEL,
         messages: [
-          {role:'system', content:'You are an MCQ generator. Return ONLY valid JSON array. No markdown, no backticks.'},
+          {role:'system', content:'You are an MCQ generator. When asked to write in Hindi, use Devanagari script only. Return ONLY valid JSON array. No markdown, no backticks.'},
           {role:'user', content: prompt}
         ],
         temperature: 0.8,
