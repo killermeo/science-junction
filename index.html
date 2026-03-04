@@ -231,6 +231,7 @@
     align-items: center;
     justify-content: center;
     background: transparent;
+    overflow: hidden;
   }
   @keyframes logo-pulse {
     0%,100%{ box-shadow: 0 0 0 6px rgba(255,215,0,0.12), 0 0 28px rgba(255,215,0,0.4); }
@@ -241,7 +242,7 @@
     object-fit: cover;
     object-position: center center;
     display: block;
-    border-radius: 0;
+    border-radius: 50%;
     padding: 0;
     background: transparent;
   }
@@ -1503,8 +1504,8 @@ async function dtGenerateQuestions(){
 
   try{
     var langInst = lang === 'English'
-      ? 'Write ALL questions, options, and explanations in ENGLISH only.'
-      : 'Sabhi prashn, vikalp aur explanation HINDI mein likhen.';
+      ? 'Write ALL questions, options, and explanations in ENGLISH only. Do NOT use Hindi or any other language.'
+      : 'IMPORTANT: You MUST write ALL questions, all options (A,B,C,D), and all explanations in Hindi language using Devanagari script only. Do NOT use English at all. Every single word must be in Hindi Devanagari script.';
 
     var diffInst = diff==='Easy' ? 'Easy/basic level.'
       : diff==='Hard' ? 'Advanced/hard level.'
@@ -1530,13 +1531,17 @@ async function dtGenerateQuestions(){
     promptParts.push('');
     promptParts.push('Format: [{"question":"...","options":["A","B","C","D"],"correctIndex":0,"explanation":"..."}]');
 
+    var sysPrompt = lang === 'English'
+      ? 'You are an MCQ generator. Write all content in English only. Return ONLY valid JSON array. No markdown, no backticks, no extra text.'
+      : 'You are an MCQ generator. You MUST write ALL questions, options, and explanations in Hindi using Devanagari script. Never use English words. Return ONLY valid JSON array. No markdown, no backticks, no extra text.';
+
     var res = await fetch(GROQ_URL, {
       method: 'POST',
       headers: {'Content-Type':'application/json','Authorization':'Bearer '+GROQ_KEY},
       body: JSON.stringify({
         model: GROQ_MODEL,
         messages: [
-          {role:'system', content:'You are an MCQ generator. When asked to write in Hindi, use Devanagari script only. Return ONLY valid JSON array. No markdown.'},
+          {role:'system', content: sysPrompt},
           {role:'user', content: promptParts.join('\n')}
         ],
         temperature: 0.85, max_tokens: 4000
@@ -1579,8 +1584,13 @@ async function dtGenerateQuestions(){
     showToast(valid.length + ' questions ready!');
 
   } catch(e){
-    showToast('Generate nahi hua. Dobara try karo.');
-    console.error(e);
+    var errMsg = e.message || '';
+    if(errMsg.toLowerCase().includes('fetch') || errMsg.toLowerCase().includes('network')){
+      showToast('⚠️ File locally open hai! GitHub Pages par deploy karke use karo.');
+    } else {
+      showToast('Generate nahi hua: ' + errMsg);
+    }
+    console.error('dtGenerateQuestions error:', e);
   }
 
   genBtn.disabled = false;
