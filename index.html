@@ -780,6 +780,15 @@
   body.dark-mode .student-mgmt-card { background:#1C1C1C; }
   body.dark-mode .modal-card { background:#1C1C1C; border-color:var(--gold); }
 
+  /* Toggle Switch */
+  .toggle-switch{position:relative;display:inline-block;width:52px;height:28px;flex-shrink:0;}
+  .toggle-switch input{opacity:0;width:0;height:0;}
+  .toggle-slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background:#ccc;border-radius:28px;transition:0.3s;}
+  .toggle-slider:before{position:absolute;content:"";height:20px;width:20px;left:4px;bottom:4px;background:white;border-radius:50%;transition:0.3s;}
+  .toggle-switch input:checked + .toggle-slider{background:var(--red);}
+  .toggle-switch input:checked + .toggle-slider:before{transform:translateX(24px);}
+  body.dark-mode .toggle-slider{background:#555;}
+
 </style>
 </head>
 <body>
@@ -883,9 +892,16 @@
 
     <div class="form-row">
       <div class="form-group">
-        <label>👤 Your Name</label>
-        <input type="text" id="studentName" placeholder="नाम लिखो...">
+        <label>👤 Student का नाम</label>
+        <input type="text" id="studentName" placeholder="अपना नाम लिखो...">
       </div>
+      <div class="form-group">
+        <label>👨 Father का नाम</label>
+        <input type="text" id="fatherName" placeholder="पिता का नाम लिखो...">
+      </div>
+    </div>
+
+    <div class="form-row single">
       <div class="form-group">
         <label>🌐 Language</label>
         <select id="language">
@@ -955,6 +971,21 @@
           <option value="90">90 Questions</option>
           <option value="100">100 Questions</option>
         </select>
+      </div>
+    </div>
+
+    <!-- Negative Marking Toggle -->
+    <div class="form-row single" id="neg-marking-row">
+      <div class="form-group">
+        <label>➖ Negative Marking</label>
+        <div style="display:flex;align-items:center;gap:12px;padding:10px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:8px;">
+          <label class="toggle-switch">
+            <input type="checkbox" id="neg-marking-toggle" onchange="updateNegMarkingInfo()">
+            <span class="toggle-slider"></span>
+          </label>
+          <span id="neg-marking-label" style="font-size:14px;color:var(--text2);font-weight:600;">OFF — कोई negative marking नहीं</span>
+        </div>
+        <div id="neg-marking-info" style="display:none;margin-top:6px;padding:8px 12px;background:rgba(192,57,43,0.08);border:1px solid rgba(192,57,43,0.3);border-radius:8px;font-size:12px;color:var(--red);"></div>
       </div>
     </div>
 
@@ -1114,6 +1145,7 @@
     <div class="stat-card"><div class="stat-num red" id="stat-wrong">0</div><div class="stat-lbl">&#10060; Wrong</div></div>
     <div class="stat-card"><div class="stat-num gold" id="stat-skip">0</div><div class="stat-lbl">&#9197; Skipped</div></div>
   </div>
+  <div id="neg-result-wrap" style="display:none;"></div>
   <div class="badge-earned"><div class="badge-icon" id="badge-icon">&#129351;</div><div><div class="badge-earned-title" id="badge-title">BRONZE ACHIEVER</div><div class="badge-earned-sub" id="badge-sub">Keep practicing!</div></div></div>
   <div class="weak-alert" id="weak-alert"><strong>&#9888; Weak Area:</strong> <span id="weak-text"></span></div>
   <div class="result-actions">
@@ -1154,8 +1186,9 @@
     <button class="dash-tab active" onclick="switchTab('tab-results',0)">&#128203; Results</button>
     <button class="dash-tab" onclick="switchTab('tab-pdf',1)">&#128196; PDF Quiz</button>
     <button class="dash-tab" onclick="switchTab('tab-dailytest',2)">&#128197; Daily Test</button>
-    <button class="dash-tab" onclick="switchTab('tab-history',3)">&#128100; Student History</button>
-    <button class="dash-tab" onclick="switchTab('tab-students',4)">&#128273; Students</button>
+    <button class="dash-tab" onclick="switchTab('tab-dtresults',3)">&#128202; Test Results</button>
+    <button class="dash-tab" onclick="switchTab('tab-history',4)">&#128100; Student History</button>
+    <button class="dash-tab" onclick="switchTab('tab-students',5)">&#128273; Students</button>
   </div>
 
   <!-- Results Tab -->
@@ -1176,6 +1209,39 @@
       </table>
     </div>
     <button class="btn-outline" onclick="exportCSV()" style="margin-top:16px;width:100%;">&#8595; Export CSV</button>
+  </div>
+
+  <!-- Daily Test Results Tab -->
+  <div class="dash-panel" id="tab-dtresults">
+    <div class="form-card" style="margin-bottom:12px;">
+      <div class="form-title">&#128202; Daily Test Results — Student-wise</div>
+      <p style="font-size:13px;color:var(--text2);margin-bottom:12px;">Jinhe Daily Test diya — unka naam, score, sahi/galat sab yahan dikh raha hai.</p>
+      <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;">
+        <button class="btn-outline" onclick="exportDTResultsCSV()" style="font-size:12px;padding:8px 14px;">&#8595; CSV Export</button>
+        <button class="btn-ghost" onclick="clearDTResults()" style="font-size:12px;padding:8px 14px;">&#128465; Sab Clear karo</button>
+      </div>
+      <div id="dt-results-summary" style="margin-bottom:10px;font-size:13px;color:var(--text2);"></div>
+      <div style="overflow-x:auto;">
+        <table class="data-table" id="dt-results-table" style="display:none;">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Student</th>
+              <th>Father</th>
+              <th>Test</th>
+              <th>Exam</th>
+              <th>&#9989; Sahi</th>
+              <th>&#10060; Galat</th>
+              <th>&#9197; Skip</th>
+              <th>Score %</th>
+              <th>Date/Time</th>
+            </tr>
+          </thead>
+          <tbody id="dt-results-body"></tbody>
+        </table>
+      </div>
+      <div id="dt-results-empty" style="text-align:center;padding:30px;color:var(--text2);font-size:13px;">Abhi kisi ne Daily Test nahi diya.</div>
+    </div>
   </div>
 
   <!-- PDF Tab -->
@@ -1570,13 +1636,16 @@ function doStartQuiz(){
 async function startQuiz(){
   var name = document.getElementById('studentName').value.trim();
   if(!name){ showToast('Please apna naam likho!'); return; }
-  Q.name = name;
+  var fName = document.getElementById('fatherName') ? document.getElementById('fatherName').value.trim() : '';
+  Q.name = fName ? name + ' (F: ' + fName + ')' : name;
+  Q.fatherName = fName;
   Q.exam = document.getElementById('exam').value;
   Q.chapter = document.getElementById('chapter').value;
   Q.diff = document.getElementById('difficulty').value;
   Q.lang = document.getElementById('language').value;
   Q.qcount = parseInt(document.getElementById('qcount').value);
   Q.questions = []; Q.current = 0; Q.answers = []; Q.score = 0; Q.skipped = 0;
+  Q.isDailyTest = false; Q.fatherName = document.getElementById('fatherName') ? document.getElementById('fatherName').value.trim() : '';
   Q.totalTime = Q.qcount * 60;
   showScreen('screen-quiz');
   document.getElementById('quiz-chapter-tag').textContent = Q.chapter;
@@ -1889,7 +1958,13 @@ function updateTimerUI(){
 
 function endQuiz(){
   clearInterval(Q.timerInt);
-  var tot = Q.questions.length, cor = Q.score, wr = tot-cor-Q.skipped, pct = Math.round((cor/tot)*100);
+  var tot = Q.questions.length, cor = Q.score, wr = tot-cor-Q.skipped;
+
+  // Negative marking calculate karo
+  var scoreData = calculateScore(cor, wr, Q.skipped);
+  var finalScore = scoreData.final;
+  var pct = Math.round((cor/tot)*100);
+
   showScreen('screen-result');
   document.getElementById('trophy-icon').textContent = pct>=80?'&#127942;':pct>=50?'&#11088;':'&#128170;';
   document.getElementById('result-title').textContent = pct>=80?'Excellent Performance!':pct>=50?'Good Effort!':'Keep Practicing!';
@@ -1899,6 +1974,30 @@ function endQuiz(){
   document.getElementById('stat-correct').textContent = cor;
   document.getElementById('stat-wrong').textContent = wr;
   document.getElementById('stat-skip').textContent = Q.skipped;
+
+  // Negative marking info dikhao
+  var negWrap = document.getElementById('neg-result-wrap');
+  if(negWrap){
+    var toggle = document.getElementById('neg-marking-toggle');
+    if(toggle && toggle.checked && currentNegMarking && currentNegMarking.wrong < 0){
+      var pos = (cor * currentNegMarking.correct).toFixed(2);
+      var neg = (wr * Math.abs(currentNegMarking.wrong)).toFixed(2);
+      var fin = Math.max(0, finalScore).toFixed(2);
+      negWrap.style.display = 'block';
+      negWrap.innerHTML = '<div style="background:rgba(192,57,43,0.08);border:1px solid rgba(192,57,43,0.3);border-radius:10px;padding:14px 16px;margin:12px 0;">'
+        + '<div style="font-family:Orbitron,sans-serif;font-size:11px;color:var(--red);letter-spacing:2px;margin-bottom:10px;">➖ NEGATIVE MARKING RESULT</div>'
+        + '<div style="font-size:13px;line-height:2;color:var(--text);">'
+        + '✅ सही: ' + cor + ' × +' + currentNegMarking.correct + ' = <b style="color:var(--green)">+' + pos + '</b><br>'
+        + '❌ गलत: ' + wr + ' × ' + currentNegMarking.wrong + ' = <b style="color:var(--red)">-' + neg + '</b><br>'
+        + '⏭️ Skip: ' + Q.skipped + ' × 0 = 0<br>'
+        + '<hr style="border-color:var(--border);margin:6px 0;">'
+        + '🎯 Final Score: <b style="color:var(--gold);font-size:16px;">' + fin + '</b>'
+        + '</div></div>';
+    } else {
+      negWrap.style.display = 'none';
+    }
+  }
+
   var bi,bt,bs;
   if(pct>=80){ bi='&#129351;'; bt='GOLD CHAMPION'; bs='Outstanding! Tumne kamaal kiya!'; }
   else if(pct>=60){ bi='&#129352;'; bt='SILVER PERFORMER'; bs='Accha kiya! Thodi aur practice karo.'; }
@@ -1913,15 +2012,17 @@ function endQuiz(){
   }
   Q_timeUsed = Q.totalTime - Q.timeLeft;
   saveResult(cor, tot, pct);
-  // Questions ko history mein save karo — future mein repeat avoid karne ke liye
   saveQuestionHistory(Q.chapter, Q.questions);
-  // Analytics render
   setTimeout(function(){ renderAnalytics(); }, 100);
 }
 
 async function saveResult(cor, tot, pct){
   // Save student-wise local history
   saveStudentHistory(Q.name, Q.exam, Q.chapter, Q.diff, Q.lang, cor, tot, pct);
+  // Agar Daily Test tha to DT results mein bhi save karo
+  if(Q.isDailyTest){
+    saveDTResult(cor, tot, pct);
+  }
   // Save chapter performance
   saveChapterPerf(Q.chapter, pct);
   try{
@@ -1979,6 +2080,7 @@ function switchTab(tabId, idx){
   for(var i=0;i<panels.length;i++) panels[i].classList.toggle('active', panels[i].id===tabId);
   if(tabId==='tab-results') loadDashboard();
   if(tabId==='tab-dailytest'){ loadCurrentDailyTest(); dtUpdateChapters(); }
+  if(tabId==='tab-dtresults'){ renderDTResults(); }
   if(tabId==='tab-history'){ renderStudentHistory(); }
   if(tabId==='tab-students'){ renderStudentMgmt(); }
 }
@@ -2350,7 +2452,9 @@ function startDailyTest(){
 function startDailyTestById(elOrId){
   var testId = (typeof elOrId === 'string') ? elOrId : elOrId.dataset.id;
   var name = document.getElementById('studentName').value.trim();
+  var fName = document.getElementById('fatherName') ? document.getElementById('fatherName').value.trim() : '';
   if(!name){ showToast('Pehle apna naam likho!'); document.getElementById('studentName').focus(); return; }
+  if(!fName){ showToast('Father ka naam bhi likho!'); document.getElementById('fatherName').focus(); return; }
   var tests = [];
   try { tests = JSON.parse(localStorage.getItem('sj_daily_tests') || '[]'); } catch(e){}
   var t = null;
@@ -2358,6 +2462,8 @@ function startDailyTestById(elOrId){
   if(!t){ showToast('Test nahi mila.'); return; }
   Q.questions = t.questions; Q.name = name; Q.exam = t.exam;
   Q.chapter = t.subject||t.title; Q.diff = 'Mix';
+  Q.isDailyTest = true; Q.dailyTestId = t.id; Q.dailyTestTitle = t.title;
+  Q.fatherName = document.getElementById('fatherName') ? document.getElementById('fatherName').value.trim() : '';
   Q.lang = document.getElementById('language').value;
   Q.qcount = t.questions.length; Q.current = 0; Q.answers = []; Q.score = 0; Q.skipped = 0;
   Q.totalTime = t.timeLimit * 60;
@@ -2870,12 +2976,238 @@ function clearAllHistory(){
 
 
 // ===================================================
-// UPDATED: Form pehle bharo, phir login popup
+// DAILY TEST RESULTS SYSTEM
 // ===================================================
+var DT_RESULTS_KEY = 'sj_dt_results';
+
+function saveDTResult(cor, tot, pct){
+  var wr = tot - cor - Q.skipped;
+  var result = {
+    studentName: Q.name,
+    fatherName: Q.fatherName || '',
+    testId: Q.dailyTestId || '',
+    testTitle: Q.dailyTestTitle || Q.chapter,
+    exam: Q.exam,
+    correct: cor,
+    wrong: wr,
+    skipped: Q.skipped,
+    total: tot,
+    score: pct,
+    datetime: new Date().toLocaleString('hi-IN')
+  };
+  var existing = [];
+  try { existing = JSON.parse(localStorage.getItem(DT_RESULTS_KEY) || '[]'); } catch(e){ existing=[]; }
+  existing.push(result);
+  localStorage.setItem(DT_RESULTS_KEY, JSON.stringify(existing));
+}
+
+function renderDTResults(){
+  var results = [];
+  try { results = JSON.parse(localStorage.getItem(DT_RESULTS_KEY) || '[]'); } catch(e){ results=[]; }
+
+  var table = document.getElementById('dt-results-table');
+  var body = document.getElementById('dt-results-body');
+  var empty = document.getElementById('dt-results-empty');
+  var summary = document.getElementById('dt-results-summary');
+
+  if(!table) return;
+
+  if(results.length === 0){
+    table.style.display = 'none';
+    empty.style.display = 'block';
+    summary.textContent = '';
+    return;
+  }
+
+  table.style.display = 'table';
+  empty.style.display = 'none';
+
+  // Summary
+  var avg = Math.round(results.reduce(function(a,r){ return a+r.score; },0) / results.length);
+  summary.innerHTML = '<b style="color:var(--gold);">कुल Students: ' + results.length + '</b>'
+    + ' &nbsp;|&nbsp; Average Score: <b>' + avg + '%</b>';
+
+  // Table rows
+  var html = '';
+  for(var i=0; i<results.length; i++){
+    var r = results[i];
+    var color = r.score>=80 ? 'var(--green)' : r.score>=50 ? 'var(--gold)' : 'var(--red)';
+    html += '<tr>'
+      + '<td>' + (i+1) + '</td>'
+      + '<td><b>' + r.studentName + '</b></td>'
+      + '<td>' + (r.fatherName||'-') + '</td>'
+      + '<td style="font-size:12px;">' + r.testTitle + '</td>'
+      + '<td>' + r.exam + '</td>'
+      + '<td style="color:var(--green);font-weight:700;">' + r.correct + '</td>'
+      + '<td style="color:var(--red);font-weight:700;">' + r.wrong + '</td>'
+      + '<td style="color:var(--text2);">' + r.skipped + '</td>'
+      + '<td style="color:' + color + ';font-weight:700;">' + r.score + '%</td>'
+      + '<td style="font-size:11px;color:var(--text2);">' + r.datetime + '</td>'
+      + '</tr>';
+  }
+  body.innerHTML = html;
+}
+
+function exportDTResultsCSV(){
+  var results = [];
+  try { results = JSON.parse(localStorage.getItem(DT_RESULTS_KEY) || '[]'); } catch(e){}
+  if(results.length === 0){ showToast('Koi results nahi hain!'); return; }
+
+  var csv = 'Student Name,Father Name,Test,Exam,Correct,Wrong,Skip,Score%,Date\n';
+  for(var i=0; i<results.length; i++){
+    var r = results[i];
+    csv += '"'+r.studentName+'","'+(r.fatherName||'')+'","'+r.testTitle+'","'+r.exam+'",'+r.correct+','+r.wrong+','+r.skipped+','+r.score+'%,"'+r.datetime+'"\n';
+  }
+  var blob = new Blob([csv], {type:'text/csv'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'DailyTest_Results_' + new Date().toLocaleDateString('en-IN').replace(/\//g,'-') + '.csv';
+  a.click();
+  showToast('CSV download ho raha hai!');
+}
+
+function clearDTResults(){
+  if(!confirm('Sabhi Daily Test results delete karne hain?')) return;
+  localStorage.removeItem(DT_RESULTS_KEY);
+  renderDTResults();
+  showToast('Sabhi results delete ho gaye.');
+}
+
+// ===================================================
+// UPDATED: Student Login System
+// ===================================================
+// ===================================================
+// NEGATIVE MARKING SYSTEM
+// ===================================================
+
+// Exam ke hisaab se known patterns (fallback)
+var NEG_MARKING_PATTERNS = {
+  'JEE':          { correct: 4,   wrong: -1,     label: 'JEE Main: +4 सही, -1 गलत (4:1 ratio)' },
+  'NEET':         { correct: 4,   wrong: -1,     label: 'NEET: +4 सही, -1 गलत (4:1 ratio)' },
+  'NDA':          { correct: 2.5, wrong: -0.833, label: 'NDA: +2.5 सही, -0.833 गलत (3:1 ratio)' },
+  'CLAT':         { correct: 1,   wrong: -0.25,  label: 'CLAT: +1 सही, -0.25 गलत (4:1 ratio)' },
+  'CA Foundation':{ correct: 1,   wrong: -0.25,  label: 'CA Foundation: +1 सही, -0.25 गलत (Paper 3&4)' },
+  'Class 9':      { correct: 1,   wrong: 0,      label: 'Class 9: कोई negative marking नहीं' },
+  'Class 10':     { correct: 1,   wrong: 0,      label: 'Class 10: कोई negative marking नहीं' },
+  'Class 11':     { correct: 1,   wrong: 0,      label: 'Class 11: कोई negative marking नहीं' },
+  'Class 12':     { correct: 1,   wrong: 0,      label: 'Class 12: कोई negative marking नहीं' },
+};
+
+var currentNegMarking = null; // { correct, wrong, label, aiVerified }
+
+function updateNegMarkingInfo(){
+  var toggle = document.getElementById('neg-marking-toggle');
+  var label = document.getElementById('neg-marking-label');
+  var info = document.getElementById('neg-marking-info');
+  var exam = document.getElementById('exam').value;
+
+  if(!toggle.checked){
+    label.textContent = 'OFF — कोई negative marking नहीं';
+    label.style.color = 'var(--text2)';
+    info.style.display = 'none';
+    currentNegMarking = null;
+    return;
+  }
+
+  // Get pattern for this exam
+  var pattern = NEG_MARKING_PATTERNS[exam] || { correct:1, wrong:0, label: 'इस exam के लिए pattern unknown' };
+  currentNegMarking = pattern;
+
+  label.textContent = 'ON — ' + pattern.label;
+  label.style.color = 'var(--red)';
+
+  // AI se verify karo (async, background mein)
+  info.style.display = 'block';
+  info.textContent = '⏳ AI से current pattern verify हो रहा है...';
+
+  fetchNegMarkingFromAI(exam, pattern);
+}
+
+async function fetchNegMarkingFromAI(exam, fallback){
+  var info = document.getElementById('neg-marking-info');
+  var label = document.getElementById('neg-marking-label');
+  try {
+    var prompt = 'What is the current official negative marking scheme for ' + exam + ' exam in India in 2025-2026? '
+      + 'Reply in EXACTLY this JSON format only, no other text: '
+      + '{"correct": number, "wrong": number, "label": "short Hindi description", "note": "any important note"}';
+
+    var res = await fetch(GROQ_URL, {
+      method: 'POST',
+      headers: {'Content-Type':'application/json','Authorization':'Bearer '+GROQ_KEY},
+      body: JSON.stringify({
+        model: GROQ_MODEL,
+        messages: [
+          {role:'system', content:'You are an expert on Indian competitive exam patterns. Return ONLY valid JSON, no markdown, no extra text.'},
+          {role:'user', content: prompt}
+        ],
+        temperature: 0.1,
+        max_tokens: 200
+      })
+    });
+
+    if(!res.ok) throw new Error('API error');
+    var data = await res.json();
+    var text = data.choices[0].message.content.trim();
+    text = text.replace(/```json/gi,'').replace(/```/g,'').trim();
+    var aiPattern = JSON.parse(text);
+
+    if(aiPattern && typeof aiPattern.correct === 'number'){
+      currentNegMarking = {
+        correct: aiPattern.correct,
+        wrong: aiPattern.wrong,
+        label: aiPattern.label || fallback.label,
+        note: aiPattern.note || '',
+        aiVerified: true
+      };
+      label.textContent = 'ON — ' + currentNegMarking.label;
+      info.textContent = '✅ AI verified: +' + currentNegMarking.correct + ' सही, '
+        + currentNegMarking.wrong + ' गलत'
+        + (currentNegMarking.note ? ' | ' + currentNegMarking.note : '');
+      info.style.color = 'var(--green)';
+      info.style.background = 'rgba(26,122,74,0.08)';
+      info.style.borderColor = 'rgba(26,122,74,0.3)';
+    } else {
+      throw new Error('Invalid response');
+    }
+  } catch(e){
+    // Fallback use karo
+    currentNegMarking = fallback;
+    info.textContent = '⚠️ AI verify nahi hua — default pattern use: +' + fallback.correct + ' सही, ' + fallback.wrong + ' गलत';
+    info.style.color = 'var(--gold)';
+  }
+}
+
+// Exam change par toggle reset karo
+document.addEventListener('DOMContentLoaded', function(){
+  var examSel = document.getElementById('exam');
+  if(examSel){
+    examSel.addEventListener('change', function(){
+      var toggle = document.getElementById('neg-marking-toggle');
+      if(toggle && toggle.checked){ updateNegMarkingInfo(); }
+    });
+  }
+});
+
+function calculateScore(correct, wrong, skipped){
+  var toggle = document.getElementById('neg-marking-toggle');
+  if(!toggle || !toggle.checked || !currentNegMarking){
+    return { raw: correct, final: correct, detail: '' };
+  }
+  var pos = correct * currentNegMarking.correct;
+  var neg = wrong * Math.abs(currentNegMarking.wrong);
+  var final = pos - neg;
+  var detail = correct + ' × +' + currentNegMarking.correct + ' = +' + pos.toFixed(2)
+    + ' | ' + wrong + ' × ' + currentNegMarking.wrong + ' = ' + (-neg).toFixed(2)
+    + ' | Final: ' + final.toFixed(2);
+  return { raw: correct, final: Math.max(0, final), detail: detail };
+}
+
 function checkAndStartQuiz(){
   // Step 1: Form validate karo
   var name = document.getElementById('studentName').value.trim();
+  var fatherName = document.getElementById('fatherName') ? document.getElementById('fatherName').value.trim() : '';
   if(!name){ showToast('Pehle apna naam likho!'); document.getElementById('studentName').focus(); return; }
+  if(!fatherName){ showToast('Father ka naam bhi likho!'); document.getElementById('fatherName').focus(); return; }
   var chapter = document.getElementById('chapter').value;
   if(!chapter){ showToast('Chapter select karo!'); return; }
 
@@ -2931,6 +3263,7 @@ function modalStudentLogin(){
 
   // Name field update karo
   document.getElementById('studentName').value = found.name;
+  if(document.getElementById('fatherName')) document.getElementById('fatherName').value = found.fatherName || '';
 
   showToast('✅ Welcome ' + found.name + '!');
 
