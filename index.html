@@ -1489,7 +1489,9 @@ function updateChapters(){
       html += '</optgroup>';
     }
   }
-  sel.innerHTML = html;
+  // Sabse upar "Overall - Poora Exam" option add karo
+  var overallOption = '<option value="Overall - ' + exam + '">⭐ Overall — Poora ' + exam + ' Exam</option>';
+  sel.innerHTML = overallOption + html;
 }
 updateChapters();
 
@@ -1545,6 +1547,15 @@ function buildAvoidPrompt(chapter){
 // ===== QUIZ STATE =====
 var Q = {questions:[],current:0,answers:[],score:0,skipped:0,totalTime:0,timerInt:null,timeLeft:0,name:'',exam:'',chapter:'',diff:'',lang:'',qcount:10};
 
+// Direct quiz starter - koi bhi check nahi, seedha chalata hai
+function doStartQuiz(){
+  // Name field mein loggedInStudent ka naam ensure karo
+  if(loggedInStudent){
+    document.getElementById('studentName').value = loggedInStudent.name;
+  }
+  startQuiz();
+}
+
 async function startQuiz(){
   var name = document.getElementById('studentName').value.trim();
   if(!name){ showToast('Please apna naam likho!'); return; }
@@ -1594,7 +1605,7 @@ async function startNormalQuiz(){
       '',
       'Generate exactly ' + Q.qcount + ' UNIQUE MCQ questions.',
       'Exam: ' + Q.exam,
-      'Chapter/Topic: ' + Q.chapter,
+      'Chapter/Topic: ' + (Q.chapter.indexOf('Overall') !== -1 ? 'All topics of ' + Q.exam + ' exam — mix of all subjects and chapters' : Q.chapter),
       'Difficulty: ' + Q.diff + ' - ' + diffInst,
       'Variation seed: ' + seed,
       ''
@@ -2772,23 +2783,27 @@ function clearAllHistory(){
 // UPDATED: Form pehle bharo, phir login popup
 // ===================================================
 function checkAndStartQuiz(){
-  // Pehle form validate karo
+  // Step 1: Form validate karo
   var name = document.getElementById('studentName').value.trim();
   if(!name){ showToast('Pehle apna naam likho!'); document.getElementById('studentName').focus(); return; }
   var chapter = document.getElementById('chapter').value;
   if(!chapter){ showToast('Chapter select karo!'); return; }
 
-  // Check karo koi student registered hai ya nahi
+  // Step 2: Students registered hain ya nahi
   var students = getAllStudentDB();
   if(students.length > 0 && !loggedInStudent){
-    // Popup kholo
+    // Popup kholo - ID/Password maango
     document.getElementById('modal-sl-id').value = '';
     document.getElementById('modal-sl-pwd').value = '';
     document.getElementById('modal-sl-error').style.display = 'none';
     document.getElementById('student-login-modal').classList.add('show');
+    // Enter key se bhi login ho sake
+    setTimeout(function(){
+      document.getElementById('modal-sl-id').focus();
+    }, 300);
   } else {
     // Seedha quiz shuru karo
-    startQuiz();
+    doStartQuiz();
   }
 }
 
@@ -2827,11 +2842,11 @@ function modalStudentLogin(){
   // Name field update karo
   document.getElementById('studentName').value = found.name;
 
-  closeStudentLoginModal();
   showToast('✅ Welcome ' + found.name + '!');
 
   // Seedha quiz shuru karo
-  setTimeout(function(){ startQuiz(); }, 500);
+  closeStudentLoginModal();
+  setTimeout(function(){ doStartQuiz(); }, 300);
 }
 
 
