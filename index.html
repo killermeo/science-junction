@@ -1376,7 +1376,7 @@
 <script>
 var APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwRtvck-c-9ZKPo4VynOdCX5gVW4wa745d0_Tix23cJhn5n-RM9SAIWl9dBA1DLz-MMgA/exec";
 var TEACHER_PWD = "science123";
-var GROQ_KEY = "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";
+var GROQ_KEY = "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";
 var GROQ_URL = "https://api.groq.com/openai/v1/chat/completions";
 var GROQ_MODEL = "llama-3.3-70b-versatile";
 
@@ -1479,6 +1479,8 @@ function updateChapters(){
     for(var s=0; s<groupOrder.length; s++){
       var subj = groupOrder[s];
       html += '<optgroup label="[ ' + subj + ' ]">';
+      // Har subject mein sabse upar Overall option
+      html += '<option value="Overall - ' + subj + '">⭐ Overall ' + subj + '</option>';
       var items = groups[subj];
       for(var k=0; k<items.length; k++){
         var item = items[k];
@@ -1605,7 +1607,7 @@ async function startNormalQuiz(){
       '',
       'Generate exactly ' + Q.qcount + ' UNIQUE MCQ questions.',
       'Exam: ' + Q.exam,
-      'Chapter/Topic: ' + (Q.chapter.indexOf('Overall') !== -1 ? 'All topics of ' + Q.exam + ' exam — mix of all subjects and chapters' : Q.chapter),
+      'Chapter/Topic: ' + (Q.chapter.indexOf('Overall - ' + Q.exam) !== -1 ? 'All topics of ' + Q.exam + ' exam — mix of all subjects and chapters' : Q.chapter.indexOf('Overall - ') !== -1 ? 'All chapters of ' + Q.chapter.replace('Overall - ','') + ' subject in ' + Q.exam + ' exam' : Q.chapter),
       'Difficulty: ' + Q.diff + ' - ' + diffInst,
       'Variation seed: ' + seed,
       ''
