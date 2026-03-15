@@ -1250,10 +1250,11 @@
               <th>Father</th>
               <th>Test</th>
               <th>Exam</th>
-              <th>&#9989; Sahi</th>
-              <th>&#10060; Galat</th>
+              <th>&#9989; सही</th>
+              <th>&#10060; गलत</th>
               <th>&#9197; Skip</th>
               <th>Score %</th>
+              <th>Final Score</th>
               <th>Date/Time</th>
             </tr>
           </thead>
@@ -2021,20 +2022,22 @@ function endQuiz(){
   // Negative marking info dikhao
   var negWrap = document.getElementById('neg-result-wrap');
   if(negWrap){
-    var toggle = document.getElementById('neg-marking-toggle');
-    if(toggle && toggle.checked && currentNegMarking && currentNegMarking.wrong < 0){
+    // Daily Test mein toggle nahi hota — sirf currentNegMarking check karo
+    if(currentNegMarking && currentNegMarking.wrong < 0){
       var pos = (cor * currentNegMarking.correct).toFixed(2);
       var neg = (wr * Math.abs(currentNegMarking.wrong)).toFixed(2);
-      var fin = Math.max(0, finalScore).toFixed(2);
+      var fin = Math.max(0, parseFloat(pos) - parseFloat(neg)).toFixed(2);
+      var maxMarks = (tot * currentNegMarking.correct).toFixed(2);
       negWrap.style.display = 'block';
       negWrap.innerHTML = '<div style="background:rgba(192,57,43,0.08);border:1px solid rgba(192,57,43,0.3);border-radius:10px;padding:14px 16px;margin:12px 0;">'
         + '<div style="font-family:Orbitron,sans-serif;font-size:11px;color:var(--red);letter-spacing:2px;margin-bottom:10px;">➖ NEGATIVE MARKING RESULT</div>'
-        + '<div style="font-size:13px;line-height:2;color:var(--text);">'
-        + '✅ सही: ' + cor + ' × +' + currentNegMarking.correct + ' = <b style="color:var(--green)">+' + pos + '</b><br>'
-        + '❌ गलत: ' + wr + ' × ' + currentNegMarking.wrong + ' = <b style="color:var(--red)">-' + neg + '</b><br>'
-        + '⏭️ Skip: ' + Q.skipped + ' × 0 = 0<br>'
-        + '<hr style="border-color:var(--border);margin:6px 0;">'
-        + '🎯 Final Score: <b style="color:var(--gold);font-size:16px;">' + fin + '</b>'
+        + '<div style="font-size:14px;line-height:2.2;color:var(--text);">'
+        + '✅ सही जवाब: <b>' + cor + '</b> × +' + currentNegMarking.correct + ' = <b style="color:var(--green)">+' + pos + '</b><br>'
+        + '❌ गलत जवाब: <b>' + wr + '</b> × ' + currentNegMarking.wrong + ' = <b style="color:var(--red)">-' + neg + '</b><br>'
+        + '⏭️ Skip किए: <b>' + Q.skipped + '</b> × 0 = 0<br>'
+        + '<hr style="border:none;border-top:1px solid var(--border);margin:8px 0;">'
+        + '📊 कुल Questions: <b>' + tot + '</b> | Maximum Marks: <b>' + maxMarks + '</b><br>'
+        + '🎯 Final Score: <b style="color:var(--gold);font-size:18px;font-family:Orbitron,sans-serif;">' + fin + ' / ' + maxMarks + '</b>'
         + '</div></div>';
     } else {
       negWrap.style.display = 'none';
@@ -3160,6 +3163,14 @@ var DT_RESULTS_KEY = 'sj_dt_results';
 
 function saveDTResult(cor, tot, pct){
   var wr = tot - cor - Q.skipped;
+  var finalScore = cor; // default
+  var negDetail = '';
+  if(currentNegMarking && currentNegMarking.wrong < 0){
+    var pos = cor * currentNegMarking.correct;
+    var neg = wr * Math.abs(currentNegMarking.wrong);
+    finalScore = Math.max(0, pos - neg);
+    negDetail = '+' + pos.toFixed(2) + ' - ' + neg.toFixed(2) + ' = ' + finalScore.toFixed(2);
+  }
   var result = {
     studentName: Q.name,
     fatherName: Q.fatherName || '',
@@ -3171,6 +3182,8 @@ function saveDTResult(cor, tot, pct){
     skipped: Q.skipped,
     total: tot,
     score: pct,
+    finalScore: finalScore.toFixed ? finalScore.toFixed(2) : finalScore,
+    negDetail: negDetail,
     datetime: new Date().toLocaleString('hi-IN')
   };
   var existing = [];
@@ -3220,6 +3233,7 @@ function renderDTResults(){
       + '<td style="color:var(--red);font-weight:700;">' + r.wrong + '</td>'
       + '<td style="color:var(--text2);">' + r.skipped + '</td>'
       + '<td style="color:' + color + ';font-weight:700;">' + r.score + '%</td>'
+      + '<td style="color:var(--gold);font-weight:700;">' + (r.negDetail ? r.finalScore : '-') + '</td>'
       + '<td style="font-size:11px;color:var(--text2);">' + r.datetime + '</td>'
       + '</tr>';
   }
