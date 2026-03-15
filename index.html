@@ -3233,7 +3233,7 @@ function renderDTResults(){
       + '<td style="color:var(--red);font-weight:700;">' + r.wrong + '</td>'
       + '<td style="color:var(--text2);">' + r.skipped + '</td>'
       + '<td style="color:' + color + ';font-weight:700;">' + r.score + '%</td>'
-      + '<td style="color:var(--gold);font-weight:700;">' + (r.negDetail ? r.finalScore : '-') + '</td>'
+      + '<td style="color:var(--gold);font-weight:700;">' + (r.finalScore !== undefined && r.finalScore !== null ? r.finalScore : r.correct + '/' + r.total) + '</td>'
       + '<td style="font-size:11px;color:var(--text2);">' + r.datetime + '</td>'
       + '</tr>';
   }
