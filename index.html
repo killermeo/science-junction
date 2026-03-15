@@ -1037,6 +1037,26 @@
   </div>
 </div>
 
+<!-- DAILY TEST START POPUP MODAL -->
+<div class="modal-overlay" id="dt-start-modal">
+  <div class="modal-card" style="max-width:400px;">
+    <button class="modal-close" onclick="closeDTStartModal()">✕</button>
+    <div class="modal-title">📅 Daily Test शुरू करो</div>
+    <div id="dt-start-test-info" style="text-align:center;margin-bottom:16px;padding:10px;background:var(--bg3);border-radius:8px;font-size:13px;color:var(--text2);"></div>
+    <div class="modal-form-group">
+      <label>👤 Student का नाम</label>
+      <input type="text" id="dt-modal-name" placeholder="अपना नाम लिखो..." style="width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'Rajdhani',sans-serif;font-size:15px;padding:10px 14px;outline:none;margin-top:4px;">
+    </div>
+    <div class="modal-form-group" style="margin-top:12px;">
+      <label>👨 Father का नाम</label>
+      <input type="text" id="dt-modal-father" placeholder="पिता का नाम लिखो..." style="width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'Rajdhani',sans-serif;font-size:15px;padding:10px 14px;outline:none;margin-top:4px;">
+    </div>
+    <div id="dt-modal-neg-info" style="display:none;margin-top:10px;padding:8px 12px;background:rgba(192,57,43,0.08);border:1px solid rgba(192,57,43,0.3);border-radius:8px;font-size:12px;color:var(--red);"></div>
+    <div id="dt-modal-error" style="display:none;margin-top:10px;padding:8px 12px;background:rgba(192,57,43,0.1);border:1px solid var(--red);border-radius:8px;font-size:13px;color:var(--red);text-align:center;"></div>
+    <button class="btn-gold" onclick="confirmDTStart()" style="margin-top:16px;">🚀 TEST SHURU KARO</button>
+  </div>
+</div>
+
 <!-- STUDENT LOGIN POPUP MODAL -->
 <div class="modal-overlay" id="student-login-modal">
   <div class="modal-card" style="max-width:380px;">
@@ -1374,6 +1394,21 @@
         </div>
       </div>
 
+      <!-- Negative Marking Toggle for Daily Test -->
+      <div class="form-row single" style="margin-top:4px;">
+        <div class="form-group">
+          <label>➖ Negative Marking</label>
+          <div style="display:flex;align-items:center;gap:12px;padding:10px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:8px;">
+            <label class="toggle-switch">
+              <input type="checkbox" id="dt-neg-toggle" onchange="updateDTNegMarking()">
+              <span class="toggle-slider"></span>
+            </label>
+            <span id="dt-neg-label" style="font-size:14px;color:var(--text2);font-weight:600;">OFF — कोई negative marking नहीं</span>
+          </div>
+          <div id="dt-neg-info" style="display:none;margin-top:6px;padding:8px 12px;background:rgba(192,57,43,0.08);border:1px solid rgba(192,57,43,0.3);border-radius:8px;font-size:12px;color:var(--red);"></div>
+        </div>
+      </div>
+
       <!-- Generate Button -->
       <button class="btn-gold" onclick="dtGenerateQuestions()" id="dt-gen-btn" style="margin-top:4px;background:linear-gradient(135deg,#1A7A4A,#22a85e);">
         &#9889; AI se Questions Generate karo
@@ -1683,7 +1718,7 @@ async function startNormalQuiz(){
     var promptParts = [
       langInst,
       '',
-      'Generate exactly ' + Q.qcount + ' UNIQUE MCQ questions.',
+      'YOU MUST generate EXACTLY ' + Q.qcount + ' MCQ questions — no more, no less.',
       'Exam: ' + Q.exam,
       'Chapter/Topic: ' + (Q.chapter.indexOf('Overall - ' + Q.exam) !== -1 ? 'All topics of ' + Q.exam + ' exam — mix of all subjects and chapters' : Q.chapter.indexOf('Overall - ') !== -1 ? 'All chapters of ' + Q.chapter.replace('Overall - ','') + ' subject in ' + Q.exam + ' exam' : Q.chapter),
       'Difficulty: ' + Q.diff + ' - ' + diffInst,
@@ -1693,13 +1728,21 @@ async function startNormalQuiz(){
 
     if(avoidPrompt){ promptParts.push(avoidPrompt); promptParts.push(''); }
 
+    promptParts.push('CRITICAL COUNTING RULE:');
+    promptParts.push('- Count your questions before responding');
+    promptParts.push('- Your final JSON array MUST contain EXACTLY ' + Q.qcount + ' objects');
+    promptParts.push('- If less: add more. If more: remove extra. No exceptions.');
+    promptParts.push('');
     promptParts.push('STRICT RULES:');
     promptParts.push('1. Every question must test a DIFFERENT concept');
     promptParts.push('2. Return ONLY raw JSON array - NO markdown, NO backticks, NO extra text');
     promptParts.push('3. Start with [ and end with ]');
     promptParts.push('4. correctIndex is 0-based (0=A, 1=B, 2=C, 3=D)');
+    promptParts.push('5. Keep explanation under 60 words, options under 10 words');
     promptParts.push('');
     promptParts.push('Format: [{"question":"...","options":["A","B","C","D"],"correctIndex":0,"explanation":"..."}]');
+    promptParts.push('');
+    promptParts.push('REMINDER: EXACTLY ' + Q.qcount + ' questions. Count. Verify. Send.');
 
     var prompt = promptParts.join('\n');
 
@@ -2203,20 +2246,29 @@ async function dtGenerateQuestions(){
 
       var promptParts = [
         langInst, '',
-        'Generate EXACTLY ' + thisChunk + ' MCQ questions. Not more, not less.',
+        'YOU MUST generate EXACTLY ' + thisChunk + ' MCQ questions — no more, no less.',
         'Exam: ' + exam,
         'Chapter/Topic: ' + chapterPrompt,
         'Difficulty: ' + diff + ' - ' + diffInst,
-        'Random seed for variety: ' + seed, ''
+        'Seed: ' + seed, '',
+        'CRITICAL COUNTING RULE:',
+        '- Count your questions before responding',
+        '- If you have less than ' + thisChunk + ', add more questions',
+        '- If you have more than ' + thisChunk + ', remove extra questions',
+        '- Your final JSON array MUST contain EXACTLY ' + thisChunk + ' objects — this is mandatory',
+        '',
+        'STRICT FORMAT RULES:',
+        '1. Return ONLY raw JSON array — NO markdown, NO backticks, NO explanation text',
+        '2. Start with [ and end with ]',
+        '3. correctIndex is 0-based (0=A, 1=B, 2=C, 3=D)',
+        '4. Keep explanation under 60 words (short = more questions fit)',
+        '5. Each option must be short (under 10 words)',
+        '',
+        'Format: [{"question":"...","options":["A","B","C","D"],"correctIndex":0,"explanation":"..."}]',
+        '',
+        'REMINDER: EXACTLY ' + thisChunk + ' questions. Count them. Verify before sending.'
       ];
       if(avoidPrompt){ promptParts.push(avoidPrompt); promptParts.push(''); }
-      promptParts.push('STRICT RULES:');
-      promptParts.push('1. Return ONLY a JSON array with EXACTLY ' + thisChunk + ' objects');
-      promptParts.push('2. Start with [ and end with ] — nothing else');
-      promptParts.push('3. correctIndex is 0-based (0=A, 1=B, 2=C, 3=D)');
-      promptParts.push('4. Keep explanation under 80 words');
-      promptParts.push('');
-      promptParts.push('Format: [{"question":"...","options":["A","B","C","D"],"correctIndex":0,"explanation":"..."}]');
 
       var res = await fetch(GROQ_URL, {
         method: 'POST',
@@ -2264,6 +2316,45 @@ async function dtGenerateQuestions(){
       valid = valid.slice(0, thisChunk);
 
       // Purane ke saath jodo
+      // Exact count guarantee — retry jab tak exact count na mile
+      var retryCount = 0;
+      while(valid.length < thisChunk && retryCount < 3){
+        retryCount++;
+        var need = thisChunk - valid.length;
+        try {
+          var retryRes = await fetch(GROQ_URL, {
+            method: 'POST',
+            headers: {'Content-Type':'application/json','Authorization':'Bearer '+GROQ_KEY},
+            body: JSON.stringify({
+              model: GROQ_MODEL,
+              messages: [
+                {role:'system', content: sysPrompt},
+                {role:'user', content: 'Generate EXACTLY ' + need + ' unique MCQ questions for ' + exam + ' on topic: ' + chapterPrompt + '. Your array MUST have exactly ' + need + ' objects. Return ONLY JSON array: [{"question":"...","options":["A","B","C","D"],"correctIndex":0,"explanation":"..."}]'}
+              ],
+              temperature: 0.95,
+              max_tokens: 2000
+            })
+          });
+          if(retryRes.ok){
+            var retryData = await retryRes.json();
+            var retryText = retryData.choices[0].message.content.trim();
+            retryText = retryText.replace(/```json/gi,'').replace(/```/g,'').trim();
+            var rsi = retryText.indexOf('['); var rei = retryText.lastIndexOf(']');
+            if(rsi !== -1 && rei !== -1) retryText = retryText.substring(rsi, rei+1);
+            try {
+              var retryParsed = JSON.parse(retryText);
+              var retryValid = retryParsed.filter(function(q){
+                return q.question && Array.isArray(q.options) && q.options.length===4;
+              }).map(function(q){
+                return { question:q.question, options:q.options, correctIndex:parseInt(q.correctIndex||0), explanation:q.explanation||'' };
+              });
+              valid = valid.concat(retryValid);
+              valid = valid.slice(0, thisChunk);
+            } catch(pe){}
+          }
+        } catch(re){ break; }
+      }
+
       allValid = allValid.concat(valid);
 
       // Preview live update — pehle wale + naye sab dikhao
@@ -2327,7 +2418,8 @@ function publishDailyTest(){
     timeLimit: parseInt(time),
     questions: dtGeneratedQuestions,
     date: new Date().toLocaleDateString('hi-IN'),
-    publishedAt: Date.now()
+    publishedAt: Date.now(),
+    negMarking: dtNegMarking || null
   };
 
   // Load existing tests array
@@ -2449,26 +2541,112 @@ function startDailyTest(){
   if(tests.length > 0) startDailyTestById(tests[0].id);
 }
 
+var _pendingDTId = null;
+
 function startDailyTestById(elOrId){
   var testId = (typeof elOrId === 'string') ? elOrId : elOrId.dataset.id;
-  var name = document.getElementById('studentName').value.trim();
-  var fName = document.getElementById('fatherName') ? document.getElementById('fatherName').value.trim() : '';
-  if(!name){ showToast('Pehle apna naam likho!'); document.getElementById('studentName').focus(); return; }
-  if(!fName){ showToast('Father ka naam bhi likho!'); document.getElementById('fatherName').focus(); return; }
+
+  // Test find karo
   var tests = [];
   try { tests = JSON.parse(localStorage.getItem('sj_daily_tests') || '[]'); } catch(e){}
   var t = null;
   for(var i=0; i<tests.length; i++){ if(tests[i].id === testId){ t = tests[i]; break; } }
   if(!t){ showToast('Test nahi mila.'); return; }
-  Q.questions = t.questions; Q.name = name; Q.exam = t.exam;
-  Q.chapter = t.subject||t.title; Q.diff = 'Mix';
-  Q.isDailyTest = true; Q.dailyTestId = t.id; Q.dailyTestTitle = t.title;
-  Q.fatherName = document.getElementById('fatherName') ? document.getElementById('fatherName').value.trim() : '';
-  Q.lang = document.getElementById('language').value;
-  Q.qcount = t.questions.length; Q.current = 0; Q.answers = []; Q.score = 0; Q.skipped = 0;
+
+  // Pending test save karo
+  _pendingDTId = testId;
+
+  // Popup mein test info dikhao
+  var infoEl = document.getElementById('dt-start-test-info');
+  if(infoEl){
+    infoEl.innerHTML = '<b style="color:var(--gold);">' + t.title + '</b><br>'
+      + t.exam + ' | ' + t.questions.length + ' Questions | ' + t.timeLimit + ' min';
+  }
+
+  // Negative marking info
+  var negEl = document.getElementById('dt-modal-neg-info');
+  if(negEl){
+    if(t.negMarking && t.negMarking.wrong < 0){
+      negEl.style.display = 'block';
+      negEl.textContent = '⚠️ Negative Marking: +' + t.negMarking.correct + ' सही, ' + t.negMarking.wrong + ' गलत';
+    } else {
+      negEl.style.display = 'none';
+    }
+  }
+
+  // Fields clear karo
+  document.getElementById('dt-modal-name').value = '';
+  document.getElementById('dt-modal-father').value = '';
+  document.getElementById('dt-modal-error').style.display = 'none';
+
+  // Popup kholo
+  document.getElementById('dt-start-modal').classList.add('show');
+  setTimeout(function(){ document.getElementById('dt-modal-name').focus(); }, 300);
+}
+
+function closeDTStartModal(){
+  document.getElementById('dt-start-modal').classList.remove('show');
+  _pendingDTId = null;
+}
+
+function confirmDTStart(){
+  var name = document.getElementById('dt-modal-name').value.trim();
+  var fName = document.getElementById('dt-modal-father').value.trim();
+  var errEl = document.getElementById('dt-modal-error');
+
+  if(!name){
+    errEl.textContent = 'Student का नाम लिखो!';
+    errEl.style.display = 'block';
+    document.getElementById('dt-modal-name').focus();
+    return;
+  }
+  if(!fName){
+    errEl.textContent = 'Father का नाम लिखो!';
+    errEl.style.display = 'block';
+    document.getElementById('dt-modal-father').focus();
+    return;
+  }
+
+  errEl.style.display = 'none';
+
+  // Test load karo
+  var tests = [];
+  try { tests = JSON.parse(localStorage.getItem('sj_daily_tests') || '[]'); } catch(e){}
+  var t = null;
+  for(var i=0; i<tests.length; i++){ if(tests[i].id === _pendingDTId){ t = tests[i]; break; } }
+  if(!t){ showToast('Test nahi mila.'); closeDTStartModal(); return; }
+
+  closeDTStartModal();
+
+  // Q object set karo
+  Q.questions = t.questions;
+  Q.name = name;
+  Q.fatherName = fName;
+  Q.exam = t.exam;
+  Q.chapter = t.subject || t.title;
+  Q.diff = 'Mix';
+  Q.isDailyTest = true;
+  Q.dailyTestId = t.id;
+  Q.dailyTestTitle = t.title;
+  Q.lang = 'Hindi';
+
+  // Negative marking set karo
+  if(t.negMarking && t.negMarking.wrong < 0){
+    currentNegMarking = t.negMarking;
+    var dtToggle = document.getElementById('neg-marking-toggle');
+    if(dtToggle) dtToggle.checked = true;
+  } else {
+    currentNegMarking = null;
+    var dtToggle = document.getElementById('neg-marking-toggle');
+    if(dtToggle) dtToggle.checked = false;
+  }
+
+  Q.qcount = t.questions.length;
+  Q.current = 0; Q.answers = []; Q.score = 0; Q.skipped = 0;
   Q.totalTime = t.timeLimit * 60;
+
   showScreen('screen-quiz');
-  document.getElementById('quiz-chapter-tag').textContent = 'Daily Test: '+t.title;
+  document.getElementById('quiz-chapter-tag').textContent = 'Daily Test: ' + t.title;
   updateProgress(); renderQuestion(); startTimer();
 }
 
@@ -3184,6 +3362,57 @@ document.addEventListener('DOMContentLoaded', function(){
     examSel.addEventListener('change', function(){
       var toggle = document.getElementById('neg-marking-toggle');
       if(toggle && toggle.checked){ updateNegMarkingInfo(); }
+    });
+  }
+});
+
+// Daily Test Negative Marking
+var dtNegMarking = null;
+
+function updateDTNegMarking(){
+  var toggle = document.getElementById('dt-neg-toggle');
+  var label = document.getElementById('dt-neg-label');
+  var info = document.getElementById('dt-neg-info');
+  var exam = document.getElementById('dt-exam').value;
+
+  if(!toggle.checked){
+    label.textContent = 'OFF — कोई negative marking नहीं';
+    label.style.color = 'var(--text2)';
+    info.style.display = 'none';
+    dtNegMarking = null;
+    return;
+  }
+
+  var pattern = NEG_MARKING_PATTERNS[exam] || { correct:1, wrong:0, label:'इस exam के लिए pattern unknown' };
+  dtNegMarking = pattern;
+  label.textContent = 'ON — ' + pattern.label;
+  label.style.color = 'var(--red)';
+  info.style.display = 'block';
+  info.textContent = '⏳ AI से verify हो रहा है...';
+
+  // AI se verify
+  fetchNegMarkingFromAI(exam, pattern).then(function(){
+    if(currentNegMarking){ dtNegMarking = currentNegMarking; }
+    var infoEl = document.getElementById('dt-neg-info');
+    if(infoEl){
+      infoEl.textContent = '✅ ' + (dtNegMarking.label || pattern.label)
+        + ' | +' + dtNegMarking.correct + ' सही, ' + dtNegMarking.wrong + ' गलत';
+      infoEl.style.color = 'var(--green)';
+      infoEl.style.background = 'rgba(26,122,74,0.08)';
+      infoEl.style.borderColor = 'rgba(26,122,74,0.3)';
+    }
+  }).catch(function(){
+    dtNegMarking = pattern;
+  });
+}
+
+// DT exam change par reset
+document.addEventListener('DOMContentLoaded', function(){
+  var dtExam = document.getElementById('dt-exam');
+  if(dtExam){
+    dtExam.addEventListener('change', function(){
+      var toggle = document.getElementById('dt-neg-toggle');
+      if(toggle && toggle.checked){ updateDTNegMarking(); }
     });
   }
 });
