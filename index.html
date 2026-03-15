@@ -1656,7 +1656,15 @@ async function startNormalQuiz(){
     var si = text.indexOf('['); var ei = text.lastIndexOf(']');
     if(si !== -1 && ei !== -1) text = text.substring(si, ei+1);
 
-    var questions = JSON.parse(text);
+    // Robust JSON repair: truncated JSON fix
+    try {
+      var questions = JSON.parse(text);
+    } catch(jsonErr) {
+      // Try to repair truncated JSON
+      var lastComma = text.lastIndexOf(',{"question"');
+      if(lastComma !== -1) text = text.substring(0, lastComma) + ']';
+      var questions = JSON.parse(text);
+    }
     if(!Array.isArray(questions) || questions.length === 0) throw new Error('No questions');
 
     var valid = questions
@@ -2044,96 +2052,110 @@ async function dtGenerateQuestions(){
   var title = document.getElementById('dt-title').value.trim();
 
   if(!chapter){ showToast('Pehle chapter select karo!'); return; }
-
-  // Auto-fill title agar khali ho
-  if(!title){
-    document.getElementById('dt-title').value = chapter + ' Test';
-  }
+  if(!title){ document.getElementById('dt-title').value = chapter + ' Test'; }
 
   var genBtn = document.getElementById('dt-gen-btn');
   genBtn.disabled = true;
-  genBtn.textContent = 'Generating...';
   genBtn.style.background = 'rgba(200,150,12,0.3)';
   document.getElementById('dt-preview-wrap').style.display = 'none';
 
-  try{
-    var langInst = lang === 'English'
-      ? 'Write ALL questions, options, and explanations in ENGLISH only. Do NOT use Hindi or any other language.'
-      : 'IMPORTANT: You MUST write ALL questions, all options (A,B,C,D), and all explanations in Hindi language using Devanagari script only. Do NOT use English at all. Every single word must be in Hindi Devanagari script.';
+  var langInst = lang === 'English'
+    ? 'Write ALL questions, options, and explanations in ENGLISH only. Do NOT use Hindi.'
+    : 'IMPORTANT: Write ALL questions, options, and explanations in Hindi using Devanagari script only. Do NOT use English at all.';
 
-    var diffInst = diff==='Easy' ? 'Easy/basic level.'
-      : diff==='Hard' ? 'Advanced/hard level.'
-      : diff==='Moderate' ? 'Medium difficulty.'
-      : 'Mix of Easy, Moderate and Hard.';
+  var sysPrompt = lang === 'English'
+    ? 'You are an MCQ generator. Write all content in English only. Return ONLY valid JSON array. No markdown, no backticks, no extra text.'
+    : 'You are an MCQ generator. Write ALL questions, options, explanations in Hindi Devanagari script only. Return ONLY valid JSON array. No markdown, no backticks.';
 
-    var seed = Math.floor(Math.random()*99999);
-    var avoidPrompt = buildAvoidPrompt(chapter);
+  var diffInst = diff==='Easy' ? 'Easy/basic level.'
+    : diff==='Hard' ? 'Advanced/hard level.'
+    : diff==='Moderate' ? 'Medium difficulty.'
+    : 'Mix of Easy, Moderate and Hard.';
 
-    var chapterPrompt = chapter.indexOf('Overall - ' + exam) !== -1
-      ? 'All topics of ' + exam + ' exam — mix of all subjects and chapters'
-      : chapter.indexOf('Overall - ') !== -1
-        ? 'All chapters of ' + chapter.replace('Overall - ','') + ' subject in ' + exam + ' exam'
-        : chapter;
+  var chapterPrompt = chapter.indexOf('Overall - ' + exam) !== -1
+    ? 'All topics of ' + exam + ' exam — mix of all subjects and chapters'
+    : chapter.indexOf('Overall - ') !== -1
+      ? 'All chapters of ' + chapter.replace('Overall - ','') + ' subject in ' + exam + ' exam'
+      : chapter;
 
-    var promptParts = [
-      langInst, '',
-      'Generate exactly ' + qcount + ' UNIQUE MCQ questions for Daily Test.',
-      'Exam: ' + exam,
-      'Chapter/Topic: ' + chapterPrompt,
-      'Difficulty: ' + diff + ' - ' + diffInst,
-      'Seed: ' + seed, ''
-    ];
-    if(avoidPrompt){ promptParts.push(avoidPrompt); promptParts.push(''); }
-    promptParts.push('RULES:');
-    promptParts.push('1. Return ONLY raw JSON array - NO markdown, NO backticks');
-    promptParts.push('2. Start with [ and end with ]');
-    promptParts.push('3. correctIndex is 0-based');
-    promptParts.push('');
-    promptParts.push('Format: [{"question":"...","options":["A","B","C","D"],"correctIndex":0,"explanation":"..."}]');
+  // Chunk system: max 25 per API call to avoid JSON truncation
+  var CHUNK_SIZE = 25;
+  var allValid = [];
+  var totalChunks = Math.ceil(qcount / CHUNK_SIZE);
 
-    var sysPrompt = lang === 'English'
-      ? 'You are an MCQ generator. Write all content in English only. Return ONLY valid JSON array. No markdown, no backticks, no extra text.'
-      : 'You are an MCQ generator. You MUST write ALL questions, options, and explanations in Hindi using Devanagari script. Never use English words. Return ONLY valid JSON array. No markdown, no backticks, no extra text.';
+  try {
+    for(var chunk = 0; chunk < totalChunks; chunk++){
+      var remaining = qcount - allValid.length;
+      var thisChunk = Math.min(CHUNK_SIZE, remaining);
 
-    var res = await fetch(GROQ_URL, {
-      method: 'POST',
-      headers: {'Content-Type':'application/json','Authorization':'Bearer '+GROQ_KEY},
-      body: JSON.stringify({
-        model: GROQ_MODEL,
-        messages: [
-          {role:'system', content: sysPrompt},
-          {role:'user', content: promptParts.join('\n')}
-        ],
-        temperature: 0.85, max_tokens: 4000
-      })
-    });
+      genBtn.textContent = totalChunks > 1
+        ? 'Generating... (' + allValid.length + '/' + qcount + ')'
+        : 'Generating...';
 
-    if(!res.ok) throw new Error('API error');
-    var data = await res.json();
-    var text = data.choices[0].message.content.trim();
-    text = text.replace(/```json/gi,'').replace(/```/g,'').trim();
-    var si = text.indexOf('['); var ei = text.lastIndexOf(']');
-    if(si !== -1 && ei !== -1) text = text.substring(si, ei+1);
+      var seed = Math.floor(Math.random()*99999) + chunk;
+      var avoidPrompt = buildAvoidPrompt(chapter);
 
-    var questions = JSON.parse(text);
-    var valid = questions.filter(function(q){
-      return q.question && Array.isArray(q.options) && q.options.length===4;
-    }).map(function(q){
-      return {
-        question: q.question, options: q.options,
-        correctIndex: parseInt(q.correctIndex !== undefined ? q.correctIndex : 0),
-        explanation: q.explanation || ''
-      };
-    });
+      var promptParts = [
+        langInst, '',
+        'Generate exactly ' + thisChunk + ' UNIQUE MCQ questions.',
+        'Exam: ' + exam,
+        'Chapter/Topic: ' + chapterPrompt,
+        'Difficulty: ' + diff + ' - ' + diffInst,
+        'Seed: ' + seed + ' (ensure variety)', ''
+      ];
+      if(avoidPrompt){ promptParts.push(avoidPrompt); promptParts.push(''); }
+      promptParts.push('STRICT RULES:');
+      promptParts.push('1. Return ONLY raw JSON array - NO markdown, NO backticks, NO extra text');
+      promptParts.push('2. Start response with [ and end with ]');
+      promptParts.push('3. correctIndex is 0-based (0=A,1=B,2=C,3=D)');
+      promptParts.push('4. Keep each explanation under 100 words');
+      promptParts.push('');
+      promptParts.push('Format: [{"question":"...","options":["A","B","C","D"],"correctIndex":0,"explanation":"..."}]');
 
-    if(valid.length === 0) throw new Error('No valid questions');
+      var res = await fetch(GROQ_URL, {
+        method: 'POST',
+        headers: {'Content-Type':'application/json','Authorization':'Bearer '+GROQ_KEY},
+        body: JSON.stringify({
+          model: GROQ_MODEL,
+          messages: [
+            {role:'system', content: sysPrompt},
+            {role:'user', content: promptParts.join('\n')}
+          ],
+          temperature: 0.85,
+          max_tokens: 4000
+        })
+      });
 
-    dtGeneratedQuestions = valid;
+      if(!res.ok) throw new Error('API error: ' + res.status);
+      var data = await res.json();
+      var text = data.choices[0].message.content.trim();
+      text = text.replace(/```json/gi,'').replace(/```/g,'').trim();
+      var si = text.indexOf('['); var ei = text.lastIndexOf(']');
+      if(si !== -1 && ei !== -1) text = text.substring(si, ei+1);
+
+      var questions = JSON.parse(text);
+      var valid = questions.filter(function(q){
+        return q.question && Array.isArray(q.options) && q.options.length===4;
+      }).map(function(q){
+        return {
+          question: q.question, options: q.options,
+          correctIndex: parseInt(q.correctIndex !== undefined ? q.correctIndex : 0),
+          explanation: q.explanation || ''
+        };
+      });
+
+      allValid = allValid.concat(valid);
+      if(allValid.length >= qcount) break;
+    }
+
+    if(allValid.length === 0) throw new Error('Koi valid questions nahi mile');
+
+    dtGeneratedQuestions = allValid;
 
     // Preview dikhao
     var previewHtml = '';
-    for(var i=0;i<valid.length;i++){
-      var q = valid[i];
+    for(var i=0; i<allValid.length; i++){
+      var q = allValid[i];
       previewHtml += '<div style="padding:8px 0;border-bottom:1px solid var(--border);">';
       previewHtml += '<b style="color:var(--gold);">Q' + (i+1) + '.</b> ' + q.question + '<br>';
       previewHtml += '<span style="color:var(--green);font-size:12px;">&#9989; Correct: ' + q.options[q.correctIndex] + '</span>';
@@ -2141,22 +2163,18 @@ async function dtGenerateQuestions(){
     }
     document.getElementById('dt-preview-list').innerHTML = previewHtml;
     document.getElementById('dt-preview-wrap').style.display = 'block';
-    showToast(valid.length + ' questions ready!');
+    showToast('✅ ' + allValid.length + ' questions ready! Ab Publish karo.');
 
   } catch(e){
-    var errMsg = e.message || '';
-    if(errMsg.toLowerCase().includes('fetch') || errMsg.toLowerCase().includes('network')){
-      showToast('⚠️ File locally open hai! GitHub Pages par deploy karke use karo.');
-    } else {
-      showToast('Generate nahi hua: ' + errMsg);
-    }
+    showToast('Generate nahi hua: ' + (e.message || e));
     console.error('dtGenerateQuestions error:', e);
   }
 
   genBtn.disabled = false;
-  genBtn.textContent = '\u26A1 AI se Questions Generate karo';
+  genBtn.textContent = '⚡ AI se Questions Generate karo';
   genBtn.style.background = 'linear-gradient(135deg,#1A7A4A,#22a85e)';
 }
+
 
 function publishDailyTest(){
   var title = document.getElementById('dt-title').value.trim();
