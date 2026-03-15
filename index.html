@@ -2057,6 +2057,10 @@ async function dtGenerateQuestions(){
   var genBtn = document.getElementById('dt-gen-btn');
   genBtn.disabled = true;
   genBtn.style.background = 'rgba(200,150,12,0.3)';
+
+  // Pehle se generate hue questions reset karo
+  dtGeneratedQuestions = [];
+  document.getElementById('dt-preview-list').innerHTML = '';
   document.getElementById('dt-preview-wrap').style.display = 'none';
 
   var langInst = lang === 'English'
@@ -2078,37 +2082,37 @@ async function dtGenerateQuestions(){
       ? 'All chapters of ' + chapter.replace('Overall - ','') + ' subject in ' + exam + ' exam'
       : chapter;
 
-  // Chunk system: max 25 per API call to avoid JSON truncation
+  // Chunk system: 25 per call, sab jod ke ek preview
   var CHUNK_SIZE = 25;
   var allValid = [];
   var totalChunks = Math.ceil(qcount / CHUNK_SIZE);
 
   try {
     for(var chunk = 0; chunk < totalChunks; chunk++){
-      var remaining = qcount - allValid.length;
-      var thisChunk = Math.min(CHUNK_SIZE, remaining);
+      var stillNeed = qcount - allValid.length;
+      if(stillNeed <= 0) break;
+      var thisChunk = Math.min(CHUNK_SIZE, stillNeed);
 
-      genBtn.textContent = totalChunks > 1
-        ? 'Generating... (' + allValid.length + '/' + qcount + ')'
-        : 'Generating...';
+      // Button par progress dikhao
+      genBtn.textContent = 'Generating... (' + allValid.length + '/' + qcount + ')';
 
-      var seed = Math.floor(Math.random()*99999) + chunk;
+      var seed = Math.floor(Math.random()*99999) + (chunk * 1000);
       var avoidPrompt = buildAvoidPrompt(chapter);
 
       var promptParts = [
         langInst, '',
-        'Generate exactly ' + thisChunk + ' UNIQUE MCQ questions.',
+        'Generate EXACTLY ' + thisChunk + ' MCQ questions. Not more, not less.',
         'Exam: ' + exam,
         'Chapter/Topic: ' + chapterPrompt,
         'Difficulty: ' + diff + ' - ' + diffInst,
-        'Seed: ' + seed + ' (ensure variety)', ''
+        'Random seed for variety: ' + seed, ''
       ];
       if(avoidPrompt){ promptParts.push(avoidPrompt); promptParts.push(''); }
       promptParts.push('STRICT RULES:');
-      promptParts.push('1. Return ONLY raw JSON array - NO markdown, NO backticks, NO extra text');
-      promptParts.push('2. Start response with [ and end with ]');
-      promptParts.push('3. correctIndex is 0-based (0=A,1=B,2=C,3=D)');
-      promptParts.push('4. Keep each explanation under 100 words');
+      promptParts.push('1. Return ONLY a JSON array with EXACTLY ' + thisChunk + ' objects');
+      promptParts.push('2. Start with [ and end with ] — nothing else');
+      promptParts.push('3. correctIndex is 0-based (0=A, 1=B, 2=C, 3=D)');
+      promptParts.push('4. Keep explanation under 80 words');
       promptParts.push('');
       promptParts.push('Format: [{"question":"...","options":["A","B","C","D"],"correctIndex":0,"explanation":"..."}]');
 
@@ -2133,35 +2137,62 @@ async function dtGenerateQuestions(){
       var si = text.indexOf('['); var ei = text.lastIndexOf(']');
       if(si !== -1 && ei !== -1) text = text.substring(si, ei+1);
 
-      var questions = JSON.parse(text);
-      var valid = questions.filter(function(q){
-        return q.question && Array.isArray(q.options) && q.options.length===4;
+      var parsed;
+      try {
+        parsed = JSON.parse(text);
+      } catch(je){
+        // Truncated JSON repair
+        var cut = text.lastIndexOf(',{"question"');
+        if(cut !== -1) text = text.substring(0, cut) + ']';
+        parsed = JSON.parse(text);
+      }
+
+      var valid = parsed.filter(function(q){
+        return q.question && Array.isArray(q.options) && q.options.length === 4;
       }).map(function(q){
         return {
-          question: q.question, options: q.options,
+          question: q.question,
+          options: q.options,
           correctIndex: parseInt(q.correctIndex !== undefined ? q.correctIndex : 0),
           explanation: q.explanation || ''
         };
       });
 
+      // Exactly thisChunk tak hi lo — zyada nahi
+      valid = valid.slice(0, thisChunk);
+
+      // Purane ke saath jodo
       allValid = allValid.concat(valid);
-      if(allValid.length >= qcount) break;
+
+      // Preview live update — pehle wale + naye sab dikhao
+      var previewHtml = '';
+      for(var i=0; i<allValid.length; i++){
+        var q = allValid[i];
+        previewHtml += '<div style="padding:8px 0;border-bottom:1px solid var(--border);">';
+        previewHtml += '<b style="color:var(--gold);">Q' + (i+1) + '.</b> ' + q.question + '<br>';
+        previewHtml += '<span style="color:var(--green);font-size:12px;">&#9989; Correct: ' + q.options[q.correctIndex] + '</span>';
+        previewHtml += '</div>';
+      }
+      document.getElementById('dt-preview-list').innerHTML = previewHtml;
+      document.getElementById('dt-preview-wrap').style.display = 'block';
     }
 
     if(allValid.length === 0) throw new Error('Koi valid questions nahi mile');
 
+    // Final - exactly qcount tak trim karo
+    allValid = allValid.slice(0, qcount);
     dtGeneratedQuestions = allValid;
 
-    // Preview dikhao
-    var previewHtml = '';
+    // Final preview update
+    var finalHtml = '';
     for(var i=0; i<allValid.length; i++){
       var q = allValid[i];
-      previewHtml += '<div style="padding:8px 0;border-bottom:1px solid var(--border);">';
-      previewHtml += '<b style="color:var(--gold);">Q' + (i+1) + '.</b> ' + q.question + '<br>';
-      previewHtml += '<span style="color:var(--green);font-size:12px;">&#9989; Correct: ' + q.options[q.correctIndex] + '</span>';
-      previewHtml += '</div>';
+      finalHtml += '<div style="padding:8px 0;border-bottom:1px solid var(--border);">';
+      finalHtml += '<b style="color:var(--gold);">Q' + (i+1) + '.</b> ' + q.question + '<br>';
+      finalHtml += '<span style="color:var(--green);font-size:12px;">&#9989; Correct: ' + q.options[q.correctIndex] + '</span>';
+      finalHtml += '</div>';
     }
-    document.getElementById('dt-preview-list').innerHTML = previewHtml;
+    document.getElementById('dt-preview-list').innerHTML = finalHtml;
     document.getElementById('dt-preview-wrap').style.display = 'block';
     showToast('✅ ' + allValid.length + ' questions ready! Ab Publish karo.');
 
