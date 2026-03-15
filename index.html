@@ -2788,7 +2788,7 @@ function checkAndStartQuiz(){
     document.getElementById('student-login-modal').classList.add('show');
   } else {
     // Seedha quiz shuru karo
-    _origStartQuiz();
+    startQuiz();
   }
 }
 
@@ -2831,7 +2831,7 @@ function modalStudentLogin(){
   showToast('✅ Welcome ' + found.name + '!');
 
   // Seedha quiz shuru karo
-  setTimeout(function(){ _origStartQuiz(); }, 500);
+  setTimeout(function(){ startQuiz(); }, 500);
 }
 
 
@@ -2966,27 +2966,9 @@ function studentLogin(){
 
   showToast('✅ Welcome ' + found.name + '! Quiz shuru ho rahi hai...');
   showScreen('screen-login');
-  // Auto start quiz after short delay so toast is visible
-  setTimeout(function(){
-    // Directly click the START QUIZ button — safest way
-    var startBtn = document.querySelector('.btn-start');
-    if(startBtn){ startBtn.click(); }
-    else { _origStartQuiz(); }
-  }, 1200);
 }
 
-// Override startQuiz to check student login
-var _origStartQuiz = startQuiz;
-function startQuiz(){
-  // Check if any students are registered
-  var students = getAllStudentDB();
-  if(students.length > 0 && !loggedInStudent){
-    showToast('Pehle apni Student ID se login karo!');
-    showScreen('screen-student-login');
-    return;
-  }
-  _origStartQuiz();
-}
+// Student login handled via checkAndStartQuiz()
 
 // Show student login button on home page
 function checkStudentLoginRequired(){
