@@ -1282,6 +1282,15 @@
             <option value="10" selected>10</option>
             <option value="15">15</option>
             <option value="20">20</option>
+            <option value="25">25</option>
+            <option value="30">30</option>
+            <option value="40">40</option>
+            <option value="50">50</option>
+            <option value="60">60</option>
+            <option value="70">70</option>
+            <option value="80">80</option>
+            <option value="90">90</option>
+            <option value="100">100</option>
           </select>
         </div>
       </div>
@@ -1975,30 +1984,54 @@ function dtUpdateChapters(){
   var exam = document.getElementById('dt-exam').value;
   var sel = document.getElementById('dt-chapter');
   if(!sel) return;
-  sel.innerHTML = '';
-  var chapters = SYLLABUS[exam] || SYLLABUS[exam + '_Science'] || [];
-  // If array — direct options
-  if(Array.isArray(chapters)){
-    for(var i=0;i<chapters.length;i++){
-      var opt = document.createElement('option');
-      opt.value = chapters[i]; opt.textContent = chapters[i];
-      sel.appendChild(opt);
+
+  var key = exam;
+  // Class 11/12 ke liye Science stream default
+  if(exam === 'Class 11' || exam === 'Class 12') key = exam + '_Science';
+
+  var chapters = SYLLABUS[key] || SYLLABUS[exam] || ['General Topics'];
+
+  // Subject-wise grouping (same as home page updateChapters)
+  var groups = {};
+  var groupOrder = [];
+  for(var i=0; i<chapters.length; i++){
+    var c = chapters[i];
+    var subject = 'General';
+    var dashIdx = c.indexOf(' - ');
+    if(dashIdx !== -1) subject = c.substring(0, dashIdx).trim();
+    if(!groups[subject]){
+      groups[subject] = [];
+      groupOrder.push(subject);
+    }
+    groups[subject].push(c);
+  }
+
+  var html = '';
+  if(groupOrder.length <= 1){
+    // Single subject - flat list
+    for(var i=0; i<chapters.length; i++){
+      html += '<option value="' + chapters[i] + '">' + chapters[i] + '</option>';
     }
   } else {
-    // Object with subjects as keys
-    var keys = Object.keys(chapters);
-    for(var k=0;k<keys.length;k++){
-      var grp = document.createElement('optgroup');
-      grp.label = '[ ' + keys[k] + ' ]';
-      var items = chapters[keys[k]];
-      for(var j=0;j<items.length;j++){
-        var opt2 = document.createElement('option');
-        opt2.value = items[j]; opt2.textContent = items[j];
-        grp.appendChild(opt2);
+    // Multiple subjects - optgroup with Overall per subject
+    for(var s=0; s<groupOrder.length; s++){
+      var subj = groupOrder[s];
+      html += '<optgroup label="[ ' + subj + ' ]">';
+      html += '<option value="Overall - ' + subj + '">⭐ Overall ' + subj + '</option>';
+      var items = groups[subj];
+      for(var k=0; k<items.length; k++){
+        var item = items[k];
+        var dashI = item.indexOf(' - ');
+        var label = dashI !== -1 ? item.substring(dashI + 3) : item;
+        html += '<option value="' + item + '">' + label + '</option>';
       }
-      sel.appendChild(grp);
+      html += '</optgroup>';
     }
   }
+
+  // Sabse upar Overall Exam option
+  var overallOption = '<option value="Overall - ' + exam + '">⭐ Overall — Poora ' + exam + ' Exam</option>';
+  sel.innerHTML = overallOption + html;
 }
 
 // AI se Daily Test questions generate karo
@@ -2036,11 +2069,17 @@ async function dtGenerateQuestions(){
     var seed = Math.floor(Math.random()*99999);
     var avoidPrompt = buildAvoidPrompt(chapter);
 
+    var chapterPrompt = chapter.indexOf('Overall - ' + exam) !== -1
+      ? 'All topics of ' + exam + ' exam — mix of all subjects and chapters'
+      : chapter.indexOf('Overall - ') !== -1
+        ? 'All chapters of ' + chapter.replace('Overall - ','') + ' subject in ' + exam + ' exam'
+        : chapter;
+
     var promptParts = [
       langInst, '',
       'Generate exactly ' + qcount + ' UNIQUE MCQ questions for Daily Test.',
       'Exam: ' + exam,
-      'Chapter/Topic: ' + chapter,
+      'Chapter/Topic: ' + chapterPrompt,
       'Difficulty: ' + diff + ' - ' + diffInst,
       'Seed: ' + seed, ''
     ];
