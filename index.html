@@ -958,7 +958,7 @@
       </div>
     </div>
 
-    <button class="btn-gold btn-start" onclick="startQuiz()">
+    <button class="btn-gold btn-start" onclick="checkAndStartQuiz()">
       <span class="btn-start-icon">⚡</span>
       <span>START QUIZ</span>
       <span class="btn-start-arrow">→</span>
@@ -1003,6 +1003,25 @@
     <div style="text-align:center;margin-top:10px;">
       <span style="font-size:13px;color:var(--text2);cursor:pointer;text-decoration:underline;" onclick="showScreen('screen-login')">← Wapas Home par jao</span>
     </div>
+  </div>
+</div>
+
+<!-- STUDENT LOGIN POPUP MODAL -->
+<div class="modal-overlay" id="student-login-modal">
+  <div class="modal-card" style="max-width:380px;">
+    <button class="modal-close" onclick="closeStudentLoginModal()">✕</button>
+    <div class="modal-title">🔐 Student Login</div>
+    <p style="font-size:13px;color:var(--text2);margin-bottom:18px;text-align:center;">Teacher se mila hua ID aur Password enter karo</p>
+    <div class="modal-form-group">
+      <label>👤 Student ID</label>
+      <input type="text" id="modal-sl-id" placeholder="e.g. SJ-2026-001" autocomplete="off" style="text-transform:uppercase;letter-spacing:2px;width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'Rajdhani',sans-serif;font-size:15px;padding:10px 14px;outline:none;">
+    </div>
+    <div class="modal-form-group" style="margin-top:12px;">
+      <label>🔑 Password</label>
+      <input type="password" id="modal-sl-pwd" placeholder="Password enter karo" style="width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'Rajdhani',sans-serif;font-size:15px;padding:10px 14px;outline:none;">
+    </div>
+    <div id="modal-sl-error" style="display:none;margin-top:10px;padding:10px;background:rgba(192,57,43,0.1);border:1px solid var(--red);border-radius:8px;font-size:13px;color:var(--red);text-align:center;"></div>
+    <button class="btn-gold" onclick="modalStudentLogin()" style="margin-top:16px;">🚀 LOGIN & QUIZ SHURU KARO</button>
   </div>
 </div>
 
@@ -2750,8 +2769,72 @@ function clearAllHistory(){
 
 
 // ===================================================
-// UPDATE 1: Student Login System
+// UPDATED: Form pehle bharo, phir login popup
 // ===================================================
+function checkAndStartQuiz(){
+  // Pehle form validate karo
+  var name = document.getElementById('studentName').value.trim();
+  if(!name){ showToast('Pehle apna naam likho!'); document.getElementById('studentName').focus(); return; }
+  var chapter = document.getElementById('chapter').value;
+  if(!chapter){ showToast('Chapter select karo!'); return; }
+
+  // Check karo koi student registered hai ya nahi
+  var students = getAllStudentDB();
+  if(students.length > 0 && !loggedInStudent){
+    // Popup kholo
+    document.getElementById('modal-sl-id').value = '';
+    document.getElementById('modal-sl-pwd').value = '';
+    document.getElementById('modal-sl-error').style.display = 'none';
+    document.getElementById('student-login-modal').classList.add('show');
+  } else {
+    // Seedha quiz shuru karo
+    _origStartQuiz();
+  }
+}
+
+function closeStudentLoginModal(){
+  document.getElementById('student-login-modal').classList.remove('show');
+}
+
+function modalStudentLogin(){
+  var inputId = document.getElementById('modal-sl-id').value.trim().toUpperCase();
+  var inputPwd = document.getElementById('modal-sl-pwd').value.trim();
+  var errDiv = document.getElementById('modal-sl-error');
+
+  if(!inputId || !inputPwd){
+    errDiv.textContent = 'ID aur Password dono likho!';
+    errDiv.style.display = 'block'; return;
+  }
+
+  var students = getAllStudentDB();
+  var found = null;
+  for(var i=0; i<students.length; i++){
+    if(students[i].id === inputId && students[i].password === inputPwd){
+      found = students[i]; break;
+    }
+  }
+
+  if(!found){
+    errDiv.textContent = '❌ ID ya Password galat hai. Teacher se dobara check karo.';
+    errDiv.style.display = 'block'; return;
+  }
+
+  // Login successful
+  found.lastLogin = Date.now();
+  saveAllStudentDB(students);
+  loggedInStudent = found;
+
+  // Name field update karo
+  document.getElementById('studentName').value = found.name;
+
+  closeStudentLoginModal();
+  showToast('✅ Welcome ' + found.name + '!');
+
+  // Seedha quiz shuru karo
+  setTimeout(function(){ _origStartQuiz(); }, 500);
+}
+
+
 var STUDENTS_KEY = 'sj_students_db';
 var loggedInStudent = null;
 
@@ -2885,7 +2968,10 @@ function studentLogin(){
   showScreen('screen-login');
   // Auto start quiz after short delay so toast is visible
   setTimeout(function(){
-    _origStartQuiz();
+    // Directly click the START QUIZ button — safest way
+    var startBtn = document.querySelector('.btn-start');
+    if(startBtn){ startBtn.click(); }
+    else { _origStartQuiz(); }
   }, 1200);
 }
 
