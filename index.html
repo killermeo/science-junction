@@ -2022,18 +2022,18 @@ function endQuiz(){
   // Negative marking info dikhao
   var negWrap = document.getElementById('neg-result-wrap');
   if(negWrap){
-    // Daily Test mein toggle nahi hota — sirf currentNegMarking check karo
-    if(currentNegMarking && currentNegMarking.wrong < 0){
-      var pos = (cor * currentNegMarking.correct).toFixed(2);
-      var neg = (wr * Math.abs(currentNegMarking.wrong)).toFixed(2);
+    var nm = Q.negMarking || currentNegMarking;
+    if(nm && nm.wrong < 0){
+      var pos = (cor * nm.correct).toFixed(2);
+      var neg = (wr * Math.abs(nm.wrong)).toFixed(2);
       var fin = Math.max(0, parseFloat(pos) - parseFloat(neg)).toFixed(2);
-      var maxMarks = (tot * currentNegMarking.correct).toFixed(2);
+      var maxMarks = (tot * nm.correct).toFixed(2);
       negWrap.style.display = 'block';
       negWrap.innerHTML = '<div style="background:rgba(192,57,43,0.08);border:1px solid rgba(192,57,43,0.3);border-radius:10px;padding:14px 16px;margin:12px 0;">'
         + '<div style="font-family:Orbitron,sans-serif;font-size:11px;color:var(--red);letter-spacing:2px;margin-bottom:10px;">➖ NEGATIVE MARKING RESULT</div>'
         + '<div style="font-size:14px;line-height:2.2;color:var(--text);">'
-        + '✅ सही जवाब: <b>' + cor + '</b> × +' + currentNegMarking.correct + ' = <b style="color:var(--green)">+' + pos + '</b><br>'
-        + '❌ गलत जवाब: <b>' + wr + '</b> × ' + currentNegMarking.wrong + ' = <b style="color:var(--red)">-' + neg + '</b><br>'
+        + '✅ सही जवाब: <b>' + cor + '</b> × +' + nm.correct + ' = <b style="color:var(--green)">+' + pos + '</b><br>'
+        + '❌ गलत जवाब: <b>' + wr + '</b> × ' + nm.wrong + ' = <b style="color:var(--red)">-' + neg + '</b><br>'
         + '⏭️ Skip किए: <b>' + Q.skipped + '</b> × 0 = 0<br>'
         + '<hr style="border:none;border-top:1px solid var(--border);margin:8px 0;">'
         + '📊 कुल Questions: <b>' + tot + '</b> | Maximum Marks: <b>' + maxMarks + '</b><br>'
@@ -2633,13 +2633,15 @@ function confirmDTStart(){
   Q.dailyTestTitle = t.title;
   Q.lang = 'Hindi';
 
-  // Negative marking set karo
+  // Negative marking set karo — Q.negMarking mein bhi save karo
   if(t.negMarking && t.negMarking.wrong < 0){
     currentNegMarking = t.negMarking;
+    Q.negMarking = t.negMarking;
     var dtToggle = document.getElementById('neg-marking-toggle');
     if(dtToggle) dtToggle.checked = true;
   } else {
     currentNegMarking = null;
+    Q.negMarking = null;
     var dtToggle = document.getElementById('neg-marking-toggle');
     if(dtToggle) dtToggle.checked = false;
   }
@@ -3163,14 +3165,21 @@ var DT_RESULTS_KEY = 'sj_dt_results';
 
 function saveDTResult(cor, tot, pct){
   var wr = tot - cor - Q.skipped;
-  var finalScore = cor; // default
+  var finalScore = cor;
   var negDetail = '';
-  if(currentNegMarking && currentNegMarking.wrong < 0){
-    var pos = cor * currentNegMarking.correct;
-    var neg = wr * Math.abs(currentNegMarking.wrong);
+
+  // Q.negMarking use karo — currentNegMarking reset ho sakta hai
+  var nm = Q.negMarking || currentNegMarking;
+
+  if(nm && nm.wrong < 0){
+    var pos = cor * nm.correct;
+    var neg = wr * Math.abs(nm.wrong);
     finalScore = Math.max(0, pos - neg);
-    negDetail = '+' + pos.toFixed(2) + ' - ' + neg.toFixed(2) + ' = ' + finalScore.toFixed(2);
+    negDetail = cor + ' × +' + nm.correct + ' = +' + pos.toFixed(2)
+      + ' | ' + wr + ' × ' + nm.wrong + ' = -' + neg.toFixed(2)
+      + ' | Final: ' + finalScore.toFixed(2);
   }
+
   var result = {
     studentName: Q.name,
     fatherName: Q.fatherName || '',
@@ -3182,10 +3191,12 @@ function saveDTResult(cor, tot, pct){
     skipped: Q.skipped,
     total: tot,
     score: pct,
-    finalScore: finalScore.toFixed ? finalScore.toFixed(2) : finalScore,
+    finalScore: nm && nm.wrong < 0 ? parseFloat(finalScore).toFixed(2) : cor + '/' + tot,
     negDetail: negDetail,
+    negMarking: nm || null,
     datetime: new Date().toLocaleString('hi-IN')
   };
+
   var existing = [];
   try { existing = JSON.parse(localStorage.getItem(DT_RESULTS_KEY) || '[]'); } catch(e){ existing=[]; }
   existing.push(result);
