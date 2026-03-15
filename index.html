@@ -903,6 +903,7 @@
           <option value="NEET">NEET</option>
           <option value="NDA">NDA</option>
           <option value="CLAT">CLAT</option>
+          <option value="CA Foundation">CA Foundation</option>
           <option value="Class 9">Class 9</option>
           <option value="Class 10">Class 10</option>
           <option value="Class 11">Class 11</option>
@@ -946,6 +947,13 @@
           <option value="20">20 Questions</option>
           <option value="25">25 Questions</option>
           <option value="30">30 Questions</option>
+          <option value="40">40 Questions</option>
+          <option value="50">50 Questions</option>
+          <option value="60">60 Questions</option>
+          <option value="70">70 Questions</option>
+          <option value="80">80 Questions</option>
+          <option value="90">90 Questions</option>
+          <option value="100">100 Questions</option>
         </select>
       </div>
     </div>
@@ -1010,6 +1018,7 @@
         <option value="NEET">NEET</option>
         <option value="NDA">NDA</option>
         <option value="CLAT">CLAT</option>
+        <option value="CA Foundation">CA Foundation</option>
         <option value="Class 9">Class 9</option>
         <option value="Class 10">Class 10</option>
         <option value="Class 11">Class 11</option>
@@ -1134,7 +1143,7 @@
   <div class="dash-panel active" id="tab-results">
     <div class="filter-row">
       <select id="dash-filter-exam" onchange="loadDashboard()">
-        <option value="">All Exams</option><option value="JEE">JEE</option><option value="NEET">NEET</option><option value="NDA">NDA</option><option value="CLAT">CLAT</option>
+        <option value="">All Exams</option><option value="JEE">JEE</option><option value="NEET">NEET</option><option value="NDA">NDA</option><option value="CLAT">CLAT</option><option value="CA Foundation">CA Foundation</option><option value="Class 9">Class 9</option><option value="Class 10">Class 10</option><option value="Class 11">Class 11</option><option value="Class 12">Class 12</option>
       </select>
       <select id="dash-filter-diff" onchange="loadDashboard()">
         <option value="">All Difficulty</option><option value="Easy">Easy</option><option value="Moderate">Moderate</option><option value="Hard">Hard</option>
@@ -1216,6 +1225,7 @@
             <option value="NEET">NEET</option>
             <option value="NDA">NDA</option>
             <option value="CLAT">CLAT</option>
+            <option value="CA Foundation">CA Foundation</option>
             <option value="Class 9">Class 9</option>
             <option value="Class 10">Class 10</option>
             <option value="Class 11">Class 11</option>
@@ -1357,7 +1367,8 @@ var SYLLABUS = {
   "NEET": ["Physics - Motion","Physics - Laws of Motion","Physics - Work & Energy","Physics - Gravitation","Physics - Thermodynamics","Physics - Optics","Physics - Dual Nature of Radiation","Physics - Nuclei & Atoms","Chemistry - Atomic Structure","Chemistry - Chemical Bonding","Chemistry - States of Matter","Chemistry - Equilibrium","Chemistry - Redox Reactions","Chemistry - Organic Chemistry - Basics","Chemistry - Hydrocarbons","Chemistry - Biomolecules","Chemistry - Polymers","Chemistry - Chemistry in Everyday Life","Biology - Cell Structure & Function","Biology - Cell Division - Mitosis & Meiosis","Biology - Biomolecules","Biology - Transport in Plants","Biology - Mineral Nutrition","Biology - Photosynthesis","Biology - Respiration in Plants","Biology - Plant Growth & Development","Biology - Digestion & Absorption","Biology - Breathing & Gas Exchange","Biology - Body Fluids & Circulation","Biology - Excretory Products","Biology - Locomotion & Movement","Biology - Neural Control & Coordination","Biology - Chemical Coordination","Biology - Reproduction in Organisms","Biology - Sexual Reproduction in Flowering Plants","Biology - Human Reproduction","Biology - Genetics - Mendel's Laws","Biology - Molecular Basis of Inheritance","Biology - Evolution","Biology - Human Health & Disease","Biology - Biotechnology","Biology - Ecology & Ecosystem"],
   "NDA": ["Math - Sets, Relations & Functions","Math - Complex Numbers","Math - Matrices & Determinants","Math - Quadratic Equations & Inequalities","Math - Permutations & Combinations","Math - Binomial Theorem","Math - Logarithms","Math - Trigonometry - Ratios & Identities","Math - Trigonometry - Inverse Functions","Math - Coordinate Geometry - 2D","Math - Coordinate Geometry - 3D","Math - Differential Calculus","Math - Integral Calculus","Math - Differential Equations","Math - Vectors","Math - Statistics","Math - Probability","Physics - Motion & Newton's Laws","Physics - Work, Energy & Power","Physics - Heat & Thermodynamics","Physics - Waves & Sound","Physics - Optics","Physics - Electricity & Magnetism","Physics - Modern Physics","Chemistry - States of Matter","Chemistry - Atomic Structure","Chemistry - Chemical Equilibrium & Acids-Bases","Chemistry - Metals & Non-Metals","Chemistry - Organic Chemistry Basics","Biology - Cell","Biology - Human Body Systems","Biology - Genetics Basics","General Knowledge - History of India","General Knowledge - Geography of India & World","General Knowledge - Indian Polity & Constitution","General Knowledge - Economy","General Knowledge - Science & Technology","General Knowledge - Current Affairs","English - Reading Comprehension","English - Grammar","English - Vocabulary & Synonyms"],
   "CLAT": ["English - Reading Comprehension","English - Grammar & Error Spotting","English - Vocabulary","English - Para Jumbles","Legal Reasoning - Contracts","Legal Reasoning - Torts","Legal Reasoning - Constitutional Law","Legal Reasoning - Criminal Law (IPC)","Legal Reasoning - Family Law","Legal Reasoning - Property Law","Logical Reasoning - Analogies","Logical Reasoning - Number & Letter Series","Logical Reasoning - Syllogisms","Logical Reasoning - Blood Relations","Logical Reasoning - Direction Sense","Logical Reasoning - Coding-Decoding","General Knowledge - Indian Constitution","General Knowledge - Current Affairs","General Knowledge - History of India","General Knowledge - Geography","General Knowledge - Economy","General Knowledge - Science & Tech","Quantitative Techniques - Number System","Quantitative Techniques - Percentages","Quantitative Techniques - Data Interpretation"],
-  "Class 9": ["Science - Matter in Our Surroundings","Science - Is Matter Around Us Pure","Science - Atoms and Molecules","Science - Structure of the Atom","Science - Cell - Fundamental Unit of Life","Science - Tissues","Science - Diversity in Living Organisms","Science - Motion","Science - Force and Laws of Motion","Science - Gravitation","Science - Work and Energy","Science - Sound","Science - Why Do We Fall Ill","Science - Natural Resources","Math - Number Systems","Math - Polynomials","Math - Coordinate Geometry","Math - Linear Equations in Two Variables","Math - Introduction to Euclid's Geometry","Math - Lines and Angles","Math - Triangles","Math - Quadrilaterals","Math - Areas of Parallelograms and Triangles","Math - Circles","Math - Constructions","Math - Heron's Formula","Math - Surface Areas and Volumes","Math - Statistics","Math - Probability"],
+  "CA Foundation": ["Accounts - Introduction to Accounting","Accounts - Journal & Ledger","Accounts - Trial Balance","Accounts - Final Accounts - Trading Account","Accounts - Final Accounts - Profit & Loss Account","Accounts - Final Accounts - Balance Sheet","Accounts - Rectification of Errors","Accounts - Bank Reconciliation Statement","Accounts - Depreciation","Accounts - Bills of Exchange","Accounts - Partnership Accounts","Accounts - Company Accounts","Business Law - Indian Contract Act 1872 - Basics","Business Law - Indian Contract Act - Offer & Acceptance","Business Law - Indian Contract Act - Consideration","Business Law - Sale of Goods Act 1930","Business Law - Negotiable Instruments Act","Business Law - LLP Act","Business Law - Companies Act - Introduction","Business Maths - Ratio & Proportion","Business Maths - Indices & Logarithms","Business Maths - Simple & Compound Interest","Business Maths - Permutations & Combinations","Business Maths - Sequence & Series","Business Maths - Sets, Relations & Functions","Business Statistics - Measures of Central Tendency","Business Statistics - Measures of Dispersion","Business Statistics - Probability","Business Statistics - Index Numbers","Economics - Introduction to Microeconomics","Economics - Theory of Demand & Supply","Economics - Production & Cost","Economics - Market Structure","Economics - Indian Economy Overview"],
+  "Class 9": ["Science - Matter in Our Surroundings","Science - Is Matter Around Us Pure","Science - Atoms and Molecules","Science - Structure of the Atom","Science - Cell - Fundamental Unit of Life","Science - Tissues","Science - Diversity in Living Organisms","Science - Motion","Science - Force and Laws of Motion","Science - Gravitation","Science - Work and Energy","Science - Sound","Science - Why Do We Fall Ill","Science - Natural Resources","Math - Number Systems","Math - Polynomials","Math - Coordinate Geometry","Math - Linear Equations in Two Variables","Math - Lines and Angles","Math - Triangles","Math - Quadrilaterals","Math - Circles","Math - Surface Areas and Volumes","Math - Statistics","Math - Probability"],
   "Class 10": ["Science - Chemical Reactions and Equations","Science - Acids, Bases and Salts","Science - Metals and Non-Metals","Science - Carbon and its Compounds","Science - Periodic Classification","Science - Life Processes","Science - Control and Coordination","Science - How Do Organisms Reproduce","Science - Heredity and Evolution","Science - Light - Reflection and Refraction","Science - Human Eye and Colourful World","Science - Electricity","Science - Magnetic Effects of Electric Current","Science - Our Environment","Math - Real Numbers","Math - Polynomials","Math - Pair of Linear Equations","Math - Quadratic Equations","Math - Arithmetic Progressions","Math - Triangles","Math - Coordinate Geometry","Math - Introduction to Trigonometry","Math - Applications of Trigonometry","Math - Circles","Math - Constructions","Math - Areas Related to Circles","Math - Surface Areas and Volumes","Math - Statistics","Math - Probability"],
   "Class 11_Science": ["Physics - Units & Measurements","Physics - Motion in a Straight Line","Physics - Motion in a Plane","Physics - Laws of Motion","Physics - Work, Energy & Power","Physics - System of Particles & Rotational Motion","Physics - Gravitation","Physics - Mechanical Properties of Solids","Physics - Mechanical Properties of Fluids","Physics - Thermal Properties","Physics - Thermodynamics","Physics - Kinetic Theory","Physics - Oscillations","Physics - Waves","Chemistry - Basic Concepts of Chemistry","Chemistry - Structure of Atom","Chemistry - Classification of Elements","Chemistry - Chemical Bonding","Chemistry - States of Matter","Chemistry - Thermodynamics","Chemistry - Equilibrium","Chemistry - Redox Reactions","Chemistry - Hydrogen","Chemistry - s-Block Elements","Chemistry - p-Block Elements (Basic)","Chemistry - Organic Chemistry - Basic Principles","Chemistry - Hydrocarbons","Biology - Living World","Biology - Biological Classification","Biology - Plant Kingdom","Biology - Animal Kingdom","Biology - Morphology of Flowering Plants","Biology - Anatomy of Flowering Plants","Biology - Cell Structure","Biology - Biomolecules","Biology - Cell Cycle & Division","Math - Sets","Math - Relations & Functions","Math - Trigonometric Functions","Math - Principle of Mathematical Induction","Math - Complex Numbers & Quadratic Equations","Math - Linear Inequalities","Math - Permutations & Combinations","Math - Binomial Theorem","Math - Sequences & Series","Math - Straight Lines","Math - Conic Sections","Math - 3D Geometry - Intro","Math - Limits & Derivatives","Math - Statistics","Math - Probability"],
   "Class 11_Math": ["Math - Sets","Math - Relations & Functions","Math - Trigonometric Functions","Math - Principle of Mathematical Induction","Math - Complex Numbers & Quadratic Equations","Math - Linear Inequalities","Math - Permutations & Combinations","Math - Binomial Theorem","Math - Sequences & Series","Math - Straight Lines","Math - Conic Sections","Math - Introduction to 3D Geometry","Math - Limits & Derivatives","Math - Mathematical Reasoning","Math - Statistics","Math - Probability"],
@@ -2870,8 +2881,12 @@ function studentLogin(){
   // Pre-fill name on home screen
   document.getElementById('studentName').value = found.name;
 
-  showToast('✅ Welcome ' + found.name + '!');
+  showToast('✅ Welcome ' + found.name + '! Quiz shuru ho rahi hai...');
   showScreen('screen-login');
+  // Auto start quiz after short delay so toast is visible
+  setTimeout(function(){
+    _origStartQuiz();
+  }, 1200);
 }
 
 // Override startQuiz to check student login
