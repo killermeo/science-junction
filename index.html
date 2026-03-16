@@ -1485,7 +1485,7 @@
 </div>
 
 <script>
-var APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwRtvck-c-9ZKPo4VynOdCX5gVW4wa745d0_Tix23cJhn5n-RM9SAIWl9dBA1DLz-MMgA/exec";
+var APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwRtvck-c-9ZKPo4VynOdCX5gVW4wa745d0_TIx23cJhn5n-RM9SAIWI9dBA1DLz-MMgA/exec";
 var TEACHER_PWD = "science123";
 var GROQ_KEY = "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";
 var GROQ_URL = "https://api.groq.com/openai/v1/chat/completions";
@@ -1768,7 +1768,7 @@ async function startNormalQuiz(){
       body: JSON.stringify({
         model: GROQ_MODEL,
         messages: [
-          {role:'system', content:'You are an expert MCQ generator for Indian competitive exams. STRICT RULES: (1) NEVER put the answer in the question text. (2) Options must be DISTINCTLY different. (3) Wrong options must be plausible but incorrect. (4) Test UNDERSTANDING not definitions. (5) NEVER repeat question keywords as options. (6) When Hindi asked, write ALL in Devanagari. Return ONLY valid JSON array. No markdown, no backticks.'},
+          {role:"system", content:"You are an expert MCQ generator. CRITICAL RULES: (1) NEVER put the answer in the question. (2) Ask about CONCEPTS not definitions. (3) All 4 options must be completely different. (4) Wrong options must be plausible. (5) NEVER repeat question words in options. (6) Test UNDERSTANDING. (7) Hindi questions: use Devanagari only. Return ONLY valid JSON array, no markdown."},
           {role:'user', content: prompt}
         ],
         temperature: 0.9,
@@ -1966,10 +1966,15 @@ function selectAnswer(idx, btn){
   var btns = document.querySelectorAll('.option-btn');
   for(var i=0;i<btns.length;i++) btns[i].disabled = true;
   var ci = (q.correctIndex !== undefined) ? parseInt(q.correctIndex) : (q.correct !== undefined ? parseInt(q.correct) : 0);
+  // Pehle check karo — kya is question ka answer pehle se diya tha?
+  var alreadyAnswered = (Q.answers[Q.current] === true || Q.answers[Q.current] === false);
   if(idx === ci){
-    btn.classList.add('correct'); Q.answers[Q.current] = true; Q.score++;
+    btn.classList.add('correct');
+    if(!alreadyAnswered) Q.score++; // Sirf pehli baar score badhao
+    Q.answers[Q.current] = true;
   } else {
-    btn.classList.add('wrong'); btns[ci].classList.add('correct'); Q.answers[Q.current] = false;
+    btn.classList.add('wrong'); btns[ci].classList.add('correct');
+    Q.answers[Q.current] = false;
   }
   if(q.explanation){
     document.getElementById('explanation-text').textContent = q.explanation;
@@ -2029,8 +2034,8 @@ function endQuiz(){
   document.getElementById('trophy-icon').textContent = pct>=80?'&#127942;':pct>=50?'&#11088;':'&#128170;';
   document.getElementById('result-title').textContent = pct>=80?'Excellent Performance!':pct>=50?'Good Effort!':'Keep Practicing!';
   document.getElementById('result-subtitle').textContent = Q.name+' — '+Q.chapter;
-  document.getElementById('score-pct').textContent = pct+'%';
-  setTimeout(function(){ document.getElementById('score-ring-fill').style.strokeDashoffset = 364.4*(1-pct/100); }, 200);
+  var displayPct = Math.round((cor/tot)*100); document.getElementById('score-pct').textContent = displayPct+'%';
+  var ringPct = Math.min(100, Math.round((cor/tot)*100)); setTimeout(function(){ document.getElementById('score-ring-fill').style.strokeDashoffset = 364.4*(1-ringPct/100); }, 200);
   document.getElementById('stat-correct').textContent = cor;
   document.getElementById('stat-wrong').textContent = wr;
   document.getElementById('stat-skip').textContent = Q.skipped;
