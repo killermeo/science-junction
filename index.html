@@ -1662,9 +1662,20 @@ var Q = {questions:[],current:0,answers:[],score:0,skipped:0,totalTime:0,timerIn
 
 // Direct quiz starter - koi bhi check nahi, seedha chalata hai
 function doStartQuiz(){
-  // Name field mein loggedInStudent ka naam ensure karo
   if(loggedInStudent){
     document.getElementById('studentName').value = loggedInStudent.name;
+  }
+  // Toggle ON hai to guaranteed negMarking set karo
+  var toggle = document.getElementById('neg-marking-toggle');
+  var exam = document.getElementById('exam').value;
+  if(toggle && toggle.checked){
+    if(!currentNegMarking){
+      currentNegMarking = NEG_MARKING_PATTERNS[exam] || { correct:1, wrong:-0.25, label: exam + ' default' };
+    }
+    Q.negMarking = currentNegMarking;
+  } else {
+    currentNegMarking = null;
+    Q.negMarking = null;
   }
   startQuiz();
 }
@@ -1734,12 +1745,16 @@ async function startNormalQuiz(){
     promptParts.push('- Your final JSON array MUST contain EXACTLY ' + Q.qcount + ' objects');
     promptParts.push('- If less: add more. If more: remove extra. No exceptions.');
     promptParts.push('');
-    promptParts.push('STRICT RULES:');
+    promptParts.push('STRICT MCQ QUALITY RULES:');
     promptParts.push('1. Every question must test a DIFFERENT concept');
-    promptParts.push('2. Return ONLY raw JSON array - NO markdown, NO backticks, NO extra text');
-    promptParts.push('3. Start with [ and end with ]');
-    promptParts.push('4. correctIndex is 0-based (0=A, 1=B, 2=C, 3=D)');
-    promptParts.push('5. Keep explanation under 60 words, options under 10 words');
+    promptParts.push('2. NEVER put the answer directly in the question text');
+    promptParts.push('3. Options must be PLAUSIBLE but clearly distinct from each other');
+    promptParts.push('4. NEVER use the question keywords as one of the options');
+    promptParts.push('5. Wrong options must be common misconceptions or related but incorrect facts');
+    promptParts.push('6. Return ONLY raw JSON array - NO markdown, NO backticks');
+    promptParts.push('7. Start with [ and end with ]');
+    promptParts.push('8. correctIndex is 0-based (0=A, 1=B, 2=C, 3=D)');
+    promptParts.push('9. Keep explanation under 60 words');
     promptParts.push('');
     promptParts.push('Format: [{"question":"...","options":["A","B","C","D"],"correctIndex":0,"explanation":"..."}]');
     promptParts.push('');
@@ -1753,7 +1768,7 @@ async function startNormalQuiz(){
       body: JSON.stringify({
         model: GROQ_MODEL,
         messages: [
-          {role:'system', content:'You are an expert MCQ generator for Indian competitive exams. When the user asks in Hindi, write ALL output in Hindi using Devanagari script only. Return ONLY valid JSON array. No markdown, no backticks.'},
+          {role:'system', content:'You are an expert MCQ generator for Indian competitive exams. STRICT RULES: (1) NEVER put the answer in the question text. (2) Options must be DISTINCTLY different. (3) Wrong options must be plausible but incorrect. (4) Test UNDERSTANDING not definitions. (5) NEVER repeat question keywords as options. (6) When Hindi asked, write ALL in Devanagari. Return ONLY valid JSON array. No markdown, no backticks.'},
           {role:'user', content: prompt}
         ],
         temperature: 0.9,
@@ -2004,10 +2019,11 @@ function endQuiz(){
   clearInterval(Q.timerInt);
   var tot = Q.questions.length, cor = Q.score, wr = tot-cor-Q.skipped;
 
-  // Negative marking calculate karo
-  var scoreData = calculateScore(cor, wr, Q.skipped);
-  var finalScore = scoreData.final;
+  // pct ALWAYS correct/total — kabhi marks se nahi
   var pct = Math.round((cor/tot)*100);
+
+  // Negative marking calculate karo (sirf display ke liye)
+  var nm = Q.negMarking || currentNegMarking;
 
   showScreen('screen-result');
   document.getElementById('trophy-icon').textContent = pct>=80?'&#127942;':pct>=50?'&#11088;':'&#128170;';
@@ -2216,8 +2232,8 @@ async function dtGenerateQuestions(){
     : 'IMPORTANT: Write ALL questions, options, and explanations in Hindi using Devanagari script only. Do NOT use English at all.';
 
   var sysPrompt = lang === 'English'
-    ? 'You are an MCQ generator. Write all content in English only. Return ONLY valid JSON array. No markdown, no backticks, no extra text.'
-    : 'You are an MCQ generator. Write ALL questions, options, explanations in Hindi Devanagari script only. Return ONLY valid JSON array. No markdown, no backticks.';
+    ? 'You are an expert MCQ generator. STRICT RULES: (1) NEVER put the answer in the question itself. (2) Options must be plausible but distinctly different. (3) NEVER repeat question keywords as options. (4) Test understanding, not just definitions. (5) Write all content in English only. Return ONLY valid JSON array. No markdown, no backticks.'
+    : 'You are an expert MCQ generator. STRICT RULES: (1) Question mein answer mat do. (2) Options clearly alag honein chahiye. (3) Question ke keywords ko options mein mat repeat karo. (4) Samajh test karo, sirf definition nahi. (5) Sabkuch Hindi Devanagari mein likho. Return ONLY valid JSON array. No markdown, no backticks.';
 
   var diffInst = diff==='Easy' ? 'Easy/basic level.'
     : diff==='Hard' ? 'Advanced/hard level.'
@@ -2259,6 +2275,13 @@ async function dtGenerateQuestions(){
         '- If you have less than ' + thisChunk + ', add more questions',
         '- If you have more than ' + thisChunk + ', remove extra questions',
         '- Your final JSON array MUST contain EXACTLY ' + thisChunk + ' objects — this is mandatory',
+        '',
+        'STRICT MCQ QUALITY RULES:',
+        '1. NEVER put the answer directly in the question text',
+        '2. Options must be PLAUSIBLE but clearly distinct from each other',
+        '3. NEVER repeat question keywords as options',
+        '4. Wrong options = common misconceptions or related incorrect facts',
+        '5. Test UNDERSTANDING, not just definitions',
         '',
         'STRICT FORMAT RULES:',
         '1. Return ONLY raw JSON array — NO markdown, NO backticks, NO explanation text',
@@ -2413,6 +2436,14 @@ function publishDailyTest(){
   if(!title){ showToast('Test ka naam likho!'); return; }
   if(dtGeneratedQuestions.length === 0){ showToast('Pehle AI se questions generate karo!'); return; }
 
+  // Negative marking — toggle ON hai to guaranteed value lo
+  var finalNegMarking = null;
+  var dtToggle = document.getElementById('dt-neg-toggle');
+  if(dtToggle && dtToggle.checked){
+    // dtNegMarking already set hai (AI verified) ya fallback use karo
+    finalNegMarking = dtNegMarking || NEG_MARKING_PATTERNS[exam] || { correct:1, wrong:-0.25, label: exam + ' default' };
+  }
+
   var test = {
     id: 'dt_' + Date.now(),
     title: title,
@@ -2422,8 +2453,26 @@ function publishDailyTest(){
     questions: dtGeneratedQuestions,
     date: new Date().toLocaleDateString('hi-IN'),
     publishedAt: Date.now(),
-    negMarking: dtNegMarking || null
+    negMarking: finalNegMarking
   };
+
+  // Apps Script mein save karo — sabko dikhega
+  try {
+    var dtData = {
+      action: 'saveDailyTest',
+      id: test.id,
+      title: test.title,
+      subject: test.subject,
+      exam: test.exam,
+      timeLimit: test.timeLimit,
+      questions: JSON.stringify(test.questions),
+      negMarking: JSON.stringify(test.negMarking || null),
+      publishedAt: test.publishedAt,
+      date: test.date
+    };
+    var p = new URLSearchParams(dtData);
+    fetch(APPS_SCRIPT_URL + '?' + p).catch(function(){});
+  } catch(e){}
 
   // Load existing tests array
   var existing = [];
@@ -2488,13 +2537,46 @@ function loadStudentDailyTest(){
   var wrap = document.getElementById('daily-test-student-wrap');
   if(!wrap) return;
 
-  // Load from new array key
-  var tests = [];
-  try { tests = JSON.parse(localStorage.getItem('sj_daily_tests') || '[]'); } catch(e){ tests = []; }
-  // Filter only active (within 24hr)
-  tests = tests.filter(function(t){ return Date.now() - t.publishedAt < 24*60*60*1000; });
+  // Pehle localStorage se dikhao (fast)
+  var localTests = [];
+  try { localTests = JSON.parse(localStorage.getItem('sj_daily_tests') || '[]'); } catch(e){}
+  localTests = localTests.filter(function(t){ return Date.now() - t.publishedAt < 24*60*60*1000; });
 
-  if(tests.length === 0){ wrap.innerHTML=''; return; }
+  // Apps Script se bhi fetch karo (server-side - sab devices par kaam karta hai)
+  fetch(APPS_SCRIPT_URL + '?action=getDailyTests')
+    .then(function(res){ return res.json(); })
+    .then(function(data){
+      if(data && data.tests && data.tests.length > 0){
+        var serverTests = data.tests.map(function(t){
+          try { t.questions = JSON.parse(t.questions); } catch(e){}
+          try { t.negMarking = JSON.parse(t.negMarking); } catch(e){}
+          t.publishedAt = parseInt(t.publishedAt);
+          return t;
+        });
+        // Local + server merge karo (duplicates hataao)
+        var allIds = {};
+        var merged = [];
+        serverTests.forEach(function(t){ if(!allIds[t.id]){ allIds[t.id]=1; merged.push(t); } });
+        localTests.forEach(function(t){ if(!allIds[t.id]){ allIds[t.id]=1; merged.push(t); } });
+        merged = merged.filter(function(t){ return Date.now() - t.publishedAt < 24*60*60*1000; });
+        // localStorage update karo
+        localStorage.setItem('sj_daily_tests', JSON.stringify(merged));
+        renderDailyTests(wrap, merged);
+      } else {
+        renderDailyTests(wrap, localTests);
+      }
+    })
+    .catch(function(){
+      // Server nahi mila — sirf local dikhao
+      renderDailyTests(wrap, localTests);
+    });
+
+  // Pehle local dikhao (instant)
+  renderDailyTests(wrap, localTests);
+}
+
+function renderDailyTests(wrap, tests){
+  if(!tests || tests.length === 0){ wrap.innerHTML=''; return; }
 
   function getTheme(exam){
     var e = (exam||'').toLowerCase();
@@ -2516,6 +2598,7 @@ function loadStudentDailyTest(){
     var t = tests[i];
     var theme = getTheme(t.exam);
     var remaining = Math.round((24*60*60*1000 - (Date.now()-t.publishedAt)) / (60*60*1000));
+    var qCount = Array.isArray(t.questions) ? t.questions.length : '?';
     html += '<div class="dt-card '+theme+'">'
       + '<div class="dt-card-top">'
       + '<div class="dt-card-left">'
@@ -2523,8 +2606,9 @@ function loadStudentDailyTest(){
       + '<div class="dt-card-title">'+t.title+'</div>'
       + '<div class="dt-card-meta">'
       + '<span class="dt-meta-chip">⏱ '+t.timeLimit+' min</span>'
-      + '<span class="dt-meta-chip">📝 '+t.questions.length+' Qs</span>'
+      + '<span class="dt-meta-chip">📝 '+qCount+' Qs</span>'
       + '<span class="dt-meta-chip">📚 '+(t.subject||t.exam)+'</span>'
+      + (t.negMarking && t.negMarking.wrong < 0 ? '<span class="dt-meta-chip" style="color:var(--red);">➖ Neg Marking</span>' : '')
       + '</div>'
       + '</div>'
       + '<button class="dt-start-btn-new" onclick="startDailyTestById(this.dataset.id)" data-id="' + t.id + '">START ▶</button>'
